@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import android.widget.Button
+import android.widget.Toast
 
 
 /**
@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Log.d("test stash", "test stash")
+        Log.d("test stash", "test stash")
 
     }
 
@@ -31,6 +33,11 @@ class MainActivity : AppCompatActivity() {
     fun onButtonClick(view: View) {
         button1.setText(R.string.button1_new )
         Toast.makeText(this, "feature_2 toast", Toast.LENGTH_LONG)
-        Toast.makeText(this, "feature_1 toast", Toast.LENGTH_LONG)
     }
+
+    @SuppressLint("ShowToast")
+    fun onSecondButtonClick(view: View) {
+        Toast.makeText(this, "test_cherry-pick toast", Toast.LENGTH_LONG)
+    }
+
 }
