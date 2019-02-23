@@ -31,4 +31,10 @@ class MainActivity : AppCompatActivity() {
         button1.setText(R.string.button1_new )
         Toast.makeText(this, "feature_2 toast", Toast.LENGTH_LONG)
     }
+
+    @SuppressLint("ShowToast")
+    fun onSecondButtonClick(view: View) {
+        Toast.makeText(this, "test_cherry-pick toast", Toast.LENGTH_LONG)
+    }
+
 }
