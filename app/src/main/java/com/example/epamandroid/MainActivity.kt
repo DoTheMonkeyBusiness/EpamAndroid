@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import com.example.mysubmodule.Myclass
 
 /**
  *
@@ -12,15 +13,13 @@ import android.widget.Button
 class MainActivity : AppCompatActivity() {
 
 
-    private val button1: Button = findViewById(R.id.button1)
-    /**
-     *
-     */
+    private lateinit var button1: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
+        button1 = findViewById(R.id.button1)
+        Myclass.myFunc()
     }
 
 
