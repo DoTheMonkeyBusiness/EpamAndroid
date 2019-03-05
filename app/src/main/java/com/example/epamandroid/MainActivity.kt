@@ -1,5 +1,6 @@
 package com.example.epamandroid
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -20,5 +21,9 @@ class MainActivity : AppCompatActivity() {
 
     fun onButtonClick(view: View) {
         button1.setText(R.string.button1_new)
+    }
+
+    fun startSecondActivity(view: View){
+        startActivity(Intent(this, SecondActivity::class.java))
     }
 }

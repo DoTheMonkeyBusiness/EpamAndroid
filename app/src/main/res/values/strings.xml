@@ -2,7 +2,7 @@
     <string name="app_name">EpamAndroid</string>
     <string name="button1">Button standard value</string>
     <string name="button1_new">Button new value</string>
-
-
     <string name="hello_button">hello</string>
+    <string name="smile_button">(◉◡◉)</string>
+    <string name="second_activity">Second activity</string>
 </resources>
