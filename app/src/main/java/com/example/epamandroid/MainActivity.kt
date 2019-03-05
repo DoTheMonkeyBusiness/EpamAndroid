@@ -2,14 +2,11 @@ package com.example.epamandroid
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.example.mysubmodule.Myclass
 import kotlinx.android.synthetic.main.activity_main.*
 
-/**
- *
- */
+
 class MainActivity : AppCompatActivity() {
 
 
