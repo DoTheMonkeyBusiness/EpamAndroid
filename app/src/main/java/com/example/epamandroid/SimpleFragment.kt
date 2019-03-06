@@ -20,6 +20,7 @@ class SimpleFragment : Fragment() {
 
         //TODO: I little don't understand how it works
         if (savedInstanceState != null) {
+            //TODO: FATAL EXCEPTION when turing the screen
             simple_fragment_hello_button.setText(savedInstanceState.getInt(BUTTON_TEXT))
         }
 
