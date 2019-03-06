@@ -18,10 +18,8 @@ class SimpleFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        //TODO: I little don't understand how it works
         if (savedInstanceState != null) {
-            //TODO: FATAL EXCEPTION when turing the screen
-            simple_fragment_hello_button.setText(savedInstanceState.getInt(BUTTON_TEXT))
+            simple_fragment_hello_button.text = savedInstanceState.getString(BUTTON_TEXT)
         }
 
         simple_fragment_hello_button.setOnClickListener {
@@ -33,10 +31,10 @@ class SimpleFragment : Fragment() {
         }
     }
 
-    override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        savedInstanceState.putString(BUTTON_TEXT, simple_fragment_hello_button.text.toString())
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
 
-        super.onSaveInstanceState(savedInstanceState)
+        outState.putString(BUTTON_TEXT, simple_fragment_hello_button.text.toString())
     }
 }
 
