@@ -4,7 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.activity_main_change_button
 
 /**
  *
@@ -16,10 +16,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val newIntent = Intent(this, MyService::class.java)
-    }
 
-
-    fun onButtonClick(view: View) {
-        activity_main_change_button.setText(R.string.button1_new)
+        activity_main_change_button.setOnClickListener{
+            activity_main_change_button.setText(R.string.button1_new)
+        }
     }
 }
