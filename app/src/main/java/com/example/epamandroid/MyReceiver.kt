@@ -9,6 +9,7 @@ class MyReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
         val currentTime: String = intent.getStringExtra(Constants.BROADCAST_MESSAGE)
+
         Toast.makeText(context, currentTime, Toast.LENGTH_SHORT).show()
     }
 }

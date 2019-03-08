@@ -7,8 +7,9 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import kotlinx.android.synthetic.main.activity_main.*
-import java.time.LocalDateTime
+import kotlinx.android.synthetic.main.activity_main.activity_main_start_service_button
+import kotlinx.android.synthetic.main.activity_main.activity_main_stop_service_button
+import kotlinx.android.synthetic.main.activity_main.activity_main_change_button
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +29,16 @@ class MainActivity : AppCompatActivity() {
             activity_main_change_button.setText(R.string.button1_new)
         }
         activity_main_start_service_button.setOnClickListener {
-            startService(serviceIntent.putExtra(Constants.TIME_NOW, LocalDateTime.now().toString()))
+            startService(serviceIntent.putExtra(Constants.SERVICE_STATE, true))
+
+            activity_main_start_service_button.isEnabled = false
+            activity_main_stop_service_button.isEnabled = true
+        }
+        activity_main_stop_service_button.setOnClickListener {
+            stopService(serviceIntent.putExtra(Constants.SERVICE_STATE, false))
+
+            activity_main_start_service_button.isEnabled = true
+            activity_main_stop_service_button.isEnabled = false
         }
     }
 

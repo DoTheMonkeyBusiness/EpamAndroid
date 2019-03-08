@@ -1,20 +1,32 @@
 package com.example.epamandroid
 
 import android.app.IntentService
-import android.app.Service
 import android.content.Intent
-import android.os.IBinder
-import android.os.SystemClock
-import java.util.concurrent.TimeUnit
+import android.os.Build
+import android.support.annotation.RequiresApi
+import android.widget.Toast
+import java.time.LocalDateTime
 
 class MyService : IntentService("MyService") {
 
     private val myIntent: Intent = Intent(Constants.CUSTOM_ACTION)
 
-    override fun onHandleIntent(intent: Intent) {
-        val timeNow: String = intent.getStringExtra(Constants.TIME_NOW)
+    private var serviceStatus: Boolean = false
 
-        myIntent.putExtra(Constants.BROADCAST_MESSAGE, timeNow)
-        sendBroadcast(myIntent)
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onHandleIntent(intent: Intent) {
+        serviceStatus = intent.getBooleanExtra(Constants.SERVICE_STATE, false)
+
+        while (serviceStatus) {
+            myIntent.putExtra(Constants.BROADCAST_MESSAGE, LocalDateTime.now().second.toString())
+            sendBroadcast(myIntent)
+            Thread.sleep(1000)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        serviceStatus = false
     }
 }
