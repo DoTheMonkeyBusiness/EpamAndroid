@@ -23,7 +23,7 @@ class SimpleFragment : Fragment() {
         }
 
         simple_fragment_hello_button.setOnClickListener {
-            if (simple_fragment_hello_button.text.equals(getText(R.string.hello_button))) {
+            if (simple_fragment_hello_button.text == getText(R.string.hello_button)) {
                 simple_fragment_hello_button.setText(R.string.smile_button)
             } else {
                 simple_fragment_hello_button.setText(R.string.hello_button)

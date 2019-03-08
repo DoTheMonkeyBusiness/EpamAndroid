@@ -10,17 +10,15 @@ import kotlinx.android.synthetic.main.activity_main.second_activity_button
 
 class MainActivity : AppCompatActivity() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Myclass.myFunc()
 
-        button1.setOnClickListener{
+        button1.setOnClickListener {
             button1.setText(R.string.button1_new)
         }
-        second_activity_button.setOnClickListener{
+        second_activity_button.setOnClickListener {
             startActivity(Intent(this, SecondActivity::class.java))
         }
     }
