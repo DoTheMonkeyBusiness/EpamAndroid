@@ -4,25 +4,17 @@ import android.app.IntentService
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import android.os.SystemClock
 import java.util.concurrent.TimeUnit
 
 class MyService : IntentService("MyService") {
 
-    private val SERVICE_ACTION: String = "myAction"
+    private val myIntent: Intent = Intent(Constants.CUSTOM_ACTION)
 
-    override fun onHandleIntent(intent: Intent?) {
-        val endTime = System.currentTimeMillis() + 5*1000
-        while (System.currentTimeMillis() < endTime) {
-            synchronized (this) {
-                TimeUnit.MILLISECONDS.sleep(endTime - System.currentTimeMillis());
-            }
-        }
-    }
+    override fun onHandleIntent(intent: Intent) {
+        val timeNow: String = intent.getStringExtra(Constants.TIME_NOW)
 
-    override fun onCreate() {
-        super.onCreate()
-
-        val myIntent = Intent()
-        myIntent.setAction(SERVICE_ACTION)
+        myIntent.putExtra(Constants.BROADCAST_MESSAGE, timeNow)
+        sendBroadcast(myIntent)
     }
 }

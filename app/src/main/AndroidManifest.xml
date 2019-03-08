@@ -11,13 +11,11 @@
             android:theme="@style/AppTheme">
         <receiver
                 android:name=".MyReceiver"
-                android:enabled="false"
                 android:exported="false">
         </receiver>
 
         <service
                 android:name=".MyService"
-                android:enabled="false"
                 android:exported="false">
         </service>
 
