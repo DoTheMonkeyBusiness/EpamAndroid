@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">EpamAndroid</string>
-    <string name="button1">Button standard value</string>
-    <string name="button1_new">Button new value</string>
 </resources>
