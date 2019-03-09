@@ -14,4 +14,6 @@
     <string name="friends_count">so many friends</string>
     <string name="location_text">Lives in Hrodna</string>
     <string name="show_info">Show info</string>
+    <string name="friend_photo">friend photo</string>
+    <string name="small_image">small image</string>
 </resources>

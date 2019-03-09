@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/real_white"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
 >
 
     <Button
@@ -16,7 +19,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
     />
 
     <ImageView
@@ -64,6 +66,42 @@
             android:layout_marginStart="16dp"
             android:layout_alignBottom="@id/vk_info_item_friends_image"
 
+    />
+
+    <ImageView
+            android:id="@+id/vk_info_item_friend_0_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/friend_photo"
+            app:srcCompat="@drawable/ic_sentiment_very_satisfied_red_32dp"
+            android:layout_below="@id/vk_info_item_about_you_image"
+            android:layout_marginTop="16dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+    />
+
+    <ImageView
+            android:id="@+id/vk_info_item_friend_1_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/friend_photo"
+            app:srcCompat="@drawable/ic_sentiment_very_satisfied_blue_32dp"
+            android:layout_below="@id/vk_info_item_about_you_image"
+            android:layout_marginTop="16dp"
+            android:layout_toStartOf="@id/vk_info_item_friend_0_image"
+            android:layout_marginEnd="-12dp"
+    />
+
+    <ImageView
+            android:id="@+id/vk_info_item_friend_2_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/friend_photo"
+            app:srcCompat="@drawable/ic_sentiment_very_satisfied_green_32dp"
+            android:layout_below="@id/vk_info_item_about_you_image"
+            android:layout_marginTop="16dp"
+            android:layout_toStartOf="@id/vk_info_item_friend_1_image"
+            android:layout_marginEnd="-12dp"
     />
 
     <ImageView

@@ -16,8 +16,6 @@
 
         <include
                 layout="@layout/activity_toolbar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/activity_vk_home_toolbar"
         />
 
@@ -26,13 +24,25 @@
                 layout="@layout/vk_image_item"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_below="@+id/activity_vk_home_toolbar"/>
+        />
 
         <include
+                android:id="@+id/vk_info_item"
                 layout="@layout/vk_info_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vk_image_item"
+        />
+
+        <include
+                android:id="@+id/vk_whatsnew_item"
+                layout="@layout/vk_whatsnew_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/vk_info_item"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+
         />
 
 
