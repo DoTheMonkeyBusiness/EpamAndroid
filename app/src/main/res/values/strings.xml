@@ -3,4 +3,15 @@
     <string name="navigate_back">navigate back</string>
     <string name="burger">burger</string>
     <string name="action_settings">settings</string>
+    <string name="vk">vk</string>
+    <string name="name">Maksim Nasalevich</string>
+    <string name="vk_image">vk image</string>
+    <string name="online">online</string>
+    <string name="photo_button">photo button</string>
+    <string name="edit">Edit</string>
+    <string name="about_you">about you</string>
+    <string name="about_you_text">There was no rounded icon</string>
+    <string name="friends_count">so many friends</string>
+    <string name="location_text">Lives in Hrodna</string>
+    <string name="show_info">Show info</string>
 </resources>
