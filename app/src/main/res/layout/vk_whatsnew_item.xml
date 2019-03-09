@@ -1,16 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/real_white"
 >
 
     <ImageView
             android:id="@+id/vk_whatsnew_item_user_image"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:contentDescription="@string/small_image"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_centerVertical="true"
     />
+
+    <TextView
+            android:id="@+id/vk_whatsnew_item_whatsnew_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/what_s_new"
+            android:textColor="@color/color_greyDark"
+            android:layout_toEndOf="@id/vk_whatsnew_item_user_image"
+            android:layout_marginStart="16dp"
+            android:layout_centerVertical="true"
+    />
+
+    <ImageButton
+            android:id="@+id/vk_whatsnew_item_camera_imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_camera_alt_gray_dark_24dp"
+            android:background="@null"
+            android:contentDescription="@string/photo_button"
+            android:layout_marginEnd="16dp"
+            android:layout_toStartOf="@id/vk_whatsnew_item_circle_imageButton"
+            android:layout_centerVertical="true"
+    />
+    <ImageButton
+            android:id="@+id/vk_whatsnew_item_circle_imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_camera_grey_dark_24dp"
+            android:background="@null"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/circle_button"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true"
+    />
+
 </RelativeLayout>

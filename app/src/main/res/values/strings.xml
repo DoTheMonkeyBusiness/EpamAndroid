@@ -16,4 +16,6 @@
     <string name="show_info">Show info</string>
     <string name="friend_photo">friend photo</string>
     <string name="small_image">small image</string>
+    <string name="what_s_new">What\'s new?</string>
+    <string name="circle_button">circle button</string>
 </resources>
