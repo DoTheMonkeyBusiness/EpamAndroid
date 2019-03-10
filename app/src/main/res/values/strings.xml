@@ -18,4 +18,6 @@
     <string name="small_image">small image</string>
     <string name="what_s_new">What\'s new?</string>
     <string name="circle_button">circle button</string>
+    <string name="photos">Photos</string>
+    <string name="zero">0</string>
 </resources>

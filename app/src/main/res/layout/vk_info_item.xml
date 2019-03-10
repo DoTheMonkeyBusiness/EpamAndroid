@@ -147,7 +147,6 @@
             android:layout_toEndOf="@id/vk_info_item_about_you_image"
             android:layout_marginStart="16dp"
             android:layout_alignBottom="@id/vk_info_item_info_image"
-
     />
 
 

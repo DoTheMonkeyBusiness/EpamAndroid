@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import kotlinx.android.synthetic.main.activity_vk_home.activity_vk_home_toolbar
 import kotlinx.android.synthetic.main.vk_whatsnew_item.vk_whatsnew_item_user_image
+import kotlinx.android.synthetic.main.vk_photos_item.vk_photos_item_photos_count_textView
+import kotlinx.android.synthetic.main.vk_photos_item.vk_photos_item_photo_gallery_linearLayout
 
 class VkHomeActivity : AppCompatActivity() {
 
@@ -23,6 +25,8 @@ class VkHomeActivity : AppCompatActivity() {
         configureSupportActionBar()
 
         createCircleImage()
+
+        vk_photos_item_photos_count_textView.text = vk_photos_item_photo_gallery_linearLayout.childCount.toString()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
