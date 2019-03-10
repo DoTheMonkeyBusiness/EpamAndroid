@@ -20,4 +20,9 @@
     <string name="circle_button">circle button</string>
     <string name="photos">Photos</string>
     <string name="zero">0</string>
+    <string name="news_page">news page</string>
+    <string name="search_page">search page</string>
+    <string name="messages_page">messages page</string>
+    <string name="notifications_page">notifications page</string>
+    <string name="home_page">home page</string>
 </resources>
