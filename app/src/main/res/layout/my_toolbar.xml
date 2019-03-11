@@ -12,7 +12,7 @@
     <ImageView
             android:id="@+id/my_toolbar_podcasts_imageView"
             android:layout_width="184dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:contentDescription="@string/google_podcasts"
             android:layout_gravity="center"
             android:src="@drawable/podcasts"
