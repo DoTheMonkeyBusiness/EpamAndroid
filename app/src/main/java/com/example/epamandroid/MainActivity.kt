@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity() {
         activity_main_vk_button.setOnClickListener {
             startActivity(Intent(this@MainActivity, VkHomeActivity::class.java));
         }
-
     }
 
 }
