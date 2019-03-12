@@ -43,7 +43,7 @@ class VkHomeActivity : AppCompatActivity() {
     }
 
     private fun createCircleImage() {
-        bitmap = BitmapFactory.decodeResource(resources, R.drawable.photo)
+        bitmap = BitmapFactory.decodeResource(resources, R.drawable.photo_vk)
         roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
         roundedBitmapDrawable.isCircular = true
         vk_whatsnew_item_user_image.setImageDrawable(roundedBitmapDrawable)
