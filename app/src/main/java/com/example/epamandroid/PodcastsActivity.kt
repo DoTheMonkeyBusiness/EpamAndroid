@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import kotlinx.android.synthetic.main.activity_podcasts.my_toolbar
+import kotlinx.android.synthetic.main.podcasts_for_you_item.podcasts_for_you_item_viewpager
+import kotlinx.android.synthetic.main.podcasts_for_you_item.podcasts_for_you_item_tab_layout
 
 class PodcastsActivity : AppCompatActivity() {
 
@@ -13,6 +15,14 @@ class PodcastsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_podcasts)
 
         configureSupportActionBar()
+
+        val adapter = ForYouPagerAdapter(supportFragmentManager)
+        adapter.addFragment(NewEpisodesFragment(), "newEpisodesFragment")
+        adapter.addFragment(InProgressFragment(), "inProgressFragment")
+        adapter.addFragment(DownloadsFragment(), "downloadsFragment")
+
+        podcasts_for_you_item_viewpager.adapter = adapter
+        podcasts_for_you_item_tab_layout.setupWithViewPager(podcasts_for_you_item_viewpager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
