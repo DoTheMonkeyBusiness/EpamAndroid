@@ -16,13 +16,7 @@ class PodcastsActivity : AppCompatActivity() {
 
         configureSupportActionBar()
 
-        val adapter = ForYouPagerAdapter(supportFragmentManager)
-        adapter.addFragment(NewEpisodesFragment(), "newEpisodesFragment")
-        adapter.addFragment(InProgressFragment(), "inProgressFragment")
-        adapter.addFragment(DownloadsFragment(), "downloadsFragment")
-
-        podcasts_for_you_item_viewpager.adapter = adapter
-        podcasts_for_you_item_tab_layout.setupWithViewPager(podcasts_for_you_item_viewpager)
+        configureTabLayout()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -37,4 +31,14 @@ class PodcastsActivity : AppCompatActivity() {
         supportActionBar?.setIcon(R.drawable.ic_search_grey_dark_24dp)
     }
 
+    private fun configureTabLayout(){
+        val adapter = ForYouPagerAdapter(supportFragmentManager)
+
+        adapter.addFragment(NewEpisodesFragment(), "New episodes")
+        adapter.addFragment(InProgressFragment(), "In progress")
+        adapter.addFragment(DownloadsFragment(), "Downloads")
+        podcasts_for_you_item_viewpager.adapter = adapter
+        podcasts_for_you_item_tab_layout.setupWithViewPager(podcasts_for_you_item_viewpager)
+
+    }
 }

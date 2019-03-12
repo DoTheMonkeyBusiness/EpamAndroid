@@ -23,7 +23,7 @@ class ForYouPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm){
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return super.getPageTitle(position)
+        return titleList[position]
     }
 
 }
