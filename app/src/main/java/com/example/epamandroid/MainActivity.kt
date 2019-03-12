@@ -12,8 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         activity_main_vk_button.setOnClickListener {
-            startActivity(Intent(this@MainActivity, VkHomeActivity::class.java));
+            startActivity(Intent(this@MainActivity, VkHomeActivity::class.java))
         }
     }
-
 }
