@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+    <include
+            android:id="@+id/my_toolbar"
+            layout="@layout/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    />
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/my_toolbar"
+    >
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+        >
+
+        <include
+                android:id="@+id/podcasts_image_gallery_item"
+                layout="@layout/podcasts_image_gallery_item"
+                android:layout_alignParentTop="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+        />
+
+            <include
+                    android:id="@+id/podcasts_for_you_item"
+                    layout="@layout/podcasts_for_you_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/podcasts_image_gallery_item"
+                    android:layout_margin="16dp"
+            />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
