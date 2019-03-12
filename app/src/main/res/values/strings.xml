@@ -10,4 +10,6 @@
     <string name="downloads">Downloads</string>
     <string name="standard_value">000: Standard Value</string>
     <string name="standart_realise_date">0 days ago · 0 min</string>
+    <string name="icon">icon</string>
+    <string name="all_episodes">All new episodes</string>
 </resources>

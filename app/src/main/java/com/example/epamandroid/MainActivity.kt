@@ -15,5 +15,4 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, PodcastsActivity::class.java))
         }
     }
-
 }

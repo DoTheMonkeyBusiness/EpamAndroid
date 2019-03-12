@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 
-class ForYouPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm){
+class ForYouPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
     private val fragmentList: MutableList<Fragment> = ArrayList()
     private val titleList: MutableList<String> = ArrayList()
@@ -17,7 +17,7 @@ class ForYouPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm){
         return fragmentList.size
     }
 
-    fun addFragment(fragment: Fragment, title: String){
+    fun addFragment(fragment: Fragment, title: String) {
         fragmentList.add(fragment)
         titleList.add(title)
     }
@@ -25,5 +25,4 @@ class ForYouPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm){
     override fun getPageTitle(position: Int): CharSequence? {
         return titleList[position]
     }
-
 }

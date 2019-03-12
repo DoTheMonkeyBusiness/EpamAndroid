@@ -8,68 +8,22 @@
         android:layout_gravity="center_horizontal"
 >
 
-    <ImageView
-            android:id="@+id/podcasts_image_gallery_image_0_imageView"
-            android:contentDescription="@string/image"
-            app:srcCompat="@drawable/photo_0"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="8dp"
+    <com.example.epamandroid.ImageNewView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"/>
+    <com.example.epamandroid.ImageNewView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"/>
+    <com.example.epamandroid.ImageNewView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"/>
 
-    />
-    <!--<TextView-->
-            <!--android:id="@+id/podcasts_image_gallery_new_0_textView"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/new_string"-->
-            <!--android:background="@color/colorPrimary"-->
-            <!--android:textColor="@color/real_white"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:textAlignment="center"/>-->
-    <ImageView
-            android:id="@+id/podcasts_image_gallery_image_1_imageView"
-            android:contentDescription="@string/image"
-            app:srcCompat="@drawable/photo_1"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="8dp"
-
-
-    />
-    <!--<TextView-->
-            <!--android:id="@+id/podcasts_image_gallery_new_1_textView"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/new_string"-->
-            <!--android:background="@color/colorPrimary"-->
-            <!--android:textColor="@color/real_white"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:textAlignment="center"/>-->
-
-    <ImageView
-            android:id="@+id/podcasts_image_gallery_image_2_imageView"
-            android:contentDescription="@string/image"
-            app:srcCompat="@drawable/photo_2"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="8dp"
-
-
-    />
-    <!--<TextView-->
-            <!--android:id="@+id/podcasts_image_gallery_new_2_textView"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/new_string"-->
-            <!--android:background="@color/colorPrimary"-->
-            <!--android:textColor="@color/real_white"-->
-            <!--android:layout_alignBottom="@id/podcasts_image_gallery_image_2_imageView"-->
-            <!--android:layout_alignStart="@id/podcasts_image_gallery_image_2_imageView"-->
-            <!--android:layout_alignEnd="@id/podcasts_image_gallery_image_2_imageView"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:textAlignment="center"/>-->
     <ImageView
             android:id="@+id/podcasts_image_gallery_image_not_available_imageView"
             android:contentDescription="@string/image"
@@ -79,29 +33,10 @@
             android:layout_margin="8dp"
 
     />
-    <ImageView
-            android:id="@+id/podcasts_image_gallery_image_3_imageView"
-            android:contentDescription="@string/image"
-            app:srcCompat="@drawable/photo_3"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="8dp"
-
-
-    />
-    <!--<TextView-->
-            <!--android:id="@+id/podcasts_image_gallery_new_3_textView"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/new_string"-->
-            <!--android:background="@color/colorPrimary"-->
-            <!--android:textColor="@color/real_white"-->
-            <!--android:layout_alignBottom="@id/podcasts_image_gallery_image_3_imageView"-->
-            <!--android:layout_alignStart="@id/podcasts_image_gallery_image_3_imageView"-->
-            <!--android:layout_alignEnd="@id/podcasts_image_gallery_image_3_imageView"-->
-            <!--android:layout_marginStart="16dp"-->
-            <!--android:layout_marginEnd="16dp"-->
-            <!--android:textAlignment="center"/>-->
-
+    <com.example.epamandroid.ImageNewView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"/>
 
 </GridLayout>

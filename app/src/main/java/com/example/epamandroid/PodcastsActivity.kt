@@ -31,7 +31,7 @@ class PodcastsActivity : AppCompatActivity() {
         supportActionBar?.setIcon(R.drawable.ic_search_grey_dark_24dp)
     }
 
-    private fun configureTabLayout(){
+    private fun configureTabLayout() {
         val adapter = ForYouPagerAdapter(supportFragmentManager)
 
         adapter.addFragment(NewEpisodesFragment(), "New episodes")
