@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:background="@color/colorPrimary"
-                android:padding="16dp"
+                android:padding="8dp"
 >
 
 
@@ -11,7 +11,7 @@
             android:id="@+id/navigation_header_android_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_android_red_32dp"
+            app:srcCompat="@drawable/ic_android_blue_64dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/android_icon"/>
@@ -22,7 +22,8 @@
             android:layout_alignParentStart="true"
             android:layout_below="@id/navigation_header_android_icon"
             android:text="@string/name"
-            android:textColor="@color/color_gray"
+            android:textColor="@color/color_gray_light"
+            android:layout_marginTop="8dp"
             android:textStyle="bold"
             android:textSize="14sp"
     />
@@ -32,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:text="@string/mail"
-            android:textColor="@color/color_gray"
+            android:textColor="@color/color_gray_light"
             android:layout_below="@+id/navigation_header_name_textView"
             android:layout_marginTop="8dp"
             android:textSize="12sp"
