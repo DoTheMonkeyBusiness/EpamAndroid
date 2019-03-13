@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">EpamAndroid</string>
-    <string name="fragment_one">fragment one</string>
-    <string name="fragment_two">fragment two</string>
+    <string name="fragment_first">fragment first</string>
+    <string name="fragment_second">fragment second</string>
     <string name="name">Maksim Nasalevich</string>
     <string name="mail">maks20061999@gmail.com</string>
     <string name="android_icon">android icon</string>
