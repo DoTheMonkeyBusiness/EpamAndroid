@@ -11,6 +11,8 @@ class MyService : IntentService("MyService") {
 
     private val myIntent: Intent = Intent(Constants.CUSTOM_ACTION)
 
+    private val colorList: MutableList<String> = ArrayList()
+
     private var serviceStatus: Boolean = false
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -18,15 +20,32 @@ class MyService : IntentService("MyService") {
         serviceStatus = intent.getBooleanExtra(Constants.SERVICE_STATE, false)
 
         while (serviceStatus) {
-            myIntent.putExtra(Constants.BROADCAST_MESSAGE, LocalDateTime.now().second.toString())
+            myIntent.putExtra(Constants.BROADCAST_MESSAGE, colorList[(Math.random()*10%(colorList.size-1)).toInt()])
             sendBroadcast(myIntent)
-            Thread.sleep(1000)
+            Thread.sleep(500)
         }
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        setBackgroundList()
     }
 
     override fun onDestroy() {
         super.onDestroy()
 
         serviceStatus = false
+    }
+
+    private fun setBackgroundList(){
+        colorList.add("#FFAB00")
+        colorList.add("#E64A19")
+        colorList.add("#00E676")
+        colorList.add("#00B8D4")
+        colorList.add("#01579B")
+        colorList.add("#651FFF")
+        colorList.add("#26C6DA")
+        colorList.add("#F44336")
+        colorList.add("#EF6C00")
     }
 }

@@ -3,13 +3,17 @@ package com.example.epamandroid
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
+import android.graphics.Color
+import android.support.constraint.ConstraintLayout
 
-class MyReceiver : BroadcastReceiver() {
+
+class MyReceiver(activity_main_layout: ConstraintLayout) : BroadcastReceiver() {
+
+    private val myLayout = activity_main_layout
 
     override fun onReceive(context: Context, intent: Intent) {
-        val currentTime: String = intent.getStringExtra(Constants.BROADCAST_MESSAGE)
+        val backgroundColor: String = intent.getStringExtra(Constants.BROADCAST_MESSAGE)
 
-        Toast.makeText(context, currentTime, Toast.LENGTH_SHORT).show()
+        myLayout.setBackgroundColor(Color.parseColor(backgroundColor))
     }
 }
