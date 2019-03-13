@@ -34,6 +34,7 @@ class MyService : IntentService("MyService") {
     override fun onDestroy() {
         super.onDestroy()
 
+        colorList.clear()
         serviceStatus = false
     }
 
