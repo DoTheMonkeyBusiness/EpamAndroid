@@ -40,9 +40,12 @@ class MainActivity : AppCompatActivity() {
             activity_main_stop_service_button.isEnabled = true
             activity_main_dance_gif.visibility = View.VISIBLE
             activity_main_dance_1_gif.visibility = View.VISIBLE
-            mediaPlayer = MediaPlayer.create(this, R.raw.epic_sax_guy)
-            mediaPlayer.isLooping = true
-            mediaPlayer.start()
+            mediaPlayer = MediaPlayer
+                .create(this, R.raw.epic_sax_guy)
+                .apply {
+                    isLooping = true
+                    start()
+                }
         }
         activity_main_stop_service_button.setOnClickListener {
             stopService(serviceIntent.putExtra(Constants.SERVICE_STATE, false))

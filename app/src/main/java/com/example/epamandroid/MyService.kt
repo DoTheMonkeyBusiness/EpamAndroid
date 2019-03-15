@@ -28,7 +28,8 @@ class MyService : IntentService("MyService") {
                 )
                 !serviceStatus -> myIntent.putExtra(
                     Constants.BROADCAST_MESSAGE,
-                    "#FFFFFF")
+                    "#FFFFFF"
+                )
             }
             sendBroadcast(myIntent)
         } while (serviceStatus)
