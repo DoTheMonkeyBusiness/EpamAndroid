@@ -19,11 +19,19 @@ class MyService : IntentService("MyService") {
     override fun onHandleIntent(intent: Intent) {
         serviceStatus = intent.getBooleanExtra(Constants.SERVICE_STATE, false)
 
-        while (serviceStatus) {
-            myIntent.putExtra(Constants.BROADCAST_MESSAGE, colorList[(Math.random()*100%(colorList.size-1)).toInt()])
-            sendBroadcast(myIntent)
+        do {
             Thread.sleep(350)
-        }
+            when {
+                serviceStatus -> myIntent.putExtra(
+                    Constants.BROADCAST_MESSAGE,
+                    colorList[(Math.random() * 100 % (colorList.size - 1)).toInt()]
+                )
+                !serviceStatus -> myIntent.putExtra(
+                    Constants.BROADCAST_MESSAGE,
+                    "#FFFFFF")
+            }
+            sendBroadcast(myIntent)
+        } while (serviceStatus)
     }
 
     override fun onCreate() {
@@ -38,7 +46,7 @@ class MyService : IntentService("MyService") {
         serviceStatus = false
     }
 
-    private fun setBackgroundList(){
+    private fun setBackgroundList() {
         colorList.add("#FFAB00")
         colorList.add("#E64A19")
         colorList.add("#00E676")

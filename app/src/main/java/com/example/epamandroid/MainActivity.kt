@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity() {
             activity_main_stop_service_button.isEnabled = false
             activity_main_dance_gif.visibility = View.INVISIBLE
             activity_main_dance_1_gif.visibility = View.INVISIBLE
-            activity_main_layout.setBackgroundColor(getColor(R.color.color_white))
             mediaPlayer.stop()
         }
     }
