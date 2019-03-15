@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var myRec: MyReceiver
     private lateinit var serviceIntent: Intent
-    private lateinit var mediaPlayer: MediaPlayer
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         serviceIntent = Intent(this, MyService::class.java)
         myRec = MyReceiver(activity_main_layout)
+        var mediaPlayer: MediaPlayer? = null
 
         activity_main_start_service_button.setOnClickListener {
             startService(serviceIntent.putExtra(Constants.SERVICE_STATE, true))
@@ -54,7 +54,8 @@ class MainActivity : AppCompatActivity() {
             activity_main_stop_service_button.isEnabled = false
             activity_main_dance_gif.visibility = View.INVISIBLE
             activity_main_dance_1_gif.visibility = View.INVISIBLE
-            mediaPlayer.stop()
+            mediaPlayer?.stop()
+            mediaPlayer = null
         }
     }
 
