@@ -22,7 +22,7 @@ class MyService : IntentService("MyService") {
         while (serviceStatus) {
             myIntent.putExtra(Constants.BROADCAST_MESSAGE, colorList[(Math.random()*100%(colorList.size-1)).toInt()])
             sendBroadcast(myIntent)
-            Thread.sleep(500)
+            Thread.sleep(350)
         }
     }
 
