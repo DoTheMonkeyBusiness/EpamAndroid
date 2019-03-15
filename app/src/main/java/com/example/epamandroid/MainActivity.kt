@@ -3,6 +3,7 @@ package com.example.epamandroid
 import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             activity_main_stop_service_button.isEnabled = false
             activity_main_dance_gif.visibility = View.INVISIBLE
             activity_main_dance_1_gif.visibility = View.INVISIBLE
+            activity_main_layout.setBackgroundColor(getColor(R.color.color_white))
         }
     }
 

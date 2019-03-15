@@ -20,7 +20,7 @@ class MyService : IntentService("MyService") {
         serviceStatus = intent.getBooleanExtra(Constants.SERVICE_STATE, false)
 
         while (serviceStatus) {
-            myIntent.putExtra(Constants.BROADCAST_MESSAGE, colorList[(Math.random()*10%(colorList.size-1)).toInt()])
+            myIntent.putExtra(Constants.BROADCAST_MESSAGE, colorList[(Math.random()*100%(colorList.size-1)).toInt()])
             sendBroadcast(myIntent)
             Thread.sleep(500)
         }
