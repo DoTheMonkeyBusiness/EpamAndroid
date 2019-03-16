@@ -1,14 +1,23 @@
 package com.example.epamandroid
 
+import android.support.annotation.IntDef
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.example.epamandroid.RecyclerViewAdapter.ViewType.Companion.LOADING
+import com.example.epamandroid.RecyclerViewAdapter.ViewType.Companion.STUDENT
+import com.example.epamandroid.backend.entities.StudentModel
+import com.example.epamandroid.base.BaseViewHolder
 import java.util.*
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+
+
+    private var isShowLastViewAsLoading = false
+
+    private val students = ArrayList<StudentModel>()
 
     private val items = object : ArrayList<Any>() {
         init {
@@ -20,8 +29,14 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): RecyclerViewAdapter.ViewHolder {
-        // create a new view
+                                    viewType: Int):
+            ViewHolder {
+        when (viewType){
+            STUDENT ->{
+                return BaseViewHolder(LessonView(parent.context))
+            }
+            LOADING ->{}
+        }
         val textView = LayoutInflater.from(parent.context)
             .inflate(R.layout.text_view, parent, false)
                 as TextView
@@ -36,8 +51,16 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
         (viewHolder.itemView as TextView).text = "View #$position"
     }
 
+    fun setShowLastViewAsLoading(isShow: Boolean) {
+        if (isShow != isShowLastViewAsLoading) {
+            isShowLastViewAsLoading = isShow
+            notifyDataSetChanged()
+        }
+    }
+
     private fun deleteByIndex(i: Int) {
         items.removeAt(i)
+
         notifyItemRemoved(i)
         notifyItemRangeChanged(i, items.size)
     }
@@ -61,4 +84,13 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+    @IntDef(ViewType.STUDENT, ViewType.LOADING)
+    internal annotation class ViewType {
+        companion object {
+
+            const val STUDENT = 0
+            const val LOADING = 1
+        }
+    }
 }
