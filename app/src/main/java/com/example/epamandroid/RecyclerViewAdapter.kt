@@ -5,11 +5,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.FrameLayout
 import com.example.epamandroid.RecyclerViewAdapter.ViewType.Companion.LOADING
 import com.example.epamandroid.RecyclerViewAdapter.ViewType.Companion.STUDENT
 import com.example.epamandroid.backend.entities.StudentModel
-import com.example.epamandroid.base.BaseViewHolder
 import java.util.*
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
@@ -18,6 +17,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
     private var isShowLastViewAsLoading = false
 
     private val students = ArrayList<StudentModel>()
+    private lateinit var student: StudentModel
 
     private val items = object : ArrayList<Any>() {
         init {
@@ -29,28 +29,49 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int):
-            ViewHolder {
-        when (viewType){
+                                    viewType: Int): ViewHolder {
+        return when (viewType){
             STUDENT ->{
-                return BaseViewHolder(LessonView(parent.context))
+                ViewHolder(StudentView(parent.context))
             }
-            LOADING ->{}
+            LOADING ->{
+                ViewHolder(LayoutInflater.from(parent.context)
+                    .inflate(R.layout.layout_progress, parent, false)
+                        as FrameLayout)
+            }
+            else -> {
+                ViewHolder(LayoutInflater.from(parent.context)
+                    .inflate(R.layout.text_view, parent, false)
+                        as FrameLayout)
+            }
         }
-        val textView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.text_view, parent, false)
-                as TextView
-        return ViewHolder(textView)
-    }
-
-    override fun getItemCount(): Int {
-        return items.size
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        (viewHolder.itemView as TextView).text = "View #$position"
+        if (getItemViewType(position) == ViewType.STUDENT) {
+            student = students[position]
+
+            (viewHolder.itemView as StudentView)
+                .setStudentName(student.name)
+                .sethwCount(student.hwCount.toString())
+                .isStudent(student.isStudent)
+        }
+    }
+    override fun getItemCount(): Int {
+        return if (isShowLastViewAsLoading) {
+            students.size + 1
+        } else {
+            students.size
+        }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return if (position < students.size) {
+            ViewType.STUDENT
+        } else {
+            ViewType.LOADING
+        }
+    }
     fun setShowLastViewAsLoading(isShow: Boolean) {
         if (isShow != isShowLastViewAsLoading) {
             isShowLastViewAsLoading = isShow
