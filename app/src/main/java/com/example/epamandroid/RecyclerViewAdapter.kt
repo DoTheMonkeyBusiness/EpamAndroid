@@ -1,7 +1,7 @@
 package com.example.epamandroid
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,9 +36,10 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
         (viewHolder.itemView as TextView).text = "View #$position"
     }
 
-    fun deleteByIndex(i: Int) {
+    private fun deleteByIndex(i: Int) {
         items.removeAt(i)
         notifyItemRemoved(i)
+        notifyItemRangeChanged(i, items.size)
     }
 
     fun onItemMove(fromPosition: Int, toPosition: Int) {
