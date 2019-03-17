@@ -15,16 +15,13 @@ import kotlinx.android.synthetic.main.vk_photos_item.vk_photos_item_photo_galler
 
 class VkHomeActivity : AppCompatActivity() {
 
-    private lateinit var bitmap: Bitmap
-    private lateinit var roundedBitmapDrawable: RoundedBitmapDrawable
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vk_home)
 
         configureSupportActionBar()
 
-        createCircleImage()
+        vk_whatsnew_item_user_image.setImageDrawable(circleImage())
 
         vk_photos_item_photos_count_textView.text = vk_photos_item_photo_gallery_linearLayout.childCount.toString()
     }
@@ -37,15 +34,21 @@ class VkHomeActivity : AppCompatActivity() {
 
     private fun configureSupportActionBar() {
         setSupportActionBar(activity_vk_home_toolbar as Toolbar?)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setTitle(R.string.name)
+        supportActionBar?.let{
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
+            it.setTitle(R.string.name)
+        }
     }
 
-    private fun createCircleImage() {
-        bitmap = BitmapFactory.decodeResource(resources, R.drawable.photo_vk)
-        roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
-        roundedBitmapDrawable.isCircular = true
-        vk_whatsnew_item_user_image.setImageDrawable(roundedBitmapDrawable)
+    private fun circleImage() : RoundedBitmapDrawable {
+        val bitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.photo_vk)
+        val roundedBitmapDrawable: RoundedBitmapDrawable
+
+        roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(resources, bitmap).apply {
+            isCircular = true
+        }
+
+        return roundedBitmapDrawable
     }
 }

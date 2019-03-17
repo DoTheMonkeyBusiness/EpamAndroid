@@ -1,73 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:background="@color/color_grey">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_grey"
+    tools:context=".MainActivity">
 
 
     <include
-            layout="@layout/activity_toolbar"
-            android:id="@+id/activity_vk_home_toolbar"
-            android:layout_alignParentTop="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        android:id="@+id/activity_vk_home_toolbar"
+        layout="@layout/activity_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
 
     <ScrollView
-            android:layout_below="@id/activity_vk_home_toolbar"
-            android:layout_above="@id/vk_bottom_navigation_item"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/vk_bottom_navigation_item"
+        android:layout_below="@id/activity_vk_home_toolbar">
 
         <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-        >
-        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
                 android:id="@+id/vk_image_item"
                 layout="@layout/vk_image_item"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-        />
+                android:layout_height="300dp" />
 
-        <include
+            <include
                 android:id="@+id/vk_info_item"
                 layout="@layout/vk_info_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/vk_image_item"
-        />
+                android:layout_below="@+id/vk_image_item" />
 
-        <include
+            <include
                 android:id="@+id/vk_whatsnew_item"
                 layout="@layout/vk_whatsnew_item"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/vk_info_item"
-                android:layout_marginTop="8dp"
-        />
+                android:layout_marginTop="8dp" />
 
 
             <include
-                    android:id="@+id/vk_photos_item"
-                    layout="@layout/vk_photos_item"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_below="@id/vk_whatsnew_item"
-            />
+                android:id="@+id/vk_photos_item"
+                layout="@layout/vk_photos_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/vk_whatsnew_item"
+                android:layout_marginTop="8dp" />
 
         </RelativeLayout>
 
     </ScrollView>
 
     <include
-            android:id="@+id/vk_bottom_navigation_item"
-            layout="@layout/vk_bottom_navigation_item"
-            android:layout_alignParentBottom="true"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-    />
+        android:id="@+id/vk_bottom_navigation_item"
+        layout="@layout/vk_bottom_navigation_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
 </RelativeLayout>

@@ -4,7 +4,7 @@
     <item
             android:id="@+id/action_news_page"
             app:showAsAction="ifRoom"
-            android:icon="@drawable/ic_web_asset_grey_dark_24dp"
+            android:icon="@drawable/ic_web_asset_grey_dark"
             android:title="@string/news_page"
             android:checked="false"
     />
@@ -12,28 +12,28 @@
     <item
             android:id="@+id/action_search_page"
             app:showAsAction="ifRoom"
-            android:icon="@drawable/ic_search_grey_dark_24dp"
+            android:icon="@drawable/ic_search_grey_dark"
             android:title="@string/search_page"
     />
 
     <item
             android:id="@+id/action_messages_page"
             app:showAsAction="always"
-            android:icon="@drawable/ic_chat_bubble_outline_grey_dark_24dp"
+            android:icon="@drawable/ic_chat_bubble_outline_grey_dark"
             android:title="@string/messages_page"
     />
 
     <item
             android:id="@+id/action_notifications_page"
             app:showAsAction="ifRoom"
-            android:icon="@drawable/ic_notifications_none_grey_dark_24dp"
+            android:icon="@drawable/ic_notifications_none_grey_dark"
             android:title="@string/notifications_page"
     />
 
     <item
             android:id="@+id/action_home_page"
             app:showAsAction="always"
-            android:icon="@drawable/ic_menu_grey_dark_24dp"
+            android:icon="@drawable/ic_menu_grey_dark"
             android:title="@string/home_page"
             android:checked="true"
     />
