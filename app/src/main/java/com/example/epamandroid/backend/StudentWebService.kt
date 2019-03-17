@@ -27,7 +27,7 @@ class StudentsWebService : IWebService<StudentModel> {
                 }
             }
             val student = StudentModel(
-                i.toLong(),
+                i,
                 i.toString(),
                 hwCount,
                 isStudent)
@@ -45,7 +45,7 @@ class StudentsWebService : IWebService<StudentModel> {
         handler.postDelayed({callback.onResult(students.subList(startRange!!, endRange!!)) }, 1000)
     }
 
-    override fun removeEntity(id: Long?) {
+    override fun removeEntity(id: Int?) {
 
     }
 }

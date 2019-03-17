@@ -1,7 +1,6 @@
 package com.example.epamandroid
 
 import android.os.Build
-import android.support.annotation.IntDef
 import android.support.annotation.RequiresApi
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -84,6 +83,22 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
 
         notifyItemRemoved(i)
         notifyItemRangeChanged(i, students.size -1)
+    }
+
+    fun getMaxStudentId(): Int {
+        var maxId:Int = 0
+        return when {
+            students.size == 0 -> maxId
+            else -> {
+                for(i in students.indices){
+                        if (i != 0
+                            && (students[i].id > students[i - 1].id)) {
+                            maxId = students[i].id
+                        }
+                }
+                maxId
+            }
+        }
     }
 
     fun onItemMove(fromPosition: Int, toPosition: Int) {

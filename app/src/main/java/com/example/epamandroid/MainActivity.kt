@@ -1,5 +1,6 @@
 package com.example.epamandroid
 
+import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: RecyclerViewAdapter
+    private var linearLayoutManager: LinearLayoutManager? = null
 
     private val webService = StudentsWebService()
 
@@ -26,55 +28,57 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        linearLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
 
         viewAdapter = RecyclerViewAdapter()
         activity_main_recyclerView.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
+            layoutManager = linearLayoutManager
             adapter = viewAdapter
             addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
-//            addOnScrollListener(object : RecyclerView.OnScrollListener(){
-//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                    super.onScrollStateChanged(recyclerView, newState)
-//                }
-//
-//                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                    super.onScrolled(recyclerView, dx, dy)
-//                    val totalItemCount = layoutManager!!.itemCount
-//
-//                    if (totalItemCount > MAX_VISIBLE_ITEMS) {
-//                        RecyclerViewAdapter.setShowLastViewAsLoading(false)
-//
-//                        return
-//                    }
-//
-//                    val visibleItemCount = mLayoutManager.getChildCount()
-//                    val firstVisibleItemPosition = mLayoutManager.findFirstVisibleItemPosition()
-//
-//                    if (!mIsLoading) {
-//                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-//                            && firstVisibleItemPosition >= 0
-//                            && totalItemCount >= PAGE_SIZE
-//                        ) {
-//                            loadMoreItems(totalItemCount, totalItemCount + PAGE_SIZE)
-//                        }
-//                    }
-//                }
-//
-//            })
+            addOnScrollListener(object : RecyclerView.OnScrollListener(){
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val totalItemCount = linearLayoutManager!!.itemCount
+                    val startPosition = viewAdapter.getMaxStudentId() + 1
+
+                    if (totalItemCount >= MAX_VISIBLE_ITEMS) {
+                        viewAdapter.setShowLastViewAsLoading(false)
+
+                        return
+                    }
+
+                    val visibleItemCount = linearLayoutManager!!.childCount
+                    val firstVisibleItemPosition = linearLayoutManager!!.findFirstVisibleItemPosition()
+
+                    if (!isLoading) {
+                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                            && totalItemCount >= PAGE_SIZE
+                        ) {
+                            loadMoreItems(startPosition, startPosition + PAGE_SIZE)
+                        }
+                    }
+                }
+
+            })
         }
         ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter)).attachToRecyclerView(activity_main_recyclerView)
 
-        loadMoreItems(0, 10)
+        loadMoreItems(0, 8)
 
     }
 
-    private fun loadMoreItems(pStartPosition: Int, pEndPosition: Int) {
+    private fun loadMoreItems(startPosition: Int, endPosition: Int) {
         isLoading = true
         viewAdapter.setShowLastViewAsLoading(true)
-        webService.getEntities(pStartPosition, pEndPosition, object : ICallback<List<StudentModel>> {
+        webService.getEntities(startPosition, endPosition, object : ICallback<List<StudentModel>> {
 
-            override fun onResult(pResult: List<StudentModel>) {
-                viewAdapter.addItems(pResult)
+            override fun onResult(result: List<StudentModel>) {
+                viewAdapter.addItems(result)
                 isLoading = false
             }
         })

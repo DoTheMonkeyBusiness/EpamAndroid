@@ -10,5 +10,5 @@ interface IWebService<T> {
         callback: ICallback<List<T>>
     )
 
-    fun removeEntity(id: Long?)
+    fun removeEntity(id: Int?)
 }
