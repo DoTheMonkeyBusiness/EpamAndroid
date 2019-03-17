@@ -2,6 +2,7 @@ package com.example.epamandroid
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
@@ -39,7 +40,11 @@ class MainActivity : AppCompatActivity() {
        applySavedInstanceState(savedInstanceState)
 
         serviceIntent = Intent(this, MyService::class.java)
-        myReceiver = MyReceiver(activity_main_layout)
+        myReceiver = MyReceiver(object : ICallback {
+            override fun onUpdate(color: String) {
+                activity_main_layout.setBackgroundColor(Color.parseColor(color))
+            }
+        })
 
         activity_main_start_service_button.setOnClickListener {
             startService(serviceIntent.putExtra(Constants.SERVICE_STATE_EXTRA_KEY, true))

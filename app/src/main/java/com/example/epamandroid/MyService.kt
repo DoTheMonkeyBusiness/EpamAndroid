@@ -3,10 +3,12 @@ package com.example.epamandroid
 import android.app.IntentService
 import android.content.Intent
 
-class MyService : IntentService("MyService") {
+class MyService : IntentService(SERVICE_KEY) {
 
     companion object {
         const val WHITE_COLOR_KEY: String = "#FFFFFF"
+        const val SERVICE_KEY: String = "MyService"
+        const val SLEEP_TIME_KEY: Long = 350
     }
 
     private val myIntent: Intent = Intent(Constants.CUSTOM_ACTION_EXTRA_KEY)
@@ -19,7 +21,7 @@ class MyService : IntentService("MyService") {
         serviceStatus = intent.getBooleanExtra(Constants.SERVICE_STATE_EXTRA_KEY, false)
 
         do {
-            Thread.sleep(350)
+            Thread.sleep(SLEEP_TIME_KEY)
             when {
                 serviceStatus -> myIntent.putExtra(
                     Constants.BROADCAST_MESSAGE_EXTRA_KEY,
