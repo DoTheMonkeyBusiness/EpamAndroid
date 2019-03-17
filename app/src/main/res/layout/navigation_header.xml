@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:background="@color/colorPrimary"
-                android:padding="8dp"
->
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:padding="8dp">
 
 
     <ImageView
-            android:id="@+id/navigation_header_android_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_android_blue_64dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="@string/android_icon"/>
+        android:id="@+id/navigation_header_android_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/android_icon"
+        app:srcCompat="@drawable/ic_android_blue" />
+
     <TextView
-            android:id="@+id/navigation_header_name_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/navigation_header_android_icon"
-            android:text="@string/name"
-            android:textColor="@color/color_gray_light"
-            android:layout_marginTop="8dp"
-            android:textStyle="bold"
-            android:textSize="14sp"
-    />
+        android:id="@+id/navigation_header_name_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/navigation_header_android_icon"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/name"
+        android:textColor="@color/color_gray_light"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
     <TextView
-            android:id="@+id/navigation_header_mail_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:text="@string/mail"
-            android:textColor="@color/color_gray_light"
-            android:layout_below="@+id/navigation_header_name_textView"
-            android:layout_marginTop="8dp"
-            android:textSize="12sp"
-    />
+        android:id="@+id/navigation_header_mail_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/navigation_header_name_textView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/mail"
+        android:textColor="@color/color_gray_light"
+        android:textSize="12sp" />
 
 </RelativeLayout>

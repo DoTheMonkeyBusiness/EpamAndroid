@@ -1,8 +1,6 @@
 package com.example.epamandroid
 
-import android.graphics.Color
 import android.graphics.Color.*
-import android.graphics.PorterDuff
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.NavigationView
@@ -15,33 +13,42 @@ import kotlinx.android.synthetic.main.activity_main.activity_main_nav_view
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    private val colorList: MutableList<String> = ArrayList()
-
+    private val colorList = listOf(
+            "#FFAB00",
+            "#E64A19",
+            "#00E676",
+            "#00B8D4",
+            "#01579B",
+            "#651FFF",
+            "#26C6DA",
+            "#F44336",
+            "#EF6C00"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         configureSupportActionBar()
-        setBackgroundList()
 
         val navigationHeaderIconButton = activity_main_nav_view
-                                                            .inflateHeaderView(R.layout.navigation_header)
-                                                            .findViewById<ImageView>(R.id.navigation_header_android_icon)
+                .inflateHeaderView(R.layout.navigation_header)
+                .findViewById<ImageView>(R.id.navigation_header_android_icon)
         activity_main_nav_view.setNavigationItemSelectedListener(this)
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, FirstFragment())
-                .commit()
+                    .commit()
             activity_main_nav_view.setCheckedItem(R.id.nav_fragment_first)
         }
         navigationHeaderIconButton.setOnClickListener {
-            navigationHeaderIconButton.setColorFilter(parseColor(colorList[(Math.random()*100%(colorList.size-1)).toInt()]))
+            navigationHeaderIconButton.setColorFilter(parseColor(colorList[(Math.random() * 100 % (colorList.size - 1)).toInt()]))
         }
 
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.nav_fragment_first -> {
                 supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, FirstFragment()).commit()
             }
@@ -50,7 +57,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
         activity_main_drawer_layout.closeDrawer(GravityCompat.START)
-       return true
+        return true
     }
 
 
@@ -64,25 +71,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun configureSupportActionBar(){
+    private fun configureSupportActionBar() {
         setSupportActionBar(activity_main_toolbar)
         supportActionBar.apply {
             this!!.setDisplayHomeAsUpEnabled(true)
-            setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
+            setHomeAsUpIndicator(R.drawable.ic_menu_white)
         }
     }
-
-    private fun setBackgroundList(){
-        colorList.add("#FFAB00")
-        colorList.add("#E64A19")
-        colorList.add("#00E676")
-        colorList.add("#00B8D4")
-        colorList.add("#01579B")
-        colorList.add("#651FFF")
-        colorList.add("#26C6DA")
-        colorList.add("#F44336")
-        colorList.add("#EF6C00")
-    }
-
-
 }

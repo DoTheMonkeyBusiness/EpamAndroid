@@ -3,13 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
-                android:id="@+id/nav_fragment_first"
-                android:icon="@drawable/ic_pan_tool_gray_24dp"
-                android:title="@string/fragment_first" />
+            android:id="@+id/nav_fragment_first"
+            android:icon="@drawable/ic_pan_tool_gray"
+            android:title="@string/fragment_first" />
         <item
-                android:id="@+id/nav_fragment_second"
-                android:icon="@drawable/ic_bubble_chart_gray_24dp"
-                android:title="@string/fragment_second" />
+            android:id="@+id/nav_fragment_second"
+            android:icon="@drawable/ic_bubble_chart_gray"
+            android:title="@string/fragment_second" />
 
     </group>
 </menu>
