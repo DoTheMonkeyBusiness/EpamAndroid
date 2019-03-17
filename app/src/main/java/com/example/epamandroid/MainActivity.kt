@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     private var mediaPlayer: MediaPlayer? = null
     private var isMediaPlayerPlaying: Boolean = false
 
-    private lateinit var myRec: MyReceiver
+    private lateinit var myReceiver: MyReceiver
     private lateinit var serviceIntent: Intent
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
        applySavedInstanceState(savedInstanceState)
 
         serviceIntent = Intent(this, MyService::class.java)
-        myRec = MyReceiver(activity_main_layout)
+        myReceiver = MyReceiver(activity_main_layout)
 
         activity_main_start_service_button.setOnClickListener {
             startService(serviceIntent.putExtra(Constants.SERVICE_STATE_EXTRA_KEY, true))
@@ -79,13 +79,13 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        registerReceiver(myRec, myIntentFilter)
+        registerReceiver(myReceiver, myIntentFilter)
     }
 
     override fun onStop() {
         super.onStop()
 
-        unregisterReceiver(myRec)
+        unregisterReceiver(myReceiver)
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
