@@ -13,7 +13,18 @@ class MyService : IntentService(SERVICE_KEY) {
 
     private val myIntent: Intent = Intent(Constants.CUSTOM_ACTION_EXTRA_KEY)
 
-    private val colorList = listOf("#FFAB00", "#E64A19", "#00E676", "#00B8D4", "#01579B", "#651FFF", "#651FFF", "#26C6DA", "#F44336", "#EF6C00")
+    private val colorList = listOf(
+        "#FFAB00",
+        "#E64A19",
+        "#00E676",
+        "#00B8D4",
+        "#01579B",
+        "#651FFF",
+        "#651FFF",
+        "#26C6DA",
+        "#F44336",
+        "#EF6C00"
+    )
 
     private var serviceStatus: Boolean = false
 
@@ -25,9 +36,9 @@ class MyService : IntentService(SERVICE_KEY) {
             when {
                 serviceStatus -> myIntent.putExtra(
                     Constants.BROADCAST_MESSAGE_EXTRA_KEY,
-                    colorList[(Math.random() * 100 % (colorList.size - 1)).toInt()]
+                    colorList[calculateRandomColor()]
                 )
-                !serviceStatus -> myIntent.putExtra(
+                else -> myIntent.putExtra(
                     Constants.BROADCAST_MESSAGE_EXTRA_KEY,
                     WHITE_COLOR_KEY
                 )
@@ -40,5 +51,9 @@ class MyService : IntentService(SERVICE_KEY) {
         super.onDestroy()
 
         serviceStatus = false
+    }
+
+    private fun calculateRandomColor(): Int {
+        return (Math.random() * 100 % (colorList.size - 1)).toInt()
     }
 }
