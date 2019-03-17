@@ -1,32 +1,25 @@
 package com.example.epamandroid
 
+import android.os.Build
 import android.support.annotation.IntDef
+import android.support.annotation.RequiresApi
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.example.epamandroid.RecyclerViewAdapter.ViewType.Companion.LOADING
-import com.example.epamandroid.RecyclerViewAdapter.ViewType.Companion.STUDENT
+import com.example.epamandroid.ViewType.Companion.LOADING
+import com.example.epamandroid.ViewType.Companion.STUDENT
 import com.example.epamandroid.backend.entities.StudentModel
 import java.util.*
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
+    private val students = ArrayList<StudentModel>()
 
     private var isShowLastViewAsLoading = false
 
-    private val students = ArrayList<StudentModel>()
     private lateinit var student: StudentModel
-
-    private val items = object : ArrayList<Any>() {
-        init {
-
-            for (i in 0..20) {
-                add(Any())
-            }
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ViewHolder {
@@ -39,7 +32,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
                     .inflate(R.layout.layout_progress, parent, false)
                         as FrameLayout)
             }
-            else -> {
+            else ->{
                 ViewHolder(LayoutInflater.from(parent.context)
                     .inflate(R.layout.text_view, parent, false)
                         as FrameLayout)
@@ -47,14 +40,16 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         if (getItemViewType(position) == ViewType.STUDENT) {
             student = students[position]
 
             (viewHolder.itemView as StudentView)
                 .setStudentName(student.name)
-                .sethwCount(student.hwCount.toString())
+                .setHwCount(student.hwCount.toString())
                 .isStudent(student.isStudent)
+                .setStudentIcon(student.isStudent)
         }
     }
     override fun getItemCount(): Int {
@@ -79,21 +74,26 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
         }
     }
 
+    fun addItems(result: List<StudentModel>) {
+        students.addAll(result)
+        notifyDataSetChanged()
+    }
+
     private fun deleteByIndex(i: Int) {
-        items.removeAt(i)
+        students.removeAt(i)
 
         notifyItemRemoved(i)
-        notifyItemRangeChanged(i, items.size)
+        notifyItemRangeChanged(i, students.size -1)
     }
 
     fun onItemMove(fromPosition: Int, toPosition: Int) {
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
-                Collections.swap(items, i, i + 1)
+                Collections.swap(students, i, i + 1)
             }
         } else {
             for (i in fromPosition downTo toPosition + 1) {
-                Collections.swap(items, i, i - 1)
+                Collections.swap(students, i, i - 1)
             }
         }
 
@@ -101,17 +101,11 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
     }
 
     fun onItemDismiss(adapterPosition: Int) {
-        deleteByIndex(adapterPosition)
+        if(getItemViewType(adapterPosition) == ViewType.STUDENT) {
+            deleteByIndex(adapterPosition)
+        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
-    @IntDef(ViewType.STUDENT, ViewType.LOADING)
-    internal annotation class ViewType {
-        companion object {
-
-            const val STUDENT = 0
-            const val LOADING = 1
-        }
-    }
 }

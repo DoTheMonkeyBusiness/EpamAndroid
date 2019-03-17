@@ -14,15 +14,28 @@ class ItemTouchCallback(private val recycler: RecyclerView, private val adapter:
         viewHolder: RecyclerView.ViewHolder,
         viewHolder1: RecyclerView.ViewHolder
     ): Boolean {
-        adapter.onItemMove(viewHolder.adapterPosition, viewHolder1.adapterPosition)
-        return true
+        if(adapter.getItemViewType(viewHolder.adapterPosition) == ViewType.STUDENT) {
+            adapter.onItemMove(viewHolder.adapterPosition, viewHolder1.adapterPosition)
+
+            return true
+        }
+
+        return false
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, i: Int) {
         val adapterPosition = viewHolder.adapterPosition
 
         if (RecyclerView.NO_POSITION != adapterPosition) {
+
             adapter.onItemDismiss(adapterPosition)
         }
+    }
+
+    override fun getSwipeDirs(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+        if(adapter.getItemViewType(viewHolder.adapterPosition) == ViewType.LOADING){
+            return 0
+        }
+        return super.getSwipeDirs(recyclerView, viewHolder)
     }
 }
