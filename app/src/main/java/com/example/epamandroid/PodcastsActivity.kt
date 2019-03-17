@@ -10,8 +10,13 @@ import kotlinx.android.synthetic.main.podcasts_for_you_item.podcasts_for_you_ite
 
 class PodcastsActivity : AppCompatActivity() {
 
+    companion object {
+        private const val EMPTY_LINE_KEY: String = ""
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_podcasts)
 
         configureSupportActionBar()
@@ -27,18 +32,25 @@ class PodcastsActivity : AppCompatActivity() {
 
     private fun configureSupportActionBar() {
         setSupportActionBar(my_toolbar as Toolbar?)
-        supportActionBar?.title = ""
-        supportActionBar?.setIcon(R.drawable.ic_search_grey_dark_24dp)
+        supportActionBar?.apply {
+            title = EMPTY_LINE_KEY
+            setIcon(R.drawable.ic_search_grey_dark)
+        }
     }
 
     private fun configureTabLayout() {
         val adapter = ForYouPagerAdapter(supportFragmentManager)
 
-        adapter.addFragment(NewEpisodesFragment(), "New episodes")
-        adapter.addFragment(InProgressFragment(), "In progress")
-        adapter.addFragment(DownloadsFragment(), "Downloads")
-        podcasts_for_you_item_viewpager.adapter = adapter
-        podcasts_for_you_item_tab_layout.setupWithViewPager(podcasts_for_you_item_viewpager)
-
+        adapter.let {
+                it.addFragment(NewEpisodesFragment(), "New episodes")
+                it.addFragment(InProgressFragment(), "In progress")
+                it.addFragment(DownloadsFragment(), "Downloads")
+        }
+        podcasts_for_you_item_viewpager.let {
+            it.adapter = adapter
+        }
+        podcasts_for_you_item_tab_layout.let {
+            it.setupWithViewPager(podcasts_for_you_item_viewpager)
+        }
     }
 }

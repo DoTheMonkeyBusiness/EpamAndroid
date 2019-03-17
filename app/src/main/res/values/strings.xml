@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">EpamAndroid</string>
-    <string name="google_podcasts">google podcasts</string>
-    <string name="navigation">navigation</string>
-    <string name="image">image</string>
-    <string name="new_string">NEW</string>
-    <string name="for_you">For you</string>
-    <string name="new_episodes">New episodes</string>
-    <string name="in_progress">In progress</string>
-    <string name="downloads">Downloads</string>
-    <string name="standard_value">000: Standard Value</string>
-    <string name="standart_realise_date">0 days ago · 0 min</string>
-    <string name="icon">icon</string>
-    <string name="all_episodes">All new episodes</string>
+<string name="app_name">EpamAndroid</string>
+<string name="google_podcasts">google podcasts</string>
+<string name="navigation">navigation</string>
+<string name="image">image</string>
+<string name="new_string">NEW</string>
+<string name="for_you">For you</string>
+<string name="new_episodes">New episodes</string>
+<string name="in_progress">In progress</string>
+<string name="downloads">Downloads</string>
+<string name="standard_value">000: Standard Value</string>
+<string name="standart_realise_date">0 days ago · 0 min</string>
+<string name="icon">icon</string>
+<string name="all_episodes">All new episodes</string>
 </resources>

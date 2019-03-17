@@ -1,42 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:columnCount="4"
-        android:padding="8dp"
-        android:layout_gravity="center_horizontal"
->
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:columnCount="4"
+    android:padding="8dp">
 
-    <com.example.epamandroid.ImageNewView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"/>
-    <com.example.epamandroid.ImageNewView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"/>
-    <com.example.epamandroid.ImageNewView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"/>
-
-    <ImageView
-            android:id="@+id/podcasts_image_gallery_image_not_available_imageView"
-            android:contentDescription="@string/image"
-            app:srcCompat="@drawable/image_not_available"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_margin="8dp"
-
-    />
-    <com.example.epamandroid.ImageNewView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.example.epamandroid.ImageNewView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp" />
+
+    <com.example.epamandroid.ImageNewView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp" />
+
+    <com.example.epamandroid.ImageNewView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp" />
+
+    <ImageView
+        android:id="@+id/podcasts_image_gallery_image_not_available_imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="8dp"
+        android:contentDescription="@string/image"
+        app:srcCompat="@drawable/image_not_available"
+
+        />
+
+    <com.example.epamandroid.ImageNewView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp" />
 
 </GridLayout>

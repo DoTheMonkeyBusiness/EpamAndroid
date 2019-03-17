@@ -1,62 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:card_view="http://schemas.android.com/tools"
-        card_view:cardElevation="2dp"
->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardElevation="2dp">
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="4dp"
-    >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp">
 
 
         <ImageView
-                android:id="@+id/fragment_podcasts_new_episodes_image_imageView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:contentDescription="@string/image"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                app:srcCompat="@drawable/photo_0"
+            android:id="@+id/fragment_podcasts_new_episodes_image_imageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/image"
+            app:srcCompat="@drawable/photo_0"
 
-        />
-        <TextView
-                android:id="@+id/fragment_podcasts_new_episodes_headline_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/standard_value"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_toEndOf="@+id/fragment_podcasts_new_episodes_image_imageView"
-                android:textSize="16sp" android:textStyle="bold"
-                android:layout_toStartOf="@id/fragment_podcasts_new_episodes_play_icon"
-        />
+            />
 
         <TextView
-                android:id="@+id/fragment_podcasts_new_episodes_realise_date_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/standart_realise_date"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_toEndOf="@+id/fragment_podcasts_new_episodes_image_imageView"
-                android:layout_below="@+id/fragment_podcasts_new_episodes_headline_textView"
-                android:textStyle="italic"/>
+            android:id="@+id/fragment_podcasts_new_episodes_headline_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_toStartOf="@id/fragment_podcasts_new_episodes_play_icon"
+            android:layout_toEndOf="@+id/fragment_podcasts_new_episodes_image_imageView"
+            android:text="@string/standard_value"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fragment_podcasts_new_episodes_realise_date_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_podcasts_new_episodes_headline_textView"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/fragment_podcasts_new_episodes_image_imageView"
+            android:text="@string/standart_realise_date"
+            android:textStyle="italic" />
 
         <ImageView
-                android:id="@+id/fragment_podcasts_new_episodes_play_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/image"
-                app:srcCompat="@drawable/ic_play_circle_outline_black_24dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-        />
+            android:id="@+id/fragment_podcasts_new_episodes_play_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/image"
+            app:srcCompat="@drawable/ic_play_circle_outline_black" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
