@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.activity_main.activity_main_dance_gif
 import kotlinx.android.synthetic.main.activity_main.activity_main_dance_1_gif
 import kotlinx.android.synthetic.main.activity_main.activity_main_layout
 
-
 class MainActivity : AppCompatActivity() {
 
     companion object {

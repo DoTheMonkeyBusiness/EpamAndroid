@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.support.constraint.ConstraintLayout
 
-
 class MyReceiver(activity_main_layout: ConstraintLayout) : BroadcastReceiver() {
 
     private val myLayout = activity_main_layout

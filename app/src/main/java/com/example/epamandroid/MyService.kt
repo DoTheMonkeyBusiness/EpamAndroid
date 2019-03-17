@@ -2,8 +2,6 @@ package com.example.epamandroid
 
 import android.app.IntentService
 import android.content.Intent
-import android.os.Build
-import android.support.annotation.RequiresApi
 
 class MyService : IntentService("MyService") {
 
