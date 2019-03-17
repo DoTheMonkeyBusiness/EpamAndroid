@@ -12,7 +12,7 @@ class MyReceiver(activity_main_layout: ConstraintLayout) : BroadcastReceiver() {
     private val myLayout = activity_main_layout
 
     override fun onReceive(context: Context, intent: Intent) {
-        val backgroundColor: String = intent.getStringExtra(Constants.BROADCAST_MESSAGE)
+        val backgroundColor: String = intent.getStringExtra(Constants.BROADCAST_MESSAGE_KEY)
 
         myLayout.setBackgroundColor(Color.parseColor(backgroundColor))
     }

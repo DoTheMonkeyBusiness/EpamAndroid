@@ -4,12 +4,10 @@ import android.app.IntentService
 import android.content.Intent
 import android.os.Build
 import android.support.annotation.RequiresApi
-import android.widget.Toast
-import java.time.LocalDateTime
 
 class MyService : IntentService("MyService") {
 
-    private val myIntent: Intent = Intent(Constants.CUSTOM_ACTION)
+    private val myIntent: Intent = Intent(Constants.CUSTOM_ACTION_KEY)
 
     private val colorList: MutableList<String> = ArrayList()
 
@@ -17,17 +15,17 @@ class MyService : IntentService("MyService") {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onHandleIntent(intent: Intent) {
-        serviceStatus = intent.getBooleanExtra(Constants.SERVICE_STATE, false)
+        serviceStatus = intent.getBooleanExtra(Constants.SERVICE_STATE_KEY, false)
 
         do {
             Thread.sleep(350)
             when {
                 serviceStatus -> myIntent.putExtra(
-                    Constants.BROADCAST_MESSAGE,
+                    Constants.BROADCAST_MESSAGE_KEY,
                     colorList[(Math.random() * 100 % (colorList.size - 1)).toInt()]
                 )
                 !serviceStatus -> myIntent.putExtra(
-                    Constants.BROADCAST_MESSAGE,
+                    Constants.BROADCAST_MESSAGE_KEY,
                     "#FFFFFF"
                 )
             }

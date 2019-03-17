@@ -1,9 +1,7 @@
 package com.example.epamandroid
 
-import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.media.MediaPlayer
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
@@ -19,7 +17,8 @@ import kotlinx.android.synthetic.main.activity_main.activity_main_layout
 
 class MainActivity : AppCompatActivity() {
 
-    private val myIntentFilter: IntentFilter = IntentFilter(Constants.CUSTOM_ACTION)
+    private val myIntentFilter: IntentFilter = IntentFilter(Constants.CUSTOM_ACTION_KEY)
+    private var mediaPlayer: MediaPlayer? = null
 
     private lateinit var myRec: MyReceiver
     private lateinit var serviceIntent: Intent
@@ -31,24 +30,23 @@ class MainActivity : AppCompatActivity() {
 
         serviceIntent = Intent(this, MyService::class.java)
         myRec = MyReceiver(activity_main_layout)
-        var mediaPlayer: MediaPlayer? = null
 
         activity_main_start_service_button.setOnClickListener {
-            startService(serviceIntent.putExtra(Constants.SERVICE_STATE, true))
+            startService(serviceIntent.putExtra(Constants.SERVICE_STATE_KEY, true))
 
             activity_main_start_service_button.isEnabled = false
             activity_main_stop_service_button.isEnabled = true
             activity_main_dance_gif.visibility = View.VISIBLE
             activity_main_dance_1_gif.visibility = View.VISIBLE
             mediaPlayer = MediaPlayer
-                .create(this, R.raw.epic_sax_guy)
-                .apply {
-                    isLooping = true
-                    start()
-                }
+                    .create(this, R.raw.epic_sax_guy)
+                    .apply {
+                        isLooping = true
+                        start()
+                    }
         }
         activity_main_stop_service_button.setOnClickListener {
-            stopService(serviceIntent.putExtra(Constants.SERVICE_STATE, false))
+            stopService(serviceIntent.putExtra(Constants.SERVICE_STATE_KEY, false))
 
             activity_main_start_service_button.isEnabled = true
             activity_main_stop_service_button.isEnabled = false
@@ -71,6 +69,4 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(myRec)
 
     }
-
-
 }
