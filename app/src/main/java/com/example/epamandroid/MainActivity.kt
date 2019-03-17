@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
             activity_main_stop_service_button.isEnabled = true
             activity_main_dance_gif.visibility = View.VISIBLE
             activity_main_dance_1_gif.visibility = View.VISIBLE
+
             mediaPlayer = MediaPlayer
                     .create(this, R.raw.epic_sax_guy)
                     .apply {
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity() {
             activity_main_stop_service_button.isEnabled = false
             activity_main_dance_gif.visibility = View.INVISIBLE
             activity_main_dance_1_gif.visibility = View.INVISIBLE
+
             mediaPlayer?.apply {
                 stop()
                 release()
