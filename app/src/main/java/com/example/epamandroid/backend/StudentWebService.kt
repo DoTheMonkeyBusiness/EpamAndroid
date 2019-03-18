@@ -16,8 +16,8 @@ class StudentsWebService : IWebService<StudentModel> {
     private var isStudent: Boolean = false
 
     init {
-        for (i in 0..999) {
-            this.hwCount = random.nextInt(5)
+        for (i in 0..50) {
+            this.hwCount = random.nextInt(6)
             when {
                 hwCount > 1 -> {
                     this.isStudent = true
@@ -34,6 +34,7 @@ class StudentsWebService : IWebService<StudentModel> {
 
             students.add(student)
         }
+        students.reverse()
     }
 
     override fun getEntities(
@@ -49,6 +50,14 @@ class StudentsWebService : IWebService<StudentModel> {
                 handler.postDelayed({ callback.onResult(students.subList(startRange!!, students.size)) }, 1000)
             }
         }
+
+    }
+
+    override fun addEntitle(
+            name: String,
+            hwCount: Int,
+            isStudent: Boolean
+    ) {
 
     }
 }

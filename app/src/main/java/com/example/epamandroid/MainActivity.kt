@@ -11,6 +11,7 @@ import com.example.epamandroid.backend.StudentsWebService
 import com.example.epamandroid.backend.entities.StudentModel
 import com.example.epamandroid.util.ICallback
 import kotlinx.android.synthetic.main.activity_main.activity_main_recyclerView
+import kotlinx.android.synthetic.main.activity_main.activity_main_add_new_student_button
 
 class MainActivity : AppCompatActivity() {
 
@@ -68,10 +69,12 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
+        activity_main_add_new_student_button.setOnClickListener {
+        }
+
         ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter)).attachToRecyclerView(activity_main_recyclerView)
 
-        loadMoreItems(0, 8)
-
+        loadMoreItems(0, PAGE_SIZE*3)
     }
 
     private fun loadMoreItems(startPosition: Int, endPosition: Int) {

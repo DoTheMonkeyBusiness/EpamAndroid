@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    
-    <item android:state_focused="false" android:state_pressed="false" android:state_selected="false" />
-    <item android:state_focused="false" android:state_pressed="false" android:state_selected="true" />
-
-    <item android:state_focused="true" android:state_pressed="false" android:state_selected="false" />
-    <item android:state_focused="true" android:state_pressed="false" android:state_selected="true" />
-
-    <item android:state_pressed="true" />
-</selector>
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="2dp"
+    android:shape="rectangle">
+    <solid android:color="@color/colorPrimary" /> <!-- this one is ths color of the Rounded Button -->
+    <corners
+        android:bottomLeftRadius="80dp"
+        android:bottomRightRadius="80dp"
+        android:topLeftRadius="80dp"
+        android:topRightRadius="80dp" />
+</shape>

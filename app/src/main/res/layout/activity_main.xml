@@ -12,10 +12,14 @@
 
     <Button
         android:id="@+id/activity_main_add_new_student_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/plus"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_button"
-        />
+        android:text="@string/plus"
+        android:textSize="30sp" />
 
 </RelativeLayout>
