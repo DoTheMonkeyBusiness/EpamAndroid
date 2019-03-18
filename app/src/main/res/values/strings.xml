@@ -5,4 +5,5 @@
     <string name="homework_count">Homework count</string>
     <string name="student_studying">student studying</string>
     <string name="student_expelled">student expelled</string>
+    <string name="plus">+</string>
 </resources>
