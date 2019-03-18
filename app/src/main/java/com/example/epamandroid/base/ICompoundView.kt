@@ -8,6 +8,6 @@ interface ICompoundView {
     @get:LayoutRes
     val layoutResId: Int
 
-    fun onViewInflated(pContext: Context)
+    fun onViewInflated(context: Context)
 }
 

@@ -9,6 +9,4 @@ interface IWebService<T> {
         endRange: Int?,
         callback: ICallback<List<T>>
     )
-
-    fun removeEntity(id: Int?)
 }

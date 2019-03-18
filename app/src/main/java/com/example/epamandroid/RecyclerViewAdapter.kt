@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.example.epamandroid.ViewType.Companion.LOADING
 import com.example.epamandroid.ViewType.Companion.STUDENT
+import com.example.epamandroid.backend.StudentsWebService
 import com.example.epamandroid.backend.entities.StudentModel
 import java.util.*
 
@@ -22,18 +23,18 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ViewHolder {
-        return when (viewType){
-            STUDENT ->{
+        return when (viewType) {
+            STUDENT -> {
                 ViewHolder(StudentView(parent.context))
             }
-            LOADING ->{
+            LOADING -> {
                 ViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.layout_progress, parent, false)
+                        .inflate(R.layout.layout_progress, parent, false)
                         as FrameLayout)
             }
-            else ->{
+            else -> {
                 ViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.text_view, parent, false)
+                        .inflate(R.layout.error_view, parent, false)
                         as FrameLayout)
             }
         }
@@ -45,12 +46,13 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
             student = students[position]
 
             (viewHolder.itemView as StudentView)
-                .setStudentName(student.name)
-                .setHwCount(student.hwCount.toString())
-                .isStudent(student.isStudent)
-                .setStudentIcon(student.isStudent)
+                    .setStudentName(student.name)
+                    .setHwCount(student.hwCount.toString())
+                    .isStudent(student.isStudent)
+                    .setStudentIcon(student.isStudent)
         }
     }
+
     override fun getItemCount(): Int {
         return if (isShowLastViewAsLoading) {
             students.size + 1
@@ -66,6 +68,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
             ViewType.LOADING
         }
     }
+
     fun setShowLastViewAsLoading(isShow: Boolean) {
         if (isShow != isShowLastViewAsLoading) {
             isShowLastViewAsLoading = isShow
@@ -82,19 +85,19 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
         students.removeAt(i)
 
         notifyItemRemoved(i)
-        notifyItemRangeChanged(i, students.size -1)
+        notifyItemRangeChanged(i, students.size - 1)
     }
 
     fun getMaxStudentId(): Int {
-        var maxId:Int = 0
+        var maxId = 0
         return when {
             students.size == 0 -> maxId
             else -> {
-                for(i in students.indices){
-                        if (i != 0
+                for (i in students.indices) {
+                    if (i != 0
                             && (students[i].id > students[i - 1].id)) {
-                            maxId = students[i].id
-                        }
+                        maxId = students[i].id
+                    }
                 }
                 maxId
             }
@@ -116,11 +119,10 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
     }
 
     fun onItemDismiss(adapterPosition: Int) {
-        if(getItemViewType(adapterPosition) == ViewType.STUDENT) {
+        if (getItemViewType(adapterPosition) == ViewType.STUDENT) {
             deleteByIndex(adapterPosition)
         }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
 }

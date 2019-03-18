@@ -27,25 +27,28 @@ class StudentsWebService : IWebService<StudentModel> {
                 }
             }
             val student = StudentModel(
-                i,
-                i.toString(),
-                hwCount,
-                isStudent)
+                    i,
+                    i.toString(),
+                    hwCount,
+                    isStudent)
 
             students.add(student)
         }
     }
 
-
     override fun getEntities(
-        startRange: Int?,
-        endRange: Int?,
-        callback: ICallback<List<StudentModel>>
+            startRange: Int?,
+            endRange: Int?,
+            callback: ICallback<List<StudentModel>>
     ) {
-        handler.postDelayed({callback.onResult(students.subList(startRange!!, endRange!!)) }, 1000)
-    }
-
-    override fun removeEntity(id: Int?) {
+        when {
+            (endRange!! < students.size) -> {
+                handler.postDelayed({ callback.onResult(students.subList(startRange!!, endRange)) }, 1000)
+            }
+            else -> {
+                handler.postDelayed({ callback.onResult(students.subList(startRange!!, students.size)) }, 1000)
+            }
+        }
 
     }
 }

@@ -3,6 +3,7 @@ package com.example.epamandroid
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             layoutManager = linearLayoutManager
             adapter = viewAdapter
             addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
-            addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                 }
@@ -56,8 +57,8 @@ class MainActivity : AppCompatActivity() {
 
                     if (!isLoading) {
                         if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                            && firstVisibleItemPosition >= 0
-                            && totalItemCount >= PAGE_SIZE
+                                && firstVisibleItemPosition >= 0
+                                && totalItemCount >= PAGE_SIZE
                         ) {
                             loadMoreItems(startPosition, startPosition + PAGE_SIZE)
                         }
@@ -75,8 +76,8 @@ class MainActivity : AppCompatActivity() {
     private fun loadMoreItems(startPosition: Int, endPosition: Int) {
         isLoading = true
         viewAdapter.setShowLastViewAsLoading(true)
-        webService.getEntities(startPosition, endPosition, object : ICallback<List<StudentModel>> {
 
+        webService.getEntities(startPosition, endPosition, object : ICallback<List<StudentModel>> {
             override fun onResult(result: List<StudentModel>) {
                 viewAdapter.addItems(result)
                 isLoading = false
