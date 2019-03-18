@@ -30,16 +30,16 @@ class StudentView @JvmOverloads constructor(
     @RequiresApi(Build.VERSION_CODES.M)
     fun isStudent(isStudent: Boolean): StudentView {
         when{
-            isStudent -> student_view_is_student_icon.setImageResource(R.drawable.ic_studying_true_green_40dp)
-            !isStudent -> student_view_is_student_icon.setImageResource(R.drawable.ic_studying_false_red_40dp)
+            isStudent -> student_view_is_student_icon.setImageResource(R.drawable.ic_studying_true_green)
+            !isStudent -> student_view_is_student_icon.setImageResource(R.drawable.ic_studying_false_red)
         }
         return this
     }
     @RequiresApi(Build.VERSION_CODES.M)
     fun setStudentIcon(isStudent: Boolean): StudentView {
         when{
-            isStudent -> student_view_icon.setImageResource(R.drawable.ic_child_care_black_80dp)
-            !isStudent -> student_view_icon.setImageResource(R.drawable.ic_sentiment_dissatisfied_black_80dp)
+            isStudent -> student_view_icon.setImageResource(R.drawable.ic_child_care_black)
+            !isStudent -> student_view_icon.setImageResource(R.drawable.ic_sentiment_dissatisfied_black)
         }
         return this
     }
