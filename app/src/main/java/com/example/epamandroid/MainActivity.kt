@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         navigationHeaderIconButton.setOnClickListener {
-            navigationHeaderIconButton.setColorFilter(parseColor(colorList[(Math.random() * 100 % (colorList.size - 1)).toInt()]))
+            navigationHeaderIconButton.setColorFilter(calculateRandomListPosition())
         }
 
     }
@@ -81,5 +81,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             this!!.setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_menu_white)
         }
+    }
+
+    private fun calculateRandomListPosition(): Int {
+        return parseColor(colorList[(Math.random() * 100 % (colorList.size - 1)).toInt()])
     }
 }
