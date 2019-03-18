@@ -3,7 +3,6 @@ package com.example.epamandroid
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,11 +12,13 @@ import com.example.epamandroid.backend.entities.StudentModel
 import com.example.epamandroid.util.ICallback
 import kotlinx.android.synthetic.main.activity_main.activity_main_recyclerView
 
-private const val MAX_VISIBLE_ITEMS = 40
-
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
+    companion object {
+        private const val MAX_VISIBLE_ITEMS_KEY: Int = 40
+
+    }
+
     private lateinit var viewAdapter: RecyclerViewAdapter
     private var linearLayoutManager: LinearLayoutManager? = null
 
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                     val totalItemCount = linearLayoutManager!!.itemCount
                     val startPosition = viewAdapter.getMaxStudentId() + 1
 
-                    if (totalItemCount >= MAX_VISIBLE_ITEMS) {
+                    if (totalItemCount >= MAX_VISIBLE_ITEMS_KEY) {
                         viewAdapter.setShowLastViewAsLoading(false)
 
                         return
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
 
             })
         }
+
         ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter)).attachToRecyclerView(activity_main_recyclerView)
 
         loadMoreItems(0, 8)
