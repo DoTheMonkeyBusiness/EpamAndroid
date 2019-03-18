@@ -55,13 +55,12 @@ class MainActivity : AppCompatActivity() {
                     val visibleItemCount = linearLayoutManager!!.childCount
                     val firstVisibleItemPosition = linearLayoutManager!!.findFirstVisibleItemPosition()
 
-                    if (!isLoading) {
-                        if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                                && firstVisibleItemPosition >= 0
-                                && totalItemCount >= PAGE_SIZE
-                        ) {
-                            loadMoreItems(startPosition, startPosition + PAGE_SIZE)
-                        }
+                    if (!isLoading
+                            && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                                    && firstVisibleItemPosition >= 0
+                                    && totalItemCount >= PAGE_SIZE)
+                    ) {
+                        loadMoreItems(startPosition, startPosition + PAGE_SIZE)
                     }
                 }
 
