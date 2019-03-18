@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     .commit()
             activity_main_nav_view.setCheckedItem(R.id.nav_fragment_first)
         }
+
         navigationHeaderIconButton.setOnClickListener {
             navigationHeaderIconButton.setColorFilter(parseColor(colorList[(Math.random() * 100 % (colorList.size - 1)).toInt()]))
         }
@@ -56,7 +57,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, SecondFragment()).commit()
             }
         }
+
         activity_main_drawer_layout.closeDrawer(GravityCompat.START)
+
         return true
     }
 
@@ -73,6 +76,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun configureSupportActionBar() {
         setSupportActionBar(activity_main_toolbar)
+
         supportActionBar.apply {
             this!!.setDisplayHomeAsUpEnabled(true)
             setHomeAsUpIndicator(R.drawable.ic_menu_white)
