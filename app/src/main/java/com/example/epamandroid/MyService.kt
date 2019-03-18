@@ -36,7 +36,7 @@ class MyService : IntentService(SERVICE_KEY) {
             when {
                 serviceStatus -> myIntent.putExtra(
                     Constants.BROADCAST_MESSAGE_EXTRA_KEY,
-                    colorList[calculateRandomColor()]
+                    colorList[calculateRandomListPosition()]
                 )
                 else -> myIntent.putExtra(
                     Constants.BROADCAST_MESSAGE_EXTRA_KEY,
@@ -53,7 +53,7 @@ class MyService : IntentService(SERVICE_KEY) {
         serviceStatus = false
     }
 
-    private fun calculateRandomColor(): Int {
+    private fun calculateRandomListPosition(): Int {
         return (Math.random() * 100 % (colorList.size - 1)).toInt()
     }
 }
