@@ -3,6 +3,7 @@ package com.example.epamandroid.backend
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.example.epamandroid.NewStudentFragment
 import com.example.epamandroid.backend.entities.StudentModel
 import com.example.epamandroid.util.ICallback
 import java.util.*
@@ -18,26 +19,27 @@ class StudentsWebService : IWebService<StudentModel> {
             val hwCount: Int = random.nextInt(6)
             val isStudent = when {
                 hwCount > 1 -> {
-                     true
+                    true
                 }
                 else -> {
                     false
                 }
             }
             val student = StudentModel(
-                    i,
-                    i.toString(),
-                    hwCount,
-                    isStudent)
+                i,
+                i.toString(),
+                hwCount,
+                isStudent
+            )
 
             students.add(student)
         }
     }
 
     override fun getEntities(
-            startRange: Int?,
-            endRange: Int?,
-            callback: ICallback<List<StudentModel>>
+        startRange: Int?,
+        endRange: Int?,
+        callback: ICallback<List<StudentModel>>
     ) {
         when {
             (endRange!! < students.size) -> {
@@ -51,11 +53,11 @@ class StudentsWebService : IWebService<StudentModel> {
     }
 
     override fun addEntitle(
-            name: String,
-            hwCount: Int
+        name: String,
+        hwCount: String
     ) {
         val isStudent: Boolean = when {
-            hwCount > 1 -> {
+            hwCount.toInt() > 1 -> {
                 true
             }
             else -> {
@@ -63,10 +65,11 @@ class StudentsWebService : IWebService<StudentModel> {
             }
         }
         val student = StudentModel(
-                students.size,
-                name,
-                hwCount,
-                isStudent)
+            students.size,
+            name,
+            hwCount.toInt(),
+            isStudent
+        )
 
         students.add(student)
 

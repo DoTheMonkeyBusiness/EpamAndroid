@@ -3,6 +3,7 @@ package com.example.epamandroid
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,7 +14,10 @@ import com.example.epamandroid.util.ICallback
 import kotlinx.android.synthetic.main.activity_main.activity_main_recyclerView
 import kotlinx.android.synthetic.main.activity_main.activity_main_add_new_student_button
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback {
+    override fun onStudentAdd(name: String, hwCount: String) {
+        webService.addEntitle(name, hwCount)
+    }
 
     private val dialogFragment = NewStudentFragment()
     private val webService: StudentsWebService = StudentsWebService()
@@ -35,9 +39,6 @@ class MainActivity : AppCompatActivity() {
             adapter = viewAdapter
             addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                }
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)

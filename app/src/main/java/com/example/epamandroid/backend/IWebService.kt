@@ -12,7 +12,7 @@ interface IWebService<T> {
 
     fun addEntitle(
             name: String,
-            hwCount: Int
+            hwCount: String
     )
 
     fun removeEntitle(
