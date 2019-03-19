@@ -55,8 +55,7 @@ class StudentsWebService : IWebService<StudentModel> {
 
     override fun addEntitle(
             name: String,
-            hwCount: Int,
-            isStudent: Boolean
+            hwCount: Int
     ) {
 
     }

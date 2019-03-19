@@ -12,7 +12,6 @@ interface IWebService<T> {
 
     fun addEntitle(
             name: String,
-            hwCount: Int,
-            isStudent: Boolean
+            hwCount: Int
     )
 }
