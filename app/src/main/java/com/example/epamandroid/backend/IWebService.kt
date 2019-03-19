@@ -14,4 +14,10 @@ interface IWebService<T> {
             name: String,
             hwCount: Int
     )
+
+    fun removeEntitle(
+            id: Int
+    )
+
+    fun getEntitiesSize(): Int
 }

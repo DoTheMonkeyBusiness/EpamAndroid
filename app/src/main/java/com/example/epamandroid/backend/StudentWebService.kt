@@ -16,7 +16,7 @@ class StudentsWebService : IWebService<StudentModel> {
     private var isStudent: Boolean = false
 
     init {
-        for (i in 0..50) {
+        for (i in 0..40) {
             this.hwCount = random.nextInt(6)
             when {
                 hwCount > 1 -> {
@@ -57,5 +57,13 @@ class StudentsWebService : IWebService<StudentModel> {
             hwCount: Int
     ) {
 
+    }
+
+    override fun removeEntitle(id: Int) {
+        students.removeAt(id)
+    }
+
+    override fun getEntitiesSize(): Int {
+        return students.size
     }
 }

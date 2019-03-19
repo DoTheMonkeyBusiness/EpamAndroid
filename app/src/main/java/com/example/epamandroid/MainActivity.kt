@@ -15,13 +15,8 @@ import kotlinx.android.synthetic.main.activity_main.activity_main_add_new_studen
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        private const val MAX_VISIBLE_ITEMS_KEY: Int = 40
-
-    }
-
-    private val webService = StudentsWebService()
     private val dialogFragment = NewStudentFragment()
+    private val webService: StudentsWebService = StudentsWebService()
 
     private lateinit var viewAdapter: RecyclerViewAdapter
 
@@ -49,7 +44,7 @@ class MainActivity : AppCompatActivity() {
                     val totalItemCount = linearLayoutManager!!.itemCount
                     val startPosition = viewAdapter.getMaxStudentId() + 1
 
-                    if (totalItemCount >= MAX_VISIBLE_ITEMS_KEY) {
+                    if (totalItemCount >= webService.getEntitiesSize()) {
                         viewAdapter.setShowLastViewAsLoading(false)
 
                         return
@@ -74,9 +69,9 @@ class MainActivity : AppCompatActivity() {
             dialogFragment.show(supportFragmentManager, "newStudent")
         }
 
-        ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter)).attachToRecyclerView(activity_main_recyclerView)
+        ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter, webService)).attachToRecyclerView(activity_main_recyclerView)
 
-        loadMoreItems(0, PAGE_SIZE*3)
+        loadMoreItems(0, PAGE_SIZE * 3)
     }
 
     private fun loadMoreItems(startPosition: Int, endPosition: Int) {
