@@ -34,7 +34,6 @@ class StudentsWebService : IWebService<StudentModel> {
 
             students.add(student)
         }
-        students.reverse()
     }
 
     override fun getEntities(

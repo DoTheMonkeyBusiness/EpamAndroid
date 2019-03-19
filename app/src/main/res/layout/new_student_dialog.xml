@@ -16,7 +16,7 @@
             android:padding="8dp"
             android:text="@string/add_new_student"
             android:textAlignment="center"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/color_grey"
             android:textSize="24sp"/>
     <EditText
             android:id="@+id/new_student_dialog_name_editText"

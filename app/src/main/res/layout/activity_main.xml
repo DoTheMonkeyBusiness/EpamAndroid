@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/activity_main_recyclerView"
@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity" />
 
-    <Button
+    <ImageButton
         android:id="@+id/activity_main_add_new_student_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -19,7 +19,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_button"
-        android:text="@string/plus"
-        android:textSize="30sp" />
+        app:srcCompat="@drawable/ic_add_black"
+    />
 
 </RelativeLayout>
