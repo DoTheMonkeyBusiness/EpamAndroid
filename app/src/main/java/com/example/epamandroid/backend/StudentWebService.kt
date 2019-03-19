@@ -12,18 +12,18 @@ class StudentsWebService : IWebService<StudentModel> {
     private val students = ArrayList<StudentModel>()
     private val random = Random()
     private val handler = Handler(Looper.getMainLooper())
-    private var hwCount: Int = 0
-    private var isStudent: Boolean = false
 
     init {
         for (i in 0..40) {
-            this.hwCount = random.nextInt(6)
+            var hwCount: Int = 0
+            var isStudent: Boolean = false
+            hwCount = random.nextInt(6)
             when {
                 hwCount > 1 -> {
-                    this.isStudent = true
+                    isStudent = true
                 }
                 else -> {
-                    this.isStudent = false
+                    isStudent = false
                 }
             }
             val student = StudentModel(
@@ -46,7 +46,7 @@ class StudentsWebService : IWebService<StudentModel> {
                 handler.postDelayed({ callback.onResult(students.subList(startRange!!, endRange)) }, 1000)
             }
             else -> {
-                handler.postDelayed({ callback.onResult(students.subList(startRange!!, students.size)) }, 1000)
+                handler.postDelayed({ callback.onResult(students.subList(startRange!!, students.size - 1)) }, 1000)
             }
         }
 
@@ -56,6 +56,21 @@ class StudentsWebService : IWebService<StudentModel> {
             name: String,
             hwCount: Int
     ) {
+        val isStudent: Boolean = when {
+            hwCount > 1 -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
+        val student = StudentModel(
+                students.size,
+                name,
+                hwCount,
+                isStudent)
+
+        students.add(student)
 
     }
 
@@ -64,6 +79,6 @@ class StudentsWebService : IWebService<StudentModel> {
     }
 
     override fun getEntitiesSize(): Int {
-        return students.size
+        return students.size - 1
     }
 }
