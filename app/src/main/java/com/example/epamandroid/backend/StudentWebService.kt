@@ -15,15 +15,13 @@ class StudentsWebService : IWebService<StudentModel> {
 
     init {
         for (i in 0..40) {
-            var hwCount: Int = 0
-            var isStudent: Boolean = false
-            hwCount = random.nextInt(6)
-            when {
+            val hwCount: Int = random.nextInt(6)
+            val isStudent = when {
                 hwCount > 1 -> {
-                    isStudent = true
+                     true
                 }
                 else -> {
-                    isStudent = false
+                    false
                 }
             }
             val student = StudentModel(
