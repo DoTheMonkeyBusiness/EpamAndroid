@@ -20,11 +20,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private lateinit var viewAdapter: RecyclerViewAdapter
-    private var linearLayoutManager: LinearLayoutManager? = null
-
     private val webService = StudentsWebService()
+    private val dialogFragment = NewStudentFragment()
 
+    private lateinit var viewAdapter: RecyclerViewAdapter
+
+    private var linearLayoutManager: LinearLayoutManager? = null
     private var isLoading: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         activity_main_add_new_student_button.setOnClickListener {
+            dialogFragment.show(supportFragmentManager, "newStudent")
         }
 
         ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter)).attachToRecyclerView(activity_main_recyclerView)
