@@ -12,6 +12,9 @@ class PodcastsActivity : AppCompatActivity() {
 
     companion object {
         private const val EMPTY_LINE_KEY: String = ""
+        private const val NEW_EPISODES_KEY: String = "New episodes"
+        private const val IN_PROGRESS_KEY: String = "In progress"
+        private const val DOWNLOADS_KEY: String = "Downloads"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,17 +43,14 @@ class PodcastsActivity : AppCompatActivity() {
 
     private fun configureTabLayout() {
         val adapter = ForYouPagerAdapter(supportFragmentManager)
-
-        adapter.let {
-                it.addFragment(NewEpisodesFragment(), "New episodes")
-                it.addFragment(InProgressFragment(), "In progress")
-                it.addFragment(DownloadsFragment(), "Downloads")
+        with(adapter){
+            let {
+                it.addFragment(NewEpisodesFragment(), NEW_EPISODES_KEY)
+                it.addFragment(InProgressFragment(), IN_PROGRESS_KEY)
+                it.addFragment(DownloadsFragment(), DOWNLOADS_KEY)
+            }
         }
-        podcasts_for_you_item_viewpager.let {
-            it.adapter = adapter
-        }
-        podcasts_for_you_item_tab_layout.let {
-            it.setupWithViewPager(podcasts_for_you_item_viewpager)
-        }
+        podcasts_for_you_item_viewpager.adapter = adapter
+        podcasts_for_you_item_tab_layout.setupWithViewPager(podcasts_for_you_item_viewpager)
     }
 }
