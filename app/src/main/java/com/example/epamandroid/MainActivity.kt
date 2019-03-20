@@ -8,6 +8,9 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import com.example.epamandroid.backend.StudentsWebService
 import com.example.epamandroid.backend.entities.StudentModel
 import com.example.epamandroid.util.ICallback
@@ -15,9 +18,6 @@ import kotlinx.android.synthetic.main.activity_main.activity_main_recyclerView
 import kotlinx.android.synthetic.main.activity_main.activity_main_add_new_student_button
 
 class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback {
-    override fun onStudentAdd(name: String, hwCount: String) {
-        webService.addEntitle(name, hwCount)
-    }
 
     private val dialogFragment = NewStudentFragment()
     private val webService: StudentsWebService = StudentsWebService()
@@ -34,6 +34,11 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
         linearLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
 
         viewAdapter = RecyclerViewAdapter()
+
+        viewAdapter.onItemClick = { student ->
+            Log.d("check", student.id.toString())
+        }
+
         activity_main_recyclerView.apply {
             layoutManager = linearLayoutManager
             adapter = viewAdapter
@@ -64,8 +69,10 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
                 }
 
             })
+
             post { viewAdapter.notifyDataSetChanged() }
         }
+
         activity_main_add_new_student_button.setOnClickListener {
             dialogFragment.show(supportFragmentManager, "newStudentDialog")
         }
@@ -85,5 +92,9 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
                 isLoading = false
             }
         })
+    }
+
+    override fun onStudentAdd(name: String, hwCount: String) {
+        webService.addEntitle(name, hwCount)
     }
 }

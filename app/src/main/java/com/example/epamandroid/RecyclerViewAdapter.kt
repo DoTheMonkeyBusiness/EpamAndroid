@@ -9,17 +9,18 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.example.epamandroid.ViewType.Companion.LOADING
 import com.example.epamandroid.ViewType.Companion.STUDENT
-import com.example.epamandroid.backend.StudentsWebService
 import com.example.epamandroid.backend.entities.StudentModel
 import java.util.*
 
-class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     private val students = ArrayList<StudentModel>()
 
     private var isShowLastViewAsLoading = false
 
     private lateinit var student: StudentModel
+
+    var onItemClick: ((StudentModel) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): ViewHolder {
@@ -123,5 +124,11 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
         }
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+        init{
+            view.setOnClickListener {
+                onItemClick?.invoke(students[adapterPosition])
+            }
+        }
+    }
 }
