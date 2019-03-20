@@ -37,7 +37,9 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
         viewAdapter.onItemClick = { student ->
             studentId = student.id
-            editStudentInfoFragment.show(supportFragmentManager, "editStudentInfoDialog")
+            if(viewAdapter.getItemViewType(studentId!!) == ViewType.STUDENT) {
+                editStudentInfoFragment.show(supportFragmentManager, "editStudentInfoDialog")
+            }
         }
 
         activity_main_recyclerView.apply {
@@ -103,5 +105,6 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
     override fun onEditStudentInfo(name: String, hwCount: String) {
         studentId?.let { webService.editStudentInfo(it, name, hwCount) }
+        viewAdapter.onItemChanged()
     }
 }

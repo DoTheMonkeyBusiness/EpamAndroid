@@ -2,6 +2,7 @@ package com.example.epamandroid
 
 import android.os.Build
 import android.support.annotation.RequiresApi
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.example.epamandroid.ViewType.Companion.LOADING
 import com.example.epamandroid.ViewType.Companion.STUDENT
 import com.example.epamandroid.backend.entities.StudentModel
 import java.util.*
+
 
 class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
@@ -124,10 +126,16 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(
         }
     }
 
+    fun onItemChanged(){
+        notifyDataSetChanged()
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         init{
             view.setOnClickListener {
-                onItemClick?.invoke(students[adapterPosition])
+                if(itemViewType == ViewType.STUDENT) {
+                    onItemClick?.invoke(students[adapterPosition])
+                }
             }
         }
     }
