@@ -12,9 +12,9 @@ import android.widget.EditText
 
 
 
-class NewStudentFragment : DialogFragment() {
+class EditStudentInfoFragment : DialogFragment() {
 
-    private var callback: INewStudentCallback? = null
+    private var callback: IEditStudentInfoCallback? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -24,9 +24,9 @@ class NewStudentFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val builder = activity?.let { AlertDialog.Builder(it) }
-        val inflater = activity?.layoutInflater?.inflate(R.layout.new_student_dialog, null)
-        val studentName = inflater?.findViewById<EditText>(R.id.new_student_dialog_name_editText)
-        val hwCount = inflater?.findViewById<EditText>(R.id.new_student_dialog_homework_count_editText)
+        val inflater = activity?.layoutInflater?.inflate(R.layout.edit_student_info_dialog, null)
+        val studentName = inflater?.findViewById<EditText>(R.id.edit_student_info_dialog_name_editText)
+        val hwCount = inflater?.findViewById<EditText>(R.id.edit_student_info_dialog_homework_count_editText)
 
         builder?.apply {
             setView(inflater)
@@ -39,7 +39,7 @@ class NewStudentFragment : DialogFragment() {
                     }
                 }
 
-                this@NewStudentFragment.dialog.cancel()
+                this@EditStudentInfoFragment.dialog.cancel()
             }
             setNegativeButton(R.string.cancel) { _, _ ->
 
@@ -53,12 +53,12 @@ class NewStudentFragment : DialogFragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is INewStudentCallback) {
+        if (context is IEditStudentInfoCallback) {
             callback = context
         }
     }
 
-    interface INewStudentCallback {
+    interface IEditStudentInfoCallback {
         fun onStudentAdd(name: String, hwCount: String)
     }
 }

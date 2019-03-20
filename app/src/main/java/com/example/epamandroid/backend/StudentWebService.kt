@@ -2,9 +2,7 @@ package com.example.epamandroid.backend
 
 import android.os.Handler
 import android.os.Looper
-import android.os.Parcelable
-import android.util.Log
-import com.example.epamandroid.NewStudentFragment
+import com.example.epamandroid.Constants.MINIMUM_HOMEWORK_COUNT
 import com.example.epamandroid.backend.entities.StudentModel
 import com.example.epamandroid.util.ICallback
 import java.util.*
@@ -19,7 +17,7 @@ class StudentsWebService : IWebService<StudentModel> {
         for (i in 0..40) {
             val hwCount: Int = random.nextInt(6)
             val isStudent = when {
-                hwCount > 1 -> {
+                hwCount > MINIMUM_HOMEWORK_COUNT -> {
                     true
                 }
                 else -> {
@@ -58,7 +56,7 @@ class StudentsWebService : IWebService<StudentModel> {
         hwCount: String
     ) {
         val isStudent: Boolean = when {
-            hwCount.toInt() > 1 -> {
+            hwCount.toInt() > MINIMUM_HOMEWORK_COUNT -> {
                 true
             }
             else -> {
@@ -82,5 +80,25 @@ class StudentsWebService : IWebService<StudentModel> {
 
     override fun getEntitiesSize(): Int {
         return students.size
+    }
+
+    override fun editStudentInfo(
+        id: Int,
+        name: String?,
+        hwCount: Int?
+    ) {
+        students[id].let {
+            if (name != null) {
+                it.name = name
+            }
+            if (hwCount != null) {
+                it.hwCount = hwCount
+                when {
+                    (hwCount > MINIMUM_HOMEWORK_COUNT) -> it.isStudent = true
+                    else -> it.isStudent = false
+                }
+            }
+        }
+
     }
 }

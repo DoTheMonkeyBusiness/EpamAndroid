@@ -20,4 +20,10 @@ interface IWebService<T> {
     )
 
     fun getEntitiesSize(): Int
+
+    fun editStudentInfo(
+        id: Int,
+        name: String?,
+        hwCount: Int?
+    )
 }
