@@ -3,29 +3,29 @@ package com.example.epamandroid
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.util.Log
-import android.view.MotionEvent
-import android.view.View
 import com.example.epamandroid.backend.StudentsWebService
 import com.example.epamandroid.backend.entities.StudentModel
 import com.example.epamandroid.util.ICallback
 import kotlinx.android.synthetic.main.activity_main.activity_main_recyclerView
 import kotlinx.android.synthetic.main.activity_main.activity_main_add_new_student_button
 
-class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback {
+class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback,
+    EditStudentInfoFragment.IEditStudentInfoCallback {
 
     private val dialogFragment = NewStudentFragment()
+    private val editStudentInfoFragment = EditStudentInfoFragment()
     private val webService: StudentsWebService = StudentsWebService()
 
     private lateinit var viewAdapter: RecyclerViewAdapter
 
     private var linearLayoutManager: LinearLayoutManager? = null
     private var isLoading: Boolean = false
+
+    private var studentId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
         viewAdapter = RecyclerViewAdapter()
 
         viewAdapter.onItemClick = { student ->
-            Log.d("check", student.id.toString())
+            studentId = student.id
+            editStudentInfoFragment.show(supportFragmentManager, "editStudentInfoDialog")
         }
 
         activity_main_recyclerView.apply {
@@ -60,9 +61,9 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
                     val firstVisibleItemPosition = linearLayoutManager!!.findFirstVisibleItemPosition()
 
                     if (!isLoading
-                            && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                                    && firstVisibleItemPosition >= 0
-                                    && totalItemCount >= PAGE_SIZE)
+                        && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                                && firstVisibleItemPosition >= 0
+                                && totalItemCount >= PAGE_SIZE)
                     ) {
                         loadMoreItems(startPosition, startPosition + PAGE_SIZE)
                     }
@@ -77,7 +78,9 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
             dialogFragment.show(supportFragmentManager, "newStudentDialog")
         }
 
-        ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter, webService)).attachToRecyclerView(activity_main_recyclerView)
+        ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter, webService)).attachToRecyclerView(
+            activity_main_recyclerView
+        )
 
         loadMoreItems(0, PAGE_SIZE * 3)
     }
@@ -96,5 +99,9 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
     override fun onStudentAdd(name: String, hwCount: String) {
         webService.addEntitle(name, hwCount)
+    }
+
+    override fun onEditStudentInfo(name: String, hwCount: String) {
+        studentId?.let { webService.editStudentInfo(it, name, hwCount) }
     }
 }

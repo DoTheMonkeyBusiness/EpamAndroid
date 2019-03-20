@@ -85,16 +85,16 @@ class StudentsWebService : IWebService<StudentModel> {
     override fun editStudentInfo(
         id: Int,
         name: String?,
-        hwCount: Int?
+        hwCount: String?
     ) {
         students[id].let {
             if (name != null) {
                 it.name = name
             }
             if (hwCount != null) {
-                it.hwCount = hwCount
+                it.hwCount = hwCount.toInt()
                 when {
-                    (hwCount > MINIMUM_HOMEWORK_COUNT) -> it.isStudent = true
+                    (hwCount.toInt() > MINIMUM_HOMEWORK_COUNT) -> it.isStudent = true
                     else -> it.isStudent = false
                 }
             }

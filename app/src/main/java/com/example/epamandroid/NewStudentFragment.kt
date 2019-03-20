@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 
 
-
 class NewStudentFragment : DialogFragment() {
 
     private var callback: INewStudentCallback? = null
@@ -43,7 +42,7 @@ class NewStudentFragment : DialogFragment() {
             }
             setNegativeButton(R.string.cancel) { _, _ ->
 
-                //                this@NewStudentFragment.dialog.cancel()
+                this@NewStudentFragment.dialog.cancel()
             }
 
         }

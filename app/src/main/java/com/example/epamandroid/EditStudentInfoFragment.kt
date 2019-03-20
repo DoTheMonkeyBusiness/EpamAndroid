@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.EditText
 
 
-
 class EditStudentInfoFragment : DialogFragment() {
 
     private var callback: IEditStudentInfoCallback? = null
@@ -35,7 +34,19 @@ class EditStudentInfoFragment : DialogFragment() {
                 when {
                     (studentName?.text.toString().isNotEmpty()
                             && hwCount?.text.toString().isNotEmpty()) -> {
-                        callback?.onStudentAdd(studentName?.text.toString(), hwCount?.text.toString())
+                        callback?.onEditStudentInfo(studentName?.text.toString(), hwCount?.text.toString())
+                    }
+                    (studentName?.text.toString().isEmpty()
+                            && hwCount?.text.toString().isNotEmpty()) -> {
+                        callback?.onEditStudentInfo(null.toString(), hwCount?.text.toString())
+                    }
+                    (studentName?.text.toString().isNotEmpty()
+                            && hwCount?.text.toString().isEmpty()) -> {
+                        callback?.onEditStudentInfo(studentName?.text.toString(), null.toString())
+                    }
+                    (studentName?.text.toString().isEmpty()
+                            && hwCount?.text.toString().isEmpty()) -> {
+                        callback?.onEditStudentInfo(null.toString(), null.toString())
                     }
                 }
 
@@ -43,7 +54,7 @@ class EditStudentInfoFragment : DialogFragment() {
             }
             setNegativeButton(R.string.cancel) { _, _ ->
 
-                //                this@NewStudentFragment.dialog.cancel()
+                this@EditStudentInfoFragment.dialog.cancel()
             }
 
         }
@@ -59,6 +70,6 @@ class EditStudentInfoFragment : DialogFragment() {
     }
 
     interface IEditStudentInfoCallback {
-        fun onStudentAdd(name: String, hwCount: String)
+        fun onEditStudentInfo(name: String, hwCount: String)
     }
 }

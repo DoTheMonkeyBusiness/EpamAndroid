@@ -24,6 +24,6 @@ interface IWebService<T> {
     fun editStudentInfo(
         id: Int,
         name: String?,
-        hwCount: Int?
+        hwCount: String?
     )
 }
