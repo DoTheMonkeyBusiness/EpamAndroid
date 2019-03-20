@@ -2,7 +2,7 @@ package com.example.epamandroid.backend
 
 import android.os.Handler
 import android.os.Looper
-import com.example.epamandroid.Constants.MINIMUM_HOMEWORK_COUNT
+import com.example.epamandroid.Constants.MINIMUM_HOMEWORK_COUNT_EXTRA_KEY
 import com.example.epamandroid.backend.entities.StudentModel
 import com.example.epamandroid.util.ICallback
 import java.util.*
@@ -17,7 +17,7 @@ class StudentsWebService : IWebService<StudentModel> {
         for (i in 0..40) {
             val hwCount: Int = random.nextInt(6)
             val isStudent = when {
-                hwCount > MINIMUM_HOMEWORK_COUNT -> {
+                hwCount > MINIMUM_HOMEWORK_COUNT_EXTRA_KEY -> {
                     true
                 }
                 else -> {
@@ -56,7 +56,7 @@ class StudentsWebService : IWebService<StudentModel> {
         hwCount: String
     ) {
         val isStudent: Boolean = when {
-            hwCount.toInt() > MINIMUM_HOMEWORK_COUNT -> {
+            hwCount.toInt() > MINIMUM_HOMEWORK_COUNT_EXTRA_KEY -> {
                 true
             }
             else -> {
@@ -94,7 +94,7 @@ class StudentsWebService : IWebService<StudentModel> {
             if (hwCount != null) {
                 it.hwCount = hwCount.toInt()
                 when {
-                    (hwCount.toInt() > MINIMUM_HOMEWORK_COUNT) -> it.isStudent = true
+                    (hwCount.toInt() > MINIMUM_HOMEWORK_COUNT_EXTRA_KEY) -> it.isStudent = true
                     else -> it.isStudent = false
                 }
             }

@@ -16,31 +16,29 @@ import kotlinx.android.synthetic.main.activity_main.activity_main_add_new_studen
 class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback,
     EditStudentInfoFragment.IEditStudentInfoCallback {
 
+    companion object {
+        const val NEW_STUDENT_DIALOG_KEY: String = "newStudentDialog"
+        const val EDIT_STUDENT_INFO_STUDENT_DIALOG_KEY: String = "editStudentInfoDialog"
+    }
+
     private val dialogFragment = NewStudentFragment()
     private val editStudentInfoFragment = EditStudentInfoFragment()
     private val webService: StudentsWebService = StudentsWebService()
 
-    private lateinit var viewAdapter: RecyclerViewAdapter
-
     private var linearLayoutManager: LinearLayoutManager? = null
-    private var isLoading: Boolean = false
 
+    private var isLoading: Boolean = false
     private var studentId: Int? = null
+
+    private lateinit var viewAdapter: RecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        linearLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
+        setLinearLayoutManager()
 
-        viewAdapter = RecyclerViewAdapter()
-
-        viewAdapter.onItemClick = { student ->
-            studentId = student.id
-            if(viewAdapter.getItemViewType(studentId!!) == ViewType.STUDENT) {
-                editStudentInfoFragment.show(supportFragmentManager, "editStudentInfoDialog")
-            }
-        }
+        setViewAdapter()
 
         activity_main_recyclerView.apply {
             layoutManager = linearLayoutManager
@@ -77,13 +75,32 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
         }
 
         activity_main_add_new_student_button.setOnClickListener {
-            dialogFragment.show(supportFragmentManager, "newStudentDialog")
+            dialogFragment.show(supportFragmentManager, NEW_STUDENT_DIALOG_KEY)
         }
 
         ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter, webService)).attachToRecyclerView(
             activity_main_recyclerView
         )
 
+        loadStartItems()
+    }
+
+    private fun setLinearLayoutManager() {
+        linearLayoutManager = LinearLayoutManager(this@MainActivity, LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun setViewAdapter() {
+        viewAdapter = RecyclerViewAdapter()
+
+        viewAdapter.onItemClick = { student ->
+            studentId = student.id
+            if (viewAdapter.getItemViewType(studentId!!) == ViewType.STUDENT) {
+                editStudentInfoFragment.show(supportFragmentManager, EDIT_STUDENT_INFO_STUDENT_DIALOG_KEY)
+            }
+        }
+    }
+
+    private fun loadStartItems() {
         loadMoreItems(0, PAGE_SIZE * 3)
     }
 

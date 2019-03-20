@@ -9,9 +9,9 @@ import android.widget.RelativeLayout
 import kotlinx.android.synthetic.main.student_view.view.*
 
 class StudentView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
     init {

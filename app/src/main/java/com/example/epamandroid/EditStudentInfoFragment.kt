@@ -10,11 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 
-
 class EditStudentInfoFragment : DialogFragment() {
 
     private var callback: IEditStudentInfoCallback? = null
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.new_student_dialog, container, false)
