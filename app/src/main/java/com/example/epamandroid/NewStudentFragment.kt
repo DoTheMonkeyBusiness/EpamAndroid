@@ -35,13 +35,18 @@ class NewStudentFragment : DialogFragment() {
             setView(inflater)
             setPositiveButton(R.string.ok) { _, _ ->
 
-                callback?.onStudentAdd(studentName?.text.toString(), hwCount?.text.toString())
+                when {
+                    (studentName?.text.toString().isNotEmpty()
+                            && hwCount?.text.toString().isNotEmpty()) -> {
+                        callback?.onStudentAdd(studentName?.text.toString(), hwCount?.text.toString())
+                    }
+                }
 
                 this@NewStudentFragment.dialog.cancel()
             }
             setNegativeButton(R.string.cancel) { _, _ ->
 
-//                this@NewStudentFragment.dialog.cancel()
+                //                this@NewStudentFragment.dialog.cancel()
             }
 
         }
@@ -51,7 +56,7 @@ class NewStudentFragment : DialogFragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        if (context is INewStudentCallback){
+        if (context is INewStudentCallback) {
             callback = context
         }
     }

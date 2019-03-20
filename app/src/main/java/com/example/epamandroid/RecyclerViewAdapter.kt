@@ -72,7 +72,6 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
     fun setShowLastViewAsLoading(isShow: Boolean) {
         if (isShow != isShowLastViewAsLoading) {
             isShowLastViewAsLoading = isShow
-            notifyDataSetChanged()
         }
     }
 

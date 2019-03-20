@@ -46,7 +46,7 @@ class StudentsWebService : IWebService<StudentModel> {
                 handler.postDelayed({ callback.onResult(students.subList(startRange!!, endRange)) }, 1000)
             }
             else -> {
-                handler.postDelayed({ callback.onResult(students.subList(startRange!!, students.size - 1)) }, 1000)
+                handler.postDelayed({ callback.onResult(students.subList(startRange!!, students.size)) }, 1000)
             }
         }
 
@@ -80,6 +80,6 @@ class StudentsWebService : IWebService<StudentModel> {
     }
 
     override fun getEntitiesSize(): Int {
-        return students.size - 1
+        return students.size
     }
 }

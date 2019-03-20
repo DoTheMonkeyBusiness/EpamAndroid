@@ -64,10 +64,10 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
                 }
 
             })
+            post { viewAdapter.notifyDataSetChanged() }
         }
-
         activity_main_add_new_student_button.setOnClickListener {
-            dialogFragment.show(supportFragmentManager, "newStudent")
+            dialogFragment.show(supportFragmentManager, "newStudentDialog")
         }
 
         ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter, webService)).attachToRecyclerView(activity_main_recyclerView)

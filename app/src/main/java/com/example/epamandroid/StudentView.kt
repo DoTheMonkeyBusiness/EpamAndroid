@@ -32,7 +32,7 @@ class StudentView @JvmOverloads constructor(
     fun isStudent(isStudent: Boolean): StudentView {
         when {
             isStudent -> student_view_is_student_icon.setImageResource(R.drawable.ic_studying_true_green)
-            !isStudent -> student_view_is_student_icon.setImageResource(R.drawable.ic_studying_false_red)
+            else -> student_view_is_student_icon.setImageResource(R.drawable.ic_studying_false_red)
         }
         return this
     }
@@ -41,7 +41,7 @@ class StudentView @JvmOverloads constructor(
     fun setStudentIcon(isStudent: Boolean): StudentView {
         when {
             isStudent -> student_view_icon.setImageResource(R.drawable.ic_child_care_black)
-            !isStudent -> student_view_icon.setImageResource(R.drawable.ic_sentiment_dissatisfied_black)
+            else -> student_view_icon.setImageResource(R.drawable.ic_sentiment_dissatisfied_black)
         }
         return this
     }
