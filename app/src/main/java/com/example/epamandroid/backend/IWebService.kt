@@ -5,8 +5,8 @@ import com.example.epamandroid.util.ICallback
 interface IWebService<T> {
 
     fun getEntities(
-            startRange: Int?,
-            endRange: Int?,
+            startRange: Int,
+            endRange: Int,
             callback: ICallback<List<T>>
     )
 

@@ -25,10 +25,10 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
     private val editStudentInfoFragment = EditStudentInfoFragment()
     private val webService: StudentsWebService = StudentsWebService()
 
-    private var linearLayoutManager: LinearLayoutManager? = null
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     private var isLoading: Boolean = false
-    private var studentId: Int? = null
+    private var studentId: Int = 0
 
     private lateinit var viewAdapter: RecyclerViewAdapter
 
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    val totalItemCount = linearLayoutManager!!.itemCount
+                    val totalItemCount = linearLayoutManager.itemCount
                     val startPosition = viewAdapter.getMaxStudentId() + 1
 
                     if (totalItemCount >= webService.getEntitiesSize()) {
@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
                         return
                     }
 
-                    val visibleItemCount = linearLayoutManager!!.childCount
-                    val firstVisibleItemPosition = linearLayoutManager!!.findFirstVisibleItemPosition()
+                    val visibleItemCount = linearLayoutManager.childCount
+                    val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
 
                     if (!isLoading
                         && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
         viewAdapter.onItemClick = { student ->
             studentId = student.id
-            if (viewAdapter.getItemViewType(studentId!!) == ViewType.STUDENT) {
+            if (viewAdapter.getItemViewType(studentId) == ViewType.STUDENT) {
                 editStudentInfoFragment.show(supportFragmentManager, EDIT_STUDENT_INFO_STUDENT_DIALOG_KEY)
             }
         }
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
     }
 
     override fun onEditStudentInfo(name: String, hwCount: String) {
-        studentId?.let { webService.editStudentInfo(it, name, hwCount) }
+        webService.editStudentInfo(studentId, name, hwCount)
         viewAdapter.onItemChanged()
     }
 }

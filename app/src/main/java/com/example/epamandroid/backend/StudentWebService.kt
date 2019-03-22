@@ -36,16 +36,16 @@ class StudentsWebService : IWebService<StudentModel> {
     }
 
     override fun getEntities(
-        startRange: Int?,
-        endRange: Int?,
+        startRange: Int,
+        endRange: Int,
         callback: ICallback<List<StudentModel>>
     ) {
         when {
-            (endRange!! < students.size) -> {
-                handler.postDelayed({ callback.onResult(students.subList(startRange!!, endRange)) }, 1000)
+            (endRange < students.size) -> {
+                handler.postDelayed({ callback.onResult(students.subList(startRange, endRange)) }, 1000)
             }
             else -> {
-                handler.postDelayed({ callback.onResult(students.subList(startRange!!, students.size)) }, 1000)
+                handler.postDelayed({ callback.onResult(students.subList(startRange, students.size)) }, 1000)
             }
         }
 

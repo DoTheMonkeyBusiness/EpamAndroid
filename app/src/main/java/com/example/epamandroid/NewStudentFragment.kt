@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import java.lang.NullPointerException
 
 
 class NewStudentFragment : DialogFragment() {
@@ -46,7 +47,11 @@ class NewStudentFragment : DialogFragment() {
 
         }
 
-        return builder?.create()!!
+        if (builder != null) {
+            return builder.create()
+        } else{
+            throw NullPointerException()
+        }
     }
 
     override fun onAttach(context: Context?) {
