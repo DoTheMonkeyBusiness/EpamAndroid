@@ -11,10 +11,11 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     companion object {
-        const val NAVIGATION_HEADER_ICON_BUTTON_KEY: String = "navigationHeaderIconButton"
+        const val NAVIGATION_HEADER_ICON_COLOR_KEY: String = "navigationHeaderIconButton"
     }
+    private lateinit var navigationHeaderView: NavigationHeaderView
 
-    private var navigationHeaderIconButtonColor: String? = null
+    private var currentIconColor: String? = null
 
     private val colorList = listOf(
         "#FFAB00",
@@ -34,22 +35,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         configureSupportActionBar()
 
-        val navigationHeaderView: NavigationHeaderView =
+        navigationHeaderView =
             activityMainNavView
                 .getHeaderView(0)
                 .findViewById(R.id.headerView)
 
         activityMainNavView.setNavigationItemSelectedListener(this)
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.activityMainFragmentContainer, FirstFragment())
-                .commit()
 
-            activityMainNavView.setCheckedItem(R.id.navFragmentFirst)
+        when {
+            (savedInstanceState == null) -> {
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.activityMainFragmentContainer, FirstFragment())
+                        .commit()
+
+                activityMainNavView.setCheckedItem(R.id.navFragmentFirst)
+            }
+            (savedInstanceState.getString(NAVIGATION_HEADER_ICON_COLOR_KEY) != null) -> {
+                navigationHeaderView.updateIconColor(savedInstanceState.getString(NAVIGATION_HEADER_ICON_COLOR_KEY))
+            }
         }
         navigationHeaderView.setOnClickListener {
-            navigationHeaderView.updateIconColor(colorList.randomPosition())
+            currentIconColor = colorList.randomPosition()
+            navigationHeaderView.updateIconColor(currentIconColor)
         }
     }
 
@@ -96,5 +104,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun <T> List<T>.randomPosition(): T {
         return this[Random.nextInt(this.size)]
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        outState?.putString(NAVIGATION_HEADER_ICON_COLOR_KEY, currentIconColor)
     }
 }

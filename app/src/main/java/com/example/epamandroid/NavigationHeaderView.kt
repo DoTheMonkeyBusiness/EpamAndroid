@@ -15,7 +15,7 @@ class NavigationHeaderView @JvmOverloads constructor(
         inflate(getContext(), R.layout.navigation_header_view, this)
     }
 
-    fun updateIconColor(colorHex: String) {
+    fun updateIconColor(colorHex: String?) {
         navigationHeaderAndroidIcon
             .setColorFilter(
                 Color
