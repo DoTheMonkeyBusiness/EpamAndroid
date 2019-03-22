@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigationHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+
+    <ImageView
+        android:id="@+id/navigationHeaderAndroidIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/android_icon"
+        app:srcCompat="@drawable/ic_android_blue" />
+
+    <TextView
+        android:id="@+id/navigationHeaderNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/navigationHeaderAndroidIcon"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/name"
+        android:textColor="@color/color_gray_light"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/navigationHeaderMailTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/navigationHeaderNameTextView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/mail"
+        android:textColor="@color/color_gray_light"
+        android:textSize="12sp" />
+
+</merge>
