@@ -13,20 +13,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     companion object {
         const val NAVIGATION_HEADER_ICON_COLOR_KEY: String = "navigationHeaderIconButton"
     }
+
     private lateinit var navigationHeaderView: NavigationHeaderView
 
     private var currentIconColor: String? = null
 
     private val colorList = listOf(
-        "#FFAB00",
-        "#E64A19",
-        "#00E676",
-        "#00B8D4",
-        "#01579B",
-        "#651FFF",
-        "#26C6DA",
-        "#F44336",
-        "#EF6C00"
+            "#FFAB00",
+            "#E64A19",
+            "#00E676",
+            "#00B8D4",
+            "#01579B",
+            "#651FFF",
+            "#26C6DA",
+            "#F44336",
+            "#EF6C00"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +37,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         configureSupportActionBar()
 
         navigationHeaderView =
-            activityMainNavView
-                .getHeaderView(0)
-                .findViewById(R.id.headerView)
+                activityMainNavView
+                        .getHeaderView(0)
+                        .findViewById(R.id.headerView)
 
         activityMainNavView.setNavigationItemSelectedListener(this)
 
@@ -65,15 +66,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.navFragmentFirst -> {
                 supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.activityMainFragmentContainer, FirstFragment())
-                    .commit()
+                        .beginTransaction()
+                        .replace(R.id.activityMainFragmentContainer, FirstFragment())
+                        .commit()
             }
             R.id.navFragmentSecond -> {
                 supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.activityMainFragmentContainer, SecondFragment())
-                    .commit()
+                        .beginTransaction()
+                        .replace(R.id.activityMainFragmentContainer, SecondFragment())
+                        .commit()
             }
         }
 
