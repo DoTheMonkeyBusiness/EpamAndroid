@@ -9,9 +9,15 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import com.example.epamandroid.backend.StudentsWebService
 import com.example.epamandroid.backend.entities.StudentModel
+import com.example.epamandroid.modules.studentWebServiceModule
 import com.example.epamandroid.util.ICallback
 import kotlinx.android.synthetic.main.activity_main.activity_main_recyclerView
 import kotlinx.android.synthetic.main.activity_main.activity_main_add_new_student_button
+import org.koin.android.ext.android.get
+import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback,
     EditStudentInfoFragment.IEditStudentInfoCallback {
@@ -23,7 +29,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
     private val dialogFragment = NewStudentFragment()
     private val editStudentInfoFragment = EditStudentInfoFragment()
-    private val webService: StudentsWebService = StudentsWebService()
+    private val webService: StudentsWebService = get()
 
     private lateinit var linearLayoutManager: LinearLayoutManager
 
