@@ -31,12 +31,11 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
     private val editStudentInfoFragment = EditStudentInfoFragment()
     private val webService: StudentsWebService = get()
 
-    private lateinit var linearLayoutManager: LinearLayoutManager
-
     private var isLoading: Boolean = false
     private var studentId: Int = 0
 
     private lateinit var viewAdapter: RecyclerViewAdapter
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
