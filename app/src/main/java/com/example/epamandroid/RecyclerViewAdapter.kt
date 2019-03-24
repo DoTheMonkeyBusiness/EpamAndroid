@@ -84,24 +84,16 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(
 
     private fun deleteByIndex(i: Int) {
         students.removeAt(i)
-
         notifyItemRemoved(i)
         notifyItemRangeChanged(i, students.size - 1)
     }
 
-    fun getMaxStudentId(): Int {
-        var maxId = 0
+    fun getMaxStudentId(): Int? {
+
         return when {
-            students.size == 0 -> maxId
-            else -> {
-                for (i in students.indices) {
-                    if (i != 0
-                            && (students[i].id > students[i - 1].id)) {
-                        maxId = students[i].id
-                    }
-                }
-                maxId
-            }
+            students.size == 0 -> 0
+            else -> students.maxBy { it.id }?.id
+
         }
     }
 
@@ -123,10 +115,6 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(
         if (getItemViewType(adapterPosition) == ViewType.STUDENT) {
             deleteByIndex(adapterPosition)
         }
-    }
-
-    fun onItemChanged(){
-        notifyDataSetChanged()
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){

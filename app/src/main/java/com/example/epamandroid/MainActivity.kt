@@ -9,15 +9,10 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import com.example.epamandroid.backend.StudentsWebService
 import com.example.epamandroid.backend.entities.StudentModel
-import com.example.epamandroid.modules.studentWebServiceModule
 import com.example.epamandroid.util.ICallback
 import kotlinx.android.synthetic.main.activity_main.activity_main_recyclerView
 import kotlinx.android.synthetic.main.activity_main.activity_main_add_new_student_button
 import org.koin.android.ext.android.get
-import org.koin.android.ext.android.inject
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
 
 class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback,
     EditStudentInfoFragment.IEditStudentInfoCallback {
@@ -54,7 +49,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     val totalItemCount = linearLayoutManager.itemCount
-                    val startPosition = viewAdapter.getMaxStudentId() + 1
+                    val startPosition = viewAdapter.getMaxStudentId()?.plus(1)
 
                     if (totalItemCount >= webService.getEntitiesSize()) {
                         viewAdapter.setShowLastViewAsLoading(false)
@@ -70,7 +65,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
                                 && firstVisibleItemPosition >= 0
                                 && totalItemCount >= PAGE_SIZE)
                     ) {
-                        loadMoreItems(startPosition, startPosition + PAGE_SIZE)
+                        startPosition?.let { loadMoreItems(it, startPosition + PAGE_SIZE) }
                     }
                 }
 
@@ -127,6 +122,6 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
     override fun onEditStudentInfo(name: String, hwCount: String) {
         webService.editStudentInfo(studentId, name, hwCount)
-        viewAdapter.onItemChanged()
+        viewAdapter.notifyDataSetChanged()
     }
 }
