@@ -16,4 +16,9 @@
         <item name="colorAccent">@color/colorAccentNight</item>
     </style>
 
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:fontFamily">@font/emblema_one</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
 </resources>

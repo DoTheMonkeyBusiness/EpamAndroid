@@ -8,18 +8,29 @@
     tools:context=".views.MainActivity">
 
     <include
-        layout="@layout/custom_action_bar_layout"
+        android:id="@+id/activityMainCustomActionBarLayout"
+        layout="@layout/home_action_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
-    <Button
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/activityMainRecyclerView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="hi" />
+        android:layout_below="@id/activityMainCustomActionBarLayout"
+        android:layout_above="@id/activityMainBottomNavigationView"
+        />
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/activityMainFrameLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@id/activityMainBottomNavigationView"-->
+        <!--android:layout_alignParentTop="true" />-->
 
     <include
+        android:id="@+id/activityMainBottomNavigationView"
         layout="@layout/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
