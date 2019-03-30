@@ -1,7 +1,14 @@
 package com.example.epamandroid.views
 
+import android.graphics.Color
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.annotation.DrawableRes
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import com.example.epamandroid.R
