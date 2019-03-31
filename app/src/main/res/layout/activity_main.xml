@@ -6,12 +6,19 @@
     android:background="?attr/colorBackground"
     tools:context=".views.MainActivity">
 
+    <include
+        android:id="@+id/mainActivityCustomActionBarLayout"
+        layout="@layout/home_action_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" />
+
     <FrameLayout
         android:id="@+id/mainActivityFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/mainActivityBottomNavigationView"
-        android:layout_alignParentTop="true" />
+        android:layout_below="@id/mainActivityCustomActionBarLayout"/>
 
     <include
         android:id="@+id/mainActivityBottomNavigationView"

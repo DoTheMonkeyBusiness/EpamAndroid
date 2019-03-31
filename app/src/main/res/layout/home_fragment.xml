@@ -4,17 +4,16 @@
     android:layout_height="match_parent"
     android:background="?attr/colorBackground">
 
-    <include
-        android:id="@+id/settingsFragmentCustomActionBarLayout"
-        layout="@layout/home_action_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+    <!--<include-->
+        <!--android:id="@+id/homeFragmentCustomActionBarLayout"-->
+        <!--layout="@layout/home_action_bar_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true" />-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/settingsFragmentRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/settingsFragmentCustomActionBarLayout" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
