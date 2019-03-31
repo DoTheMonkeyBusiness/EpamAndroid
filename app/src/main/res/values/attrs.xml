@@ -3,4 +3,8 @@
     <declare-styleable name="dayStyle">
         <attr name="colorBackground" format="color"/>
     </declare-styleable>
+    <declare-styleable name="SettingsItemView">
+        <attr name="itemText" format="string"/>
+        <attr name="itemIcon" format="integer"/>
+    </declare-styleable>
 </resources>

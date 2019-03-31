@@ -1,30 +1,45 @@
 package com.example.epamandroid.views
 
-import android.graphics.Color
-import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.Toolbar
-import android.view.Menu
+import android.support.design.widget.BottomNavigationView
+import android.view.MenuItem
 import com.example.epamandroid.R
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(activityMainCustomActionBarLayout as Toolbar?)
+
+        when {
+            (savedInstanceState == null) -> {
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.mainActivityFrameLayout, HomeFragment())
+                        .commit()
+            }
+        }
+
+        (mainActivityBottomNavigationView as BottomNavigationView).setOnNavigationItemSelectedListener(this)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.home_action_bar_menu, menu)
-
-        return super.onCreateOptionsMenu(menu)
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.bottomNavigationHome -> {
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.mainActivityFrameLayout, HomeFragment())
+                        .commit()
+            }
+            R.id.bottomNavigationSettings -> {
+                supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.mainActivityFrameLayout, SettingsFragment())
+                        .commit()
+            }
+        }
+        return true
     }
 }
