@@ -2,15 +2,11 @@ package com.example.epamandroid.contracts
 
 interface MainContract {
     interface View {
-        fun showText()
+        fun setMenuVisibility(isVisible: Boolean)
     }
 
-    interface Presenter {
-        fun onButtonWasClicked()
-        fun onDestroy()
-    }
-
-    interface Repository {
+    interface Presenter
+    interface Model {
         fun loadMessage(): String
     }
 }

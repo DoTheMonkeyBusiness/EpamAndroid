@@ -7,9 +7,10 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import com.example.epamandroid.R
+import com.example.epamandroid.contracts.MainContract
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener, MainContract.View {
 
     private var isVisibleItem: Boolean = true
 
@@ -71,7 +72,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun setMenuVisibility(isVisible: Boolean) {
+    override fun setMenuVisibility(isVisible: Boolean) {
         (mainActivityCustomActionBarLayout as Toolbar?)
                 ?.menu
                 ?.getItem(0)
