@@ -5,6 +5,7 @@ import android.os.Looper
 import com.example.epamandroid.Constants.MINIMUM_HOMEWORK_COUNT_EXTRA_KEY
 import com.example.epamandroid.backend.entities.StudentModel
 import com.example.epamandroid.util.ICallback
+import com.example.epamandroid.util.IShowLastViewAsLoadingCallback
 import java.util.*
 
 class StudentsWebService : IWebService<StudentModel> {
@@ -38,13 +39,17 @@ class StudentsWebService : IWebService<StudentModel> {
     override fun getEntities(
         startRange: Int,
         endRange: Int,
-        callback: ICallback<List<StudentModel>>
+        callback: ICallback<List<StudentModel>>,
+        showLastViewAsLoading: IShowLastViewAsLoadingCallback
+
     ) {
         when {
-            (endRange < students.size) -> {
+            (endRange < students.size-1) -> {
+                showLastViewAsLoading.onShowLastViewAsLoadingCallback(true)
                 handler.postDelayed({ callback.onResult(students.subList(startRange, endRange)) }, 1000)
             }
             else -> {
+                showLastViewAsLoading.onShowLastViewAsLoadingCallback(false)
                 handler.postDelayed({ callback.onResult(students.subList(startRange, students.size)) }, 1000)
             }
         }

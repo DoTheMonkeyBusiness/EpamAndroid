@@ -37,15 +37,11 @@ class EditStudentInfoFragment : DialogFragment() {
                     }
                     (studentName?.text.toString().isEmpty()
                             && hwCount?.text.toString().isNotEmpty()) -> {
-                        callback?.onEditStudentInfo(null.toString(), hwCount?.text.toString())
+                        callback?.onEditStudentInfo(null, hwCount?.text.toString())
                     }
                     (studentName?.text.toString().isNotEmpty()
                             && hwCount?.text.toString().isEmpty()) -> {
-                        callback?.onEditStudentInfo(studentName?.text.toString(), null.toString())
-                    }
-                    (studentName?.text.toString().isEmpty()
-                            && hwCount?.text.toString().isEmpty()) -> {
-                        callback?.onEditStudentInfo(null.toString(), null.toString())
+                        callback?.onEditStudentInfo(studentName?.text.toString(), null)
                     }
                 }
 
@@ -73,6 +69,6 @@ class EditStudentInfoFragment : DialogFragment() {
     }
 
     interface IEditStudentInfoCallback {
-        fun onEditStudentInfo(name: String, hwCount: String)
+        fun onEditStudentInfo(name: String?, hwCount: String?)
     }
 }
