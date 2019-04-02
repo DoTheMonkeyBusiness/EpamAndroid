@@ -85,8 +85,8 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>
         }
     }
 
-    fun addItems(result: List<StudentModel>) {
-        students.addAll(result)
+    fun addItems(result: List<StudentModel>?) {
+        result?.let { students.addAll(it) }
         notifyDataSetChanged()
     }
     fun getItems(): ArrayList<StudentModel> {

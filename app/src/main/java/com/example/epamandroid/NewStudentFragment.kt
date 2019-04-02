@@ -49,7 +49,7 @@ class NewStudentFragment : DialogFragment() {
 
         if (builder != null) {
             return builder.create()
-        } else{
+        } else {
             throw NullPointerException()
         }
     }

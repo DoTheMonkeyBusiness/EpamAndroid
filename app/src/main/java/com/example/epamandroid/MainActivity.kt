@@ -43,11 +43,6 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
         setLinearLayoutManager()
 
-        if(savedInstanceState != null){
-            val pars: Parcelable? = savedInstanceState.getParcelable(RECYCLER_STATE_KEY)
-            linearLayoutManager.onRestoreInstanceState(pars)
-        }
-
         setViewAdapter()
 
         activity_main_recyclerView.apply {
@@ -55,6 +50,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
             layoutManager = linearLayoutManager
 
             adapter = viewAdapter
+
             addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
@@ -91,19 +87,34 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
             dialogFragment.show(supportFragmentManager, NEW_STUDENT_DIALOG_KEY)
         }
 
-         ItemTouchCallback(activity_main_recyclerView, viewAdapter, object : IRemoveEntityCallback{
-             override fun onRemoveEntity(id: Int?){
-                 webService?.removeEntitle(id)
-             }
-         }).let {
+        ItemTouchCallback(activity_main_recyclerView, viewAdapter, object : IRemoveEntityCallback {
+            override fun onRemoveEntity(id: Int?) {
+                webService?.removeEntitle(id)
+            }
+        }).let {
             ItemTouchHelper(it).attachToRecyclerView(
                 activity_main_recyclerView
             )
         }
-        if(savedInstanceState != null){
-            activity_main_recyclerView.layoutManager?.onRestoreInstanceState(savedInstanceState.getParcelable(RECYCLER_STATE_KEY))
-            linearLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(LINEAR_LAYOUT_MANAGER_KEY))
-            viewAdapter.addItems(savedInstanceState.getParcelableArrayList(STUDENT_LIST_KEY))
+
+        restoringState(savedInstanceState)
+    }
+
+    private fun restoringState(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            activity_main_recyclerView
+                .layoutManager
+                ?.onRestoreInstanceState(
+                savedInstanceState.getParcelable(
+                    RECYCLER_STATE_KEY
+                )
+            )
+            linearLayoutManager
+                .onRestoreInstanceState(savedInstanceState
+                    .getParcelable(LINEAR_LAYOUT_MANAGER_KEY))
+            viewAdapter
+                .addItems(savedInstanceState
+                    .getParcelableArrayList(STUDENT_LIST_KEY))
         } else {
             loadStartItems()
         }
