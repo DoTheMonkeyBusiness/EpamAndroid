@@ -61,8 +61,8 @@ class StudentsWebService private constructor(): IWebService<StudentModel> {
                 handler.postDelayed({ students?.subList(startRange, endRange)?.let { callback.onResult(it) } }, 1000)
             }
             else -> {
-                showLastViewAsLoading.onShowLastViewAsLoadingCallback(false)
                 handler.postDelayed({ students?.subList(startRange, students.size)?.let { callback.onResult(it) } }, 1000)
+                showLastViewAsLoading.onShowLastViewAsLoadingCallback(false)
             }
         }
 

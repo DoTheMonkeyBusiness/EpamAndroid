@@ -1,6 +1,7 @@
 package com.example.epamandroid
 
 import android.os.Build
+import android.os.Parcelable
 import android.support.annotation.RequiresApi
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,9 +12,10 @@ import com.example.epamandroid.ViewType.Companion.LOADING
 import com.example.epamandroid.ViewType.Companion.STUDENT
 import com.example.epamandroid.backend.entities.StudentModel
 import java.util.*
+import kotlin.collections.ArrayList
 
 
-class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
 
     private val students = ArrayList<StudentModel>()
 
@@ -23,21 +25,27 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(
 
     var onItemClick: ((StudentModel) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewHolder {
         return when (viewType) {
             STUDENT -> {
                 ViewHolder(StudentView(parent.context))
             }
             LOADING -> {
-                ViewHolder(LayoutInflater.from(parent.context)
+                ViewHolder(
+                    LayoutInflater.from(parent.context)
                         .inflate(R.layout.layout_progress, parent, false)
-                        as FrameLayout)
+                            as FrameLayout
+                )
             }
             else -> {
-                ViewHolder(LayoutInflater.from(parent.context)
+                ViewHolder(
+                    LayoutInflater.from(parent.context)
                         .inflate(R.layout.error_view, parent, false)
-                        as FrameLayout)
+                            as FrameLayout
+                )
             }
         }
     }
@@ -48,10 +56,10 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(
             student = students[position]
 
             (viewHolder.itemView as StudentView)
-                    .setStudentName(student.name)
-                    .setHwCount(student.hwCount.toString())
-                    .isStudent(student.isStudent)
-                    .setStudentIcon(student.isStudent)
+                .setStudentName(student.name)
+                .setHwCount(student.hwCount.toString())
+                .isStudent(student.isStudent)
+                .setStudentIcon(student.isStudent)
         }
     }
 
@@ -81,6 +89,9 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(
         students.addAll(result)
         notifyDataSetChanged()
     }
+    fun getItems(): ArrayList<StudentModel> {
+        return students
+    }
 
     private fun deleteByIndex(i: Int) {
         students.removeAt(i)
@@ -91,8 +102,15 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(
     fun getMaxStudentId(): Int? {
 
         return when {
-            students.size == 0 -> 0
-            else -> students.maxBy { it.id }?.id
+            students.size == 0 -> {
+                0
+            }
+            (students.size < students.maxBy { it.id }?.id ?: students.size) -> {
+                students.size - 1
+            }
+            else -> {
+                students.maxBy { it.id }?.id
+            }
 
         }
     }
@@ -117,10 +135,10 @@ class RecyclerViewAdapter: RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(
         }
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
-        init{
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        init {
             view.setOnClickListener {
-                if(itemViewType == ViewType.STUDENT) {
+                if (itemViewType == ViewType.STUDENT) {
                     onItemClick?.invoke(students[adapterPosition])
                 }
             }

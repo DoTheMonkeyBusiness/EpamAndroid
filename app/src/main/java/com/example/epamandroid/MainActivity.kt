@@ -3,6 +3,7 @@ package com.example.epamandroid
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,6 +22,9 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
     companion object {
         const val NEW_STUDENT_DIALOG_KEY: String = "newStudentDialog"
         const val EDIT_STUDENT_INFO_STUDENT_DIALOG_KEY: String = "editStudentInfoDialog"
+        const val RECYCLER_STATE_KEY: String = "recyclerViewKey"
+        const val LINEAR_LAYOUT_MANAGER_KEY: String = "linearLayoutKey"
+        const val STUDENT_LIST_KEY: String = "studentListKey"
     }
 
     private val dialogFragment = NewStudentFragment()
@@ -39,10 +43,17 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
         setLinearLayoutManager()
 
+        if(savedInstanceState != null){
+            val pars: Parcelable? = savedInstanceState.getParcelable(RECYCLER_STATE_KEY)
+            linearLayoutManager.onRestoreInstanceState(pars)
+        }
+
         setViewAdapter()
 
         activity_main_recyclerView.apply {
+
             layoutManager = linearLayoutManager
+
             adapter = viewAdapter
             addItemDecoration(DividerItemDecoration(this@MainActivity, DividerItemDecoration.VERTICAL))
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -73,6 +84,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
             })
 
             post { viewAdapter.notifyDataSetChanged() }
+
         }
 
         activity_main_add_new_student_button.setOnClickListener {
@@ -88,8 +100,13 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
                 activity_main_recyclerView
             )
         }
-
-        loadStartItems()
+        if(savedInstanceState != null){
+            activity_main_recyclerView.layoutManager?.onRestoreInstanceState(savedInstanceState.getParcelable(RECYCLER_STATE_KEY))
+            linearLayoutManager.onRestoreInstanceState(savedInstanceState.getParcelable(LINEAR_LAYOUT_MANAGER_KEY))
+            viewAdapter.addItems(savedInstanceState.getParcelableArrayList(STUDENT_LIST_KEY))
+        } else {
+            loadStartItems()
+        }
     }
 
     private fun setLinearLayoutManager() {
@@ -113,7 +130,6 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
     private fun loadMoreItems(startPosition: Int, endPosition: Int) {
         isLoading = true
-        viewAdapter.setShowLastViewAsLoading(true)
 
         webService?.getEntities(startPosition, endPosition,
             object : ICallback<List<StudentModel>> {
@@ -135,6 +151,14 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
     override fun onEditStudentInfo(name: String?, hwCount: String?) {
         webService?.editStudentInfo(studentId, name, hwCount)
         viewAdapter.notifyDataSetChanged()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        outState?.putParcelable(RECYCLER_STATE_KEY, activity_main_recyclerView.layoutManager?.onSaveInstanceState())
+        outState?.putParcelable(LINEAR_LAYOUT_MANAGER_KEY, linearLayoutManager.onSaveInstanceState())
+        outState?.putParcelableArrayList(STUDENT_LIST_KEY, viewAdapter.getItems())
     }
 
 }
