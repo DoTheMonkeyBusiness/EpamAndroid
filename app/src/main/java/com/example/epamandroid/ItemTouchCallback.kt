@@ -2,9 +2,9 @@ package com.example.epamandroid
 
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import com.example.epamandroid.backend.StudentsWebService
+import com.example.epamandroid.util.IRemoveEntityCallback
 
-class ItemTouchCallback(private val recycler: RecyclerView, private val adapter: RecyclerViewAdapter, private val webService: StudentsWebService) :
+class ItemTouchCallback(private val recycler: RecyclerView, private val adapter: RecyclerViewAdapter, private val removeEntityCallback: IRemoveEntityCallback) :
         ItemTouchHelper.SimpleCallback(
                 ItemTouchHelper.UP or ItemTouchHelper.DOWN,
                 ItemTouchHelper.START or ItemTouchHelper.END
@@ -30,7 +30,7 @@ class ItemTouchCallback(private val recycler: RecyclerView, private val adapter:
         if (RecyclerView.NO_POSITION != adapterPosition) {
 
             adapter.onItemDismiss(adapterPosition)
-            webService.removeEntitle(adapterPosition)
+            removeEntityCallback.onRemoveEntity(adapterPosition)
         }
     }
 

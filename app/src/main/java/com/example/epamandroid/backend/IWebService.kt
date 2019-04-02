@@ -18,10 +18,10 @@ interface IWebService<T> {
     )
 
     fun removeEntitle(
-            id: Int
+            id: Int?
     )
 
-    fun getEntitiesSize(): Int
+    fun getEntitiesSize(): Int?
 
     fun editStudentInfo(
         id: Int,

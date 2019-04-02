@@ -10,10 +10,10 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import com.example.epamandroid.backend.StudentsWebService
 import com.example.epamandroid.backend.entities.StudentModel
 import com.example.epamandroid.util.ICallback
+import com.example.epamandroid.util.IRemoveEntityCallback
 import com.example.epamandroid.util.IShowLastViewAsLoadingCallback
 import kotlinx.android.synthetic.main.activity_main.activity_main_recyclerView
 import kotlinx.android.synthetic.main.activity_main.activity_main_add_new_student_button
-import org.koin.android.ext.android.get
 
 class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback,
     EditStudentInfoFragment.IEditStudentInfoCallback {
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
 
     private val dialogFragment = NewStudentFragment()
     private val editStudentInfoFragment = EditStudentInfoFragment()
-    private val webService: StudentsWebService = get()
+    private val webService: StudentsWebService? = StudentsWebService.getInstance()
 
     private var isLoading: Boolean = false
     private var studentId: Int = 0
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
                     val totalItemCount = linearLayoutManager.itemCount
                     val startPosition = viewAdapter.getMaxStudentId()?.plus(1)
 
-                    if (totalItemCount >= webService.getEntitiesSize()) {
+                    if (totalItemCount >= webService?.getEntitiesSize() ?: 0) {
                         viewAdapter.setShowLastViewAsLoading(false)
 
                         return
@@ -79,9 +79,15 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
             dialogFragment.show(supportFragmentManager, NEW_STUDENT_DIALOG_KEY)
         }
 
-        ItemTouchHelper(ItemTouchCallback(activity_main_recyclerView, viewAdapter, webService)).attachToRecyclerView(
-            activity_main_recyclerView
-        )
+         ItemTouchCallback(activity_main_recyclerView, viewAdapter, object : IRemoveEntityCallback{
+             override fun onRemoveEntity(id: Int?){
+                 webService?.removeEntitle(id)
+             }
+         }).let {
+            ItemTouchHelper(it).attachToRecyclerView(
+                activity_main_recyclerView
+            )
+        }
 
         loadStartItems()
     }
@@ -109,7 +115,7 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
         isLoading = true
         viewAdapter.setShowLastViewAsLoading(true)
 
-        webService.getEntities(startPosition, endPosition,
+        webService?.getEntities(startPosition, endPosition,
             object : ICallback<List<StudentModel>> {
                 override fun onResult(result: List<StudentModel>) {
                     viewAdapter.addItems(result)
@@ -123,11 +129,11 @@ class MainActivity : AppCompatActivity(), NewStudentFragment.INewStudentCallback
     }
 
     override fun onStudentAdd(name: String, hwCount: String) {
-        webService.addEntitle(name, hwCount)
+        webService?.addEntitle(name, hwCount)
     }
 
     override fun onEditStudentInfo(name: String?, hwCount: String?) {
-        webService.editStudentInfo(studentId, name, hwCount)
+        webService?.editStudentInfo(studentId, name, hwCount)
         viewAdapter.notifyDataSetChanged()
     }
 

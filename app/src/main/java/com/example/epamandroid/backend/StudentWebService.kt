@@ -7,10 +7,22 @@ import com.example.epamandroid.backend.entities.StudentModel
 import com.example.epamandroid.util.ICallback
 import com.example.epamandroid.util.IShowLastViewAsLoadingCallback
 import java.util.*
+import kotlin.collections.ArrayList
 
-class StudentsWebService : IWebService<StudentModel> {
+class StudentsWebService private constructor(): IWebService<StudentModel> {
 
-    private val students = ArrayList<StudentModel>()
+    companion object {
+        private var instance: StudentsWebService? = null
+        fun getInstance(): StudentsWebService? {
+            if(instance == null){
+                instance = StudentsWebService()
+            }
+
+            return instance
+        }
+    }
+
+    private val students: ArrayList<StudentModel>? = ArrayList()
     private val random = Random()
     private val handler = Handler(Looper.getMainLooper())
 
@@ -32,7 +44,7 @@ class StudentsWebService : IWebService<StudentModel> {
                 isStudent
             )
 
-            students.add(student)
+            students?.add(student)
         }
     }
 
@@ -44,13 +56,13 @@ class StudentsWebService : IWebService<StudentModel> {
 
     ) {
         when {
-            (endRange < students.size-1) -> {
+            (endRange < students?.size?.minus(1) ?: 0) -> {
                 showLastViewAsLoading.onShowLastViewAsLoadingCallback(true)
-                handler.postDelayed({ callback.onResult(students.subList(startRange, endRange)) }, 1000)
+                handler.postDelayed({ students?.subList(startRange, endRange)?.let { callback.onResult(it) } }, 1000)
             }
             else -> {
                 showLastViewAsLoading.onShowLastViewAsLoadingCallback(false)
-                handler.postDelayed({ callback.onResult(students.subList(startRange, students.size)) }, 1000)
+                handler.postDelayed({ students?.subList(startRange, students.size)?.let { callback.onResult(it) } }, 1000)
             }
         }
 
@@ -68,23 +80,25 @@ class StudentsWebService : IWebService<StudentModel> {
                 false
             }
         }
-        val student = StudentModel(
-            students.size,
-            name,
-            hwCount.toInt(),
-            isStudent
-        )
+        val student = students?.size?.let {
+            StudentModel(
+                it,
+                name,
+                hwCount.toInt(),
+                isStudent
+            )
+        }
 
-        students.add(student)
+        student?.let { students?.add(it) }
 
     }
 
-    override fun removeEntitle(id: Int) {
-        students.removeAt(id)
+    override fun removeEntitle(id: Int?) {
+        id?.let { students?.removeAt(it) }
     }
 
-    override fun getEntitiesSize(): Int {
-        return students.size
+    override fun getEntitiesSize(): Int? {
+        return students?.size
     }
 
     override fun editStudentInfo(
@@ -92,7 +106,7 @@ class StudentsWebService : IWebService<StudentModel> {
         name: String?,
         hwCount: String?
     ) {
-        students[id].let {
+        students?.get(id)?.let {
             if (name != null) {
                 it.name = name
             }
