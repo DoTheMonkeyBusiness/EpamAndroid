@@ -2,6 +2,7 @@ package com.example.epamandroid.views
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -20,6 +21,14 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val isDarkModeEnabled = PreferenceManager.getDefaultSharedPreferences(this)
+
+        if (isDarkModeEnabled.getBoolean(getString(R.string.switch_day_night_mode_key), false)) {
+            setTheme(R.style.AppThemeNight)
+        } else {
+            setTheme(R.style.AppThemeDay)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

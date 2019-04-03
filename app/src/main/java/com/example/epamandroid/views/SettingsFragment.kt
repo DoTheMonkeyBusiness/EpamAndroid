@@ -1,15 +1,19 @@
 package com.example.epamandroid.views
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.view.*
+import android.support.v7.preference.PreferenceFragmentCompat
 import com.example.epamandroid.R
-import kotlinx.android.synthetic.main.home_fragment.*
 
-class SettingsFragment : Fragment() {
+class SettingsFragment : PreferenceFragmentCompat() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.settings_fragment, container, false)
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        addPreferencesFromResource(R.xml.preferences)
+
+        val modeSwitcher = findPreference(getString(R.string.switch_day_night_mode_key))
+        modeSwitcher.setOnPreferenceChangeListener { _, _ ->
+            activity?.recreate()
+            true
+        }
     }
+
 }

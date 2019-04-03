@@ -1,19 +1,24 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppThemeDay" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorBackground">@color/colorBackground</item>
-    </style>
-
-    <style name="AppThemeNight" parent="Theme.AppCompat.Light">
+    <style name="AppThemeNight" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
         <item name="colorAccent">@color/colorAccentNight</item>
+        <item name="colorBackground">@color/colorBackgroundNight</item>
+        <!--<item name="colorSwitchThumbNormal">@color/colorPrimaryDark</item>-->
+        <!--<item name="switchStyle">@style/Widget.AppCompat.CompoundButton.Switch</item>-->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
+
+    <style name="AppThemeDay" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryDay</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkDay</item>
+        <item name="colorAccent">@color/colorAccentDay</item>
+        <item name="colorBackground">@color/colorBackgroundDay</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
