@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     companion object {
         const val TITLE_KEY: String = "titleKey"
         const val MENU_VISIBILITY_KEY: String = "menuVisibilityKey"
+        const val HOME_FRAGMENT_TAG_KEY: String = "homeFragmentTagKey"
+        const val SETTINGS_FRAGMENT_TAG_KEY: String = "settingsFragmentTagKey"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +40,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             (savedInstanceState == null) -> {
                 supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.mainActivityFrameLayout, HomeFragment())
+                        .replace(R.id.mainActivityFrameLayout, HomeFragment(), HOME_FRAGMENT_TAG_KEY)
                         .commit()
                 setTitle(R.string.home_page)
             }
@@ -52,20 +54,28 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val homeFragment = supportFragmentManager.findFragmentByTag(HOME_FRAGMENT_TAG_KEY)
+        val settingsFragment = supportFragmentManager.findFragmentByTag(SETTINGS_FRAGMENT_TAG_KEY)
         when (item.itemId) {
             R.id.bottomNavigationHome -> {
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.mainActivityFrameLayout, HomeFragment())
-                        .commit()
+                if(homeFragment == null || !homeFragment.isVisible) {
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.mainActivityFrameLayout, HomeFragment(), HOME_FRAGMENT_TAG_KEY)
+                            .addToBackStack(null)
+                            .commit()
+                }
                 setTitle(R.string.home_page)
                 setMenuVisibility(true)
             }
             R.id.bottomNavigationSettings -> {
-                supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.mainActivityFrameLayout, SettingsFragment())
-                        .commit()
+                if(settingsFragment == null || !settingsFragment.isVisible) {
+                    supportFragmentManager
+                            .beginTransaction()
+                            .replace(R.id.mainActivityFrameLayout, SettingsFragment(), SETTINGS_FRAGMENT_TAG_KEY)
+                            .addToBackStack(null)
+                            .commit()
+                }
                 setTitle(R.string.settings)
                 setMenuVisibility(false)
             }
@@ -100,5 +110,21 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                     outState
                             ?.putBoolean(MENU_VISIBILITY_KEY, it)
                 }
+    }
+
+    override fun onBackPressed() {
+        val homeFragment = supportFragmentManager.findFragmentByTag(HOME_FRAGMENT_TAG_KEY)
+        val settingsFragment = supportFragmentManager.findFragmentByTag(SETTINGS_FRAGMENT_TAG_KEY)
+
+        super.onBackPressed()
+
+        when {
+            (homeFragment !== null && homeFragment.isVisible) ->{
+                (mainActivityBottomNavigationView as BottomNavigationView).selectedItemId = R.id.bottomNavigationHome
+            }
+            (settingsFragment !== null && settingsFragment.isVisible) ->{
+                (mainActivityBottomNavigationView as BottomNavigationView).selectedItemId = R.id.bottomNavigationSettings
+            }
+        }
     }
 }
