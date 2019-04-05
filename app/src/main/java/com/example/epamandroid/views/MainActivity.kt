@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     companion object {
         const val TITLE_KEY: String = "titleKey"
-        const val MENU_VISIBILITY_KEY: String = "menuVisibilityKey"
+        const val ACTIONBAR_ITEMS_VISIBILITY_KEY: String = "actionbarItemsVisibilityKey"
         const val HOME_FRAGMENT_TAG_KEY: String = "homeFragmentTagKey"
         const val SETTINGS_FRAGMENT_TAG_KEY: String = "settingsFragmentTagKey"
     }
@@ -35,6 +35,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(mainActivityCustomActionBarLayout as Toolbar?)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_photo_camera)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         when {
             (savedInstanceState == null) -> {
@@ -43,10 +45,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                         .replace(R.id.mainActivityFrameLayout, HomeFragment(), HOME_FRAGMENT_TAG_KEY)
                         .commit()
                 setTitle(R.string.home_page)
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
             }
             else -> {
                 title = savedInstanceState.getString(TITLE_KEY)
-                isVisibleItem = savedInstanceState.getBoolean(MENU_VISIBILITY_KEY)
+                isVisibleItem = savedInstanceState.getBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY)
+                supportActionBar?.setDisplayHomeAsUpEnabled(savedInstanceState.getBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY))
             }
         }
 
@@ -66,6 +71,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                             .commit()
                 }
                 setTitle(R.string.home_page)
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 setMenuVisibility(true)
             }
             R.id.bottomNavigationSettings -> {
@@ -77,6 +83,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                             .commit()
                 }
                 setTitle(R.string.settings)
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 setMenuVisibility(false)
             }
         }
@@ -108,7 +115,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 ?.isVisible
                 ?.let {
                     outState
-                            ?.putBoolean(MENU_VISIBILITY_KEY, it)
+                            ?.putBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY, it)
                 }
     }
 
@@ -126,5 +133,13 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 (mainActivityBottomNavigationView as BottomNavigationView).selectedItemId = R.id.bottomNavigationSettings
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val id = item?.itemId
+
+        if(id == android.R.id.home){
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

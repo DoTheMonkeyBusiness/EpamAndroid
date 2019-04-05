@@ -6,7 +6,7 @@
 
     <!--<include-->
         <!--android:id="@+id/homeFragmentCustomActionBarLayout"-->
-        <!--layout="@layout/home_action_bar_layout"-->
+        <!--layout="@layout/main_action_bar_layout"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_alignParentTop="true" />-->
