@@ -37,7 +37,6 @@ android {
             versionNameSuffix "-full"
         }
     }
-    buildToolsVersion '28.0.3'
 }
 
 androidExtensions {
