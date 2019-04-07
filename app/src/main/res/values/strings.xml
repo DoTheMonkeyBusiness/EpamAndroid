@@ -11,4 +11,7 @@
     <string name="appearance">Appearance</string>
     <string name="help">Help</string>
     <string name="switch_day_night_mode_key">switch_day_night_mode_key</string>
+    <string name="permissions_error">You can\'t use camera without permission</string>
+    <string name="error">Error</string>
+    <string name="configure_failed">Configure Failed</string>
 </resources>

@@ -10,8 +10,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
         addPreferencesFromResource(R.xml.preferences)
 
         val modeSwitcher = findPreference(getString(R.string.switch_day_night_mode_key))
+
         modeSwitcher.setOnPreferenceChangeListener { _, _ ->
             activity?.recreate()
+
             true
         }
     }
