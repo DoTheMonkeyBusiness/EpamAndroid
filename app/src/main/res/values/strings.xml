@@ -14,4 +14,5 @@
     <string name="permissions_error">You can\'t use camera without permission</string>
     <string name="error">Error</string>
     <string name="configure_failed">Configure Failed</string>
+    <string name="back_to_menu">back to menu</string>
 </resources>

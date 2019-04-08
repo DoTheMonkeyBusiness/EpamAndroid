@@ -23,7 +23,7 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
     private var isVisibleMenuItem: Boolean = true
     private var isSwipePagingEnabled: Boolean = true
 
-    private var callback: IChangeViewItemCallback? = null
+    private var callback: IChangeFragmentMainItemCallback? = null
 
     private lateinit var mainActivity: AppCompatActivity
 
@@ -38,6 +38,9 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
             supportActionBar?.setDisplayHomeAsUpEnabled(false)
         }
 
+        setHasOptionsMenu(true)
+        setMenuVisibility(false)
+
         when {
             (savedInstanceState == null) -> {
                 mainActivity.apply {
@@ -47,6 +50,8 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
                             .commit()
                     setTitle(R.string.home_page)
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    isVisibleMenuItem = true
+                    setMenuVisibility(isVisibleMenuItem)
                 }
 
                 isVisibleMenuItem = true
@@ -65,10 +70,10 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
                         ?.onViewPagerSwipePagingEnabled(
                                 savedInstanceState
                                         .getBoolean(IS_SWIPE_PAGING_ENABLED_KEY))
+                isVisibleMenuItem = savedInstanceState
+                    .getBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY)
             }
         }
-
-        setHasOptionsMenu(true)
 
         (mainFragmentBottomNavigationView as BottomNavigationView)
                 .setOnNavigationItemSelectedListener(this)
@@ -81,21 +86,8 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        if (context is IChangeViewItemCallback) {
+        if (context is IChangeFragmentMainItemCallback) {
             callback = context
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        isVisibleMenuItem = when {
-            (mainActivity.title == getString(R.string.home_page)) -> {
-                true
-            }
-            else -> {
-                false
-            }
         }
     }
 
@@ -126,7 +118,8 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
 
-                isMenuVisible(true)
+                isVisibleMenuItem = true
+                setMenuVisibility(isVisibleMenuItem)
                 isSwipePagingEnabled = true
                 callback?.onViewPagerSwipePagingEnabled(isSwipePagingEnabled)
             }
@@ -148,7 +141,8 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
 
-                isMenuVisible(false)
+                isVisibleMenuItem = false
+                setMenuVisibility(isVisibleMenuItem)
                 isSwipePagingEnabled = false
                 callback?.onViewPagerSwipePagingEnabled(isSwipePagingEnabled)
             }
@@ -161,7 +155,7 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
         super.onCreateOptionsMenu(menu, inflater)
 
         inflater?.inflate(R.menu.home_action_bar_menu, menu)
-        isMenuVisible(isVisibleMenuItem)
+        setMenuVisibility(isVisibleMenuItem)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -169,27 +163,21 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
 
         outState.putString(TITLE_KEY, mainActivity.title.toString())
         outState.putBoolean(IS_SWIPE_PAGING_ENABLED_KEY, isSwipePagingEnabled)
-    }
-
-    private fun isMenuVisible(isVisible: Boolean) {
-        (mainFragmentCustomActionBarLayout as Toolbar?)
-                ?.menu
-                ?.getItem(0)
-                ?.isVisible = isVisible
+        outState.putBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY, isVisibleMenuItem)
     }
 
     override fun onOptionsItemSelected(menuItem: MenuItem?): Boolean {
         val id = menuItem?.itemId
 
         if (id == android.R.id.home) {
-            callback?.onViewPagerItemChanged(0, true)
+            callback?.onFragmentMainItemChanged()
         }
 
         return super.onOptionsItemSelected(menuItem)
     }
 
-    interface IChangeViewItemCallback {
-        fun onViewPagerItemChanged(item: Int, smoothScroll: Boolean)
+    interface IChangeFragmentMainItemCallback {
+        fun onFragmentMainItemChanged()
         fun onViewPagerSwipePagingEnabled(changeSwipePagingEnabled: Boolean)
     }
 }

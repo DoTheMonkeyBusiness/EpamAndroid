@@ -10,7 +10,7 @@ import com.example.epamandroid.R
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_fragment.*
 
-class MainActivity : AppCompatActivity(), MainFragment.IChangeViewItemCallback {
+class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCallback, CameraFragment.IChangeFragmentCameraItemCallback {
 
     companion object {
         private const val CAMERA_ITEM_KEY: Int = 0
@@ -71,9 +71,14 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeViewItemCallback {
         activityMainViewPager.adapter = adapter
     }
 
-    override fun onViewPagerItemChanged(item: Int, smoothScroll: Boolean) {
+    override fun onFragmentMainItemChanged() {
         activityMainViewPager
                 .setCurrentItem(CAMERA_ITEM_KEY, true)
+    }
+
+    override fun onFragmentCameraItemChanged() {
+        activityMainViewPager
+                .setCurrentItem(MAIN_ITEM_KEY, true)
     }
 
     override fun onViewPagerSwipePagingEnabled(changeSwipePagingEnabled: Boolean) {

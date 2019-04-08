@@ -29,6 +29,8 @@ class CameraFragment : Fragment() {
         private const val THREAD_NAME_KEY: String = "Camera Background"
     }
 
+    private var callback: IChangeFragmentCameraItemCallback? = null
+
     private var backgroundHandler: Handler? = null
     private var backgroundThread: HandlerThread? = null
     private var cameraCaptureSessions: CameraCaptureSession? = null
@@ -79,6 +81,18 @@ class CameraFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         cameraFragmentTextureView.surfaceTextureListener = textureListener
+
+        cameraFragmentBackToMenuButton.setOnClickListener {
+            callback?.onFragmentCameraItemChanged()
+        }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        if (context is IChangeFragmentCameraItemCallback) {
+            callback = context
+        }
     }
 
     private fun createCameraPreview() {
@@ -216,5 +230,9 @@ class CameraFragment : Fragment() {
         backgroundThread = HandlerThread(THREAD_NAME_KEY)
         backgroundThread?.start()
         backgroundHandler = Handler(backgroundThread?.looper)
+    }
+
+    interface IChangeFragmentCameraItemCallback {
+        fun onFragmentCameraItemChanged()
     }
 }
