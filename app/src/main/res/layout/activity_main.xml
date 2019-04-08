@@ -6,25 +6,30 @@
     android:background="?attr/colorBackground"
     tools:context=".views.MainActivity">
 
-    <include
-        android:id="@+id/mainActivityCustomActionBarLayout"
-        layout="@layout/home_action_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+    <!--<include-->
+        <!--android:id="@+id/mainFragmentCustomActionBarLayout"-->
+        <!--layout="@layout/main_action_bar_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentTop="true" />-->
 
-    <FrameLayout
-        android:id="@+id/mainActivityFrameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/mainActivityBottomNavigationView"
-        android:layout_below="@id/mainActivityCustomActionBarLayout"/>
+    <!--<FrameLayout-->
+        <!--android:id="@+id/mainFragmentFrameLayout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@id/mainFragmentBottomNavigationView"-->
+        <!--android:layout_below="@id/mainFragmentCustomActionBarLayout" />-->
 
-    <include
-        android:id="@+id/mainActivityBottomNavigationView"
-        layout="@layout/bottom_navigation_view"
+    <!--<include-->
+        <!--android:id="@+id/mainFragmentBottomNavigationView"-->
+        <!--layout="@layout/bottom_navigation_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true" />-->
+
+    <com.example.epamandroid.views.SwipeLockableViewPager
+        android:id="@+id/activityMainViewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_height="match_parent" />
 
 </RelativeLayout>
