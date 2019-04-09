@@ -170,14 +170,15 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
         val id = menuItem?.itemId
 
         if (id == android.R.id.home) {
-            callback?.onFragmentMainItemChanged()
+            callback?.onItemChangedToCamera()
         }
 
         return super.onOptionsItemSelected(menuItem)
     }
 
     interface IChangeFragmentMainItemCallback {
-        fun onFragmentMainItemChanged()
+        fun onItemChangedToCamera()
+        fun onItemChangedToInternalFrament()
         fun onViewPagerSwipePagingEnabled(changeSwipePagingEnabled: Boolean)
     }
 }

@@ -35,11 +35,9 @@ class CameraFragment : Fragment() {
     private var backgroundThread: HandlerThread? = null
     private var cameraCaptureSessions: CameraCaptureSession? = null
     private var cameraDevice: CameraDevice? = null
-    private var captureRequestBuilder: CaptureRequest.Builder? = null
     private var imageDimension: Size? = null
-
+    private var captureRequestBuilder: CaptureRequest.Builder? = null
     private var cameraId: String = EMPTY_STRING_KEY
-
 
     private val stateCallback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {
@@ -83,7 +81,7 @@ class CameraFragment : Fragment() {
         cameraFragmentTextureView.surfaceTextureListener = textureListener
 
         cameraFragmentBackToMenuButton.setOnClickListener {
-            callback?.onFragmentCameraItemChanged()
+            callback?.onItemChangedToMain()
         }
     }
 
@@ -135,9 +133,10 @@ class CameraFragment : Fragment() {
                 ?.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_MODE_AUTO)
 
         try {
-            cameraCaptureSessions
+                cameraCaptureSessions
                     ?.setRepeatingRequest(
-                            captureRequestBuilder?.build(), null, backgroundHandler)
+                        captureRequestBuilder?.build(), null, backgroundHandler
+                    )
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         }
@@ -233,6 +232,6 @@ class CameraFragment : Fragment() {
     }
 
     interface IChangeFragmentCameraItemCallback {
-        fun onFragmentCameraItemChanged()
+        fun onItemChangedToMain()
     }
 }
