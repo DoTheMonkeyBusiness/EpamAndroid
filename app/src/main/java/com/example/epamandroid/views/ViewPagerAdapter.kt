@@ -19,5 +19,4 @@ class ViewPagerAdapter(fragmentManager: FragmentManager) : FragmentStatePagerAda
     fun addFragment(fragment: Fragment) {
         fragmentList.add(fragment)
     }
-
 }

@@ -127,5 +127,4 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCa
         activityMainViewPager
             .setSwipePagingEnabled(changeSwipePagingEnabled)
     }
-
 }

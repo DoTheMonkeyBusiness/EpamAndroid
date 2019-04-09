@@ -17,5 +17,4 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
     }
-
 }
