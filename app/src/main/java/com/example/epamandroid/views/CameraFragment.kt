@@ -18,8 +18,12 @@ import android.widget.Toast
 import android.support.v4.app.ActivityCompat
 import android.content.pm.PackageManager
 import android.content.Context
+import android.graphics.Bitmap
 import android.view.*
 import android.os.HandlerThread
+import android.util.Log
+import com.example.neuralnetwork.ImageClassifier
+import java.io.IOException
 
 class CameraFragment : Fragment() {
 
@@ -27,10 +31,10 @@ class CameraFragment : Fragment() {
         private const val REQUEST_CAMERA_PERMISSION: Int = 200
         private const val EMPTY_STRING_KEY: String = ""
         private const val THREAD_NAME_KEY: String = "Camera Background"
+        private const val TAG: String = "Camera CameraFragment"
     }
 
     private var callback: IChangeFragmentCameraItemCallback? = null
-
     private var backgroundHandler: Handler? = null
     private var backgroundThread: HandlerThread? = null
     private var cameraCaptureSessions: CameraCaptureSession? = null
@@ -38,6 +42,11 @@ class CameraFragment : Fragment() {
     private var imageDimension: Size? = null
     private var captureRequestBuilder: CaptureRequest.Builder? = null
     private var cameraId: String = EMPTY_STRING_KEY
+    private var runClassifier: Boolean = false
+
+    private lateinit var imageClassifier: ImageClassifier
+
+    private val lock: Any = Any()
 
     private val stateCallback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {
@@ -70,6 +79,17 @@ class CameraFragment : Fragment() {
         }
     }
 
+    private val periodicClassify = object : Runnable {
+        override fun run() {
+            synchronized(lock) {
+                if (runClassifier) {
+                    classifyFrame()
+                }
+            }
+            backgroundHandler?.post(this)
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.camera_fragment, container, false)
     }
@@ -84,12 +104,28 @@ class CameraFragment : Fragment() {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        try {
+            imageClassifier = ImageClassifier(activity)
+        } catch (e: IOException) {
+            Log.e(TAG, "Failed to initialize an image classifier.")
+        }
+
+    }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
         if (context is IChangeFragmentCameraItemCallback) {
             callback = context
         }
+    }
+
+    override fun onDestroy() {
+        imageClassifier.close()
+        super.onDestroy()
     }
 
     private fun createCameraPreview() {
@@ -132,9 +168,9 @@ class CameraFragment : Fragment() {
                 ?.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_MODE_AUTO)
 
         try {
-                cameraCaptureSessions
+            cameraCaptureSessions
                     ?.setRepeatingRequest(
-                        captureRequestBuilder?.build(), null, backgroundHandler
+                            captureRequestBuilder?.build(), null, backgroundHandler
                     )
         } catch (e: CameraAccessException) {
             e.printStackTrace()
@@ -218,6 +254,9 @@ class CameraFragment : Fragment() {
             backgroundThread?.join()
             backgroundThread = null
             backgroundHandler = null
+            synchronized(lock) {
+                runClassifier = true
+            }
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
@@ -228,6 +267,28 @@ class CameraFragment : Fragment() {
         backgroundThread = HandlerThread(THREAD_NAME_KEY)
         backgroundThread?.start()
         backgroundHandler = Handler(backgroundThread?.looper)
+        synchronized(lock) {
+            runClassifier = true
+        }
+        backgroundHandler?.post(periodicClassify)
+    }
+
+    private fun classifyFrame() {
+        if (activity == null || cameraDevice == null) {
+            setBreedText(getString(R.string.uninitialized_classifier))
+            return
+        }
+
+        val bitmap: Bitmap = cameraFragmentTextureView.getBitmap(ImageClassifier.DIM_IMG_SIZE_X, ImageClassifier.DIM_IMG_SIZE_Y)
+        val textToShow = imageClassifier.classifyFrame(bitmap)
+        bitmap.recycle()
+        setBreedText(textToShow)
+    }
+
+    fun setBreedText(breed: String) {
+        activity?.runOnUiThread {
+            cameraFragmentDogBreed?.text = breed
+        }
     }
 
     interface IChangeFragmentCameraItemCallback {

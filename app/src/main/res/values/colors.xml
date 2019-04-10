@@ -15,4 +15,7 @@
     <color name="colorAccentDay">#442C2E</color>
     <color name="colorBackgroundDay">#FFFBFA</color>
     <color name="colorBlack">#000000</color>
+
+
+    <color name="colorWhite">#FFFFFF</color>
 </resources>

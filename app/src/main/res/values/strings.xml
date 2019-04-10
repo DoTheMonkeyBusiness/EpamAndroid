@@ -15,4 +15,5 @@
     <string name="error">Error</string>
     <string name="configure_failed">Configure Failed</string>
     <string name="back_to_menu">back to menu</string>
+    <string name="uninitialized_classifier">Uninitialized Classifier or invalid context.</string>
 </resources>
