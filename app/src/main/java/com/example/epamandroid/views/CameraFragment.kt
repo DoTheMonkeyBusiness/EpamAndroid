@@ -2,12 +2,6 @@ package com.example.epamandroid.views
 
 import android.Manifest
 import android.graphics.SurfaceTexture
-import android.hardware.camera2.CameraAccessException
-import android.hardware.camera2.CameraCaptureSession
-import android.hardware.camera2.CameraCharacteristics
-import android.hardware.camera2.CameraDevice
-import android.hardware.camera2.CameraManager
-import android.hardware.camera2.CaptureRequest
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -19,6 +13,9 @@ import android.support.v4.app.ActivityCompat
 import android.content.pm.PackageManager
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.graphics.RectF
+import android.hardware.camera2.*
 import android.view.*
 import android.os.HandlerThread
 import android.util.Log
@@ -28,10 +25,10 @@ import java.io.IOException
 class CameraFragment : Fragment() {
 
     companion object {
+        private const val TAG: String = "Camera CameraFragment"
         private const val REQUEST_CAMERA_PERMISSION: Int = 200
         private const val EMPTY_STRING_KEY: String = ""
         private const val THREAD_NAME_KEY: String = "Camera Background"
-        private const val TAG: String = "Camera CameraFragment"
     }
 
     private var callback: IChangeFragmentCameraItemCallback? = null
@@ -39,10 +36,10 @@ class CameraFragment : Fragment() {
     private var backgroundThread: HandlerThread? = null
     private var cameraCaptureSessions: CameraCaptureSession? = null
     private var cameraDevice: CameraDevice? = null
-    private var imageDimension: Size? = null
     private var captureRequestBuilder: CaptureRequest.Builder? = null
     private var cameraId: String = EMPTY_STRING_KEY
     private var runClassifier: Boolean = false
+    private var imageDimension: Size? = null
 
     private lateinit var imageClassifier: ImageClassifier
 
@@ -56,6 +53,7 @@ class CameraFragment : Fragment() {
 
         override fun onDisconnected(camera: CameraDevice) {
             cameraDevice?.close()
+            cameraDevice = null
         }
 
         override fun onError(camera: CameraDevice, error: Int) {
@@ -65,10 +63,23 @@ class CameraFragment : Fragment() {
 
     }
 
-    private val textureListener: TextureView.SurfaceTextureListener = object : TextureView.SurfaceTextureListener {
-        override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {}
+    private val captureCallback = object : CameraCaptureSession.CaptureCallback() {
+        override fun onCaptureProgressed(
+            session: CameraCaptureSession,
+            request: CaptureRequest,
+            partialResult: CaptureResult
+        ) = Unit
+        override fun onCaptureCompleted(
+            session: CameraCaptureSession,
+            request: CaptureRequest,
+            result: TotalCaptureResult
+        ) = Unit
+    }
 
-        override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) {}
+    private val textureListener: TextureView.SurfaceTextureListener = object : TextureView.SurfaceTextureListener {
+        override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) = Unit
+
+        override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) = Unit
 
         override fun onSurfaceTextureDestroyed(surface: SurfaceTexture?): Boolean {
             return false
@@ -76,6 +87,7 @@ class CameraFragment : Fragment() {
 
         override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
             openCamera()
+            transformImage(width.toFloat(), height.toFloat())
         }
     }
 
@@ -138,19 +150,20 @@ class CameraFragment : Fragment() {
             captureRequestBuilder?.addTarget(surface)
 
             cameraDevice?.createCaptureSession(
-                    arrayListOf(surface),
-                    object : CameraCaptureSession.StateCallback() {
-                        override fun onConfigureFailed(session: CameraCaptureSession) {
-                            Toast.makeText(context, getString(R.string.configure_failed), Toast.LENGTH_SHORT).show()
-                        }
+                arrayListOf(surface),
+                object : CameraCaptureSession.StateCallback() {
+                    override fun onConfigureFailed(session: CameraCaptureSession) {
+                        Toast.makeText(context, getString(R.string.configure_failed), Toast.LENGTH_SHORT).show()
+                    }
 
-                        override fun onConfigured(session: CameraCaptureSession) {
-                            cameraCaptureSessions = session
-                            updatePreview()
-                        }
+                    override fun onConfigured(session: CameraCaptureSession) {
+                        cameraCaptureSessions = session
+                        updatePreview()
+                    }
 
-                    },
-                    null)
+                },
+                null
+            )
 
         } catch (e: CameraAccessException) {
             e.printStackTrace()
@@ -160,18 +173,19 @@ class CameraFragment : Fragment() {
     private fun updatePreview() {
         if (cameraDevice == null) {
             Toast.makeText(
-                    context, getString(R.string.error), Toast.LENGTH_SHORT)
-                    .show()
+                context, getString(R.string.error), Toast.LENGTH_SHORT
+            )
+                .show()
         }
 
         captureRequestBuilder
-                ?.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_MODE_AUTO)
+            ?.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_MODE_AUTO)
 
         try {
             cameraCaptureSessions
-                    ?.setRepeatingRequest(
-                            captureRequestBuilder?.build(), null, backgroundHandler
-                    )
+                ?.setRepeatingRequest(
+                    captureRequestBuilder?.build(), captureCallback, backgroundHandler
+                )
         } catch (e: CameraAccessException) {
             e.printStackTrace()
         }
@@ -179,34 +193,35 @@ class CameraFragment : Fragment() {
 
     private fun openCamera() {
         val manager: CameraManager = context
-                ?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            ?.getSystemService(Context.CAMERA_SERVICE) as CameraManager
 
         try {
             cameraId = manager.cameraIdList[0]
             val characteristics = manager.getCameraCharacteristics(cameraId)
             val map = characteristics
-                    .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
-            imageDimension = map
-                    ?.getOutputSizes(SurfaceTexture::class.java)?.get(0)
+                .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+            imageDimension = map?.getOutputSizes(SurfaceTexture::class.java)?.get(0)
 
             if (context?.let {
-                        ActivityCompat
-                                .checkSelfPermission(
-                                        it, Manifest.permission.CAMERA
-                                )
-                    }
-                    != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat
+                        .checkSelfPermission(
+                            it, Manifest.permission.CAMERA
+                        )
+                }
+                != PackageManager.PERMISSION_GRANTED) {
                 activity?.let {
                     ActivityCompat
-                            .requestPermissions(
-                                    it, arrayOf(
-                                    Manifest
-                                            .permission
-                                            .CAMERA,
-                                    Manifest
-                                            .permission
-                                            .WRITE_EXTERNAL_STORAGE),
-                                    REQUEST_CAMERA_PERMISSION)
+                        .requestPermissions(
+                            it, arrayOf(
+                                Manifest
+                                    .permission
+                                    .CAMERA,
+                                Manifest
+                                    .permission
+                                    .WRITE_EXTERNAL_STORAGE
+                            ),
+                            REQUEST_CAMERA_PERMISSION
+                        )
                 }
                 return
             }
@@ -218,14 +233,63 @@ class CameraFragment : Fragment() {
 
     }
 
+    private fun transformImage(width: Float, height: Float) {
+        if (cameraFragmentTextureView == null || imageDimension == null) {
+            return
+        }
+        val matrix = Matrix()
+        val rotation = activity?.windowManager?.defaultDisplay?.rotation
+        val textureRectF = RectF(0F, 0F, width, height)
+        val previewRectF = imageDimension
+            ?.width
+            ?.toFloat()
+            ?.let {
+                imageDimension
+                    ?.height
+                    ?.toFloat()?.let { it1 ->
+                        RectF(
+                            0F,
+                            0F,
+                            it,
+                            it1
+                        )
+                    }
+            }
+        val centerX: Float = textureRectF.centerX()
+        val centerY: Float = textureRectF.centerY()
+
+        if (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270) {
+            previewRectF?.offset(
+                centerX - previewRectF.centerX(),
+                centerY - previewRectF.centerY()
+            )
+            matrix.setRectToRect(textureRectF, previewRectF, Matrix.ScaleToFit.FILL)
+
+            val scale: Float = Math.max(
+                width / imageDimension!!.width,
+                height / imageDimension!!.height
+            )
+
+            matrix.postScale(scale, scale, centerX, centerY)
+            matrix.postRotate(
+                (90 * (rotation - 2)).toFloat(),
+                centerX, centerY
+            )
+
+        }
+        cameraFragmentTextureView.setTransform(matrix)
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == REQUEST_CAMERA_PERMISSION
-                && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            && grantResults[0] != PackageManager.PERMISSION_GRANTED
+        ) {
             Toast.makeText(
-                    context, getString(R.string.permissions_error), Toast.LENGTH_SHORT)
-                    .show()
+                context, getString(R.string.permissions_error), Toast.LENGTH_SHORT
+            )
+                .show()
         }
     }
 
@@ -236,6 +300,7 @@ class CameraFragment : Fragment() {
 
         if (cameraFragmentTextureView.isAvailable) {
             openCamera()
+            transformImage(cameraFragmentTextureView.width.toFloat(), cameraFragmentTextureView.height.toFloat())
         } else {
             cameraFragmentTextureView.surfaceTextureListener = textureListener
         }
@@ -279,13 +344,14 @@ class CameraFragment : Fragment() {
             return
         }
 
-        val bitmap: Bitmap = cameraFragmentTextureView.getBitmap(ImageClassifier.DIM_IMG_SIZE_X, ImageClassifier.DIM_IMG_SIZE_Y)
+        val bitmap: Bitmap =
+            cameraFragmentTextureView.getBitmap(ImageClassifier.DIM_IMG_SIZE_X, ImageClassifier.DIM_IMG_SIZE_Y)
         val textToShow = imageClassifier.classifyFrame(bitmap)
         bitmap.recycle()
         setBreedText(textToShow)
     }
 
-    fun setBreedText(breed: String) {
+    private fun setBreedText(breed: String) {
         activity?.runOnUiThread {
             cameraFragmentDogBreed?.text = breed
         }
