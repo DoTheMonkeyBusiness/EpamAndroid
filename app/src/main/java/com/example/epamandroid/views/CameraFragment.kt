@@ -265,6 +265,7 @@ class CameraFragment : Fragment() {
             )
             matrix.setRectToRect(textureRectF, previewRectF, Matrix.ScaleToFit.FILL)
 
+            //TODO: fix it
             val scale: Float = Math.max(
                 width / imageDimension!!.width,
                 height / imageDimension!!.height

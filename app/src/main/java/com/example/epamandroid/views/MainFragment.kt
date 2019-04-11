@@ -10,6 +10,8 @@ import android.view.*
 import com.example.epamandroid.Constants.HOME_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.Constants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.R
+import com.example.kotlinextensions.changeFragment
+import com.example.kotlinextensions.changeFragmentWithBackStack
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -44,10 +46,8 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
         when {
             (savedInstanceState == null) -> {
                 mainActivity.apply {
-                    supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.mainFragmentFrameLayout, HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY)
-                            .commit()
+                    changeFragment(R.id.mainFragmentFrameLayout,
+                        HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY)
                     setTitle(R.string.home_page)
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     isVisibleMenuItem = true
@@ -106,11 +106,8 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
                         || !homeFragment.isVisible) {
 
                     mainActivity
-                            .supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.mainFragmentFrameLayout, HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY)
-                            .addToBackStack(null)
-                            .commit()
+                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
+                            HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY)
                 }
 
                 mainActivity.apply {
@@ -129,11 +126,8 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
                         || !settingsFragment.isVisible) {
 
                     mainActivity
-                            .supportFragmentManager
-                            .beginTransaction()
-                            .replace(R.id.mainFragmentFrameLayout, SettingsFragment(), SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
-                            .addToBackStack(null)
-                            .commit()
+                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
+                            SettingsFragment(), SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
                 }
 
                 mainActivity.apply {
