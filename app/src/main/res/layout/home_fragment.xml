@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/homeFragmentRecyclerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorBackground">
+    android:background="?attr/colorBackground" />
 
-    <!--<include-->
-        <!--android:id="@+id/homeFragmentCustomActionBarLayout"-->
-        <!--layout="@layout/main_action_bar_layout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentTop="true" />-->
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/settingsFragmentRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</RelativeLayout>

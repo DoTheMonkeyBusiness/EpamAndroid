@@ -1,6 +1,6 @@
 package com.example.epamandroid.contracts
 
-interface MainContract {
+interface IMainContract {
     interface View {
         fun setMenuVisibility(isVisible: Boolean)
     }

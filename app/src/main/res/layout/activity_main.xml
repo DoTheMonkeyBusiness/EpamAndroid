@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorBackground"
-    tools:context=".views.MainActivity">
+    tools:context=".views.activities.MainActivity">
 
     <!--<include-->
         <!--android:id="@+id/mainFragmentCustomActionBarLayout"-->
@@ -27,7 +27,7 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_alignParentBottom="true" />-->
 
-    <com.example.epamandroid.views.SwipeLockableViewPager
+    <com.example.epamandroid.views.compoundviews.SwipeLockableViewPager
         android:id="@+id/activityMainViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

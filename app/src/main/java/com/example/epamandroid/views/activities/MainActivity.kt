@@ -1,4 +1,4 @@
-package com.example.epamandroid.views
+package com.example.epamandroid.views.activities
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -8,12 +8,15 @@ import android.support.v4.view.ViewPager
 import com.example.epamandroid.Constants.HOME_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.Constants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.R
+import com.example.epamandroid.views.fragments.CameraFragment
+import com.example.epamandroid.views.fragments.MainFragment
+import com.example.epamandroid.views.adapters.ViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCallback,
-    CameraFragment.IChangeFragmentCameraItemCallback {
+        CameraFragment.IChangeFragmentCameraItemCallback {
 
     companion object {
         private const val CAMERA_ITEM_KEY: Int = 0

@@ -1,4 +1,4 @@
-package com.example.epamandroid.views
+package com.example.epamandroid.views.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -47,7 +47,7 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
             (savedInstanceState == null) -> {
                 mainActivity.apply {
                     changeFragment(R.id.mainFragmentFrameLayout,
-                        HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY)
+                            HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY)
                     setTitle(R.string.home_page)
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     isVisibleMenuItem = true
@@ -107,7 +107,7 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
 
                     mainActivity
                         .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
-                            HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY)
+                                HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY)
                 }
 
                 mainActivity.apply {
@@ -127,7 +127,7 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
 
                     mainActivity
                         .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
-                            SettingsFragment(), SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
+                                SettingsFragment(), SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
                 }
 
                 mainActivity.apply {

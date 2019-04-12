@@ -1,4 +1,4 @@
-package com.example.epamandroid.views
+package com.example.epamandroid.views.fragments
 
 import android.Manifest
 import android.graphics.SurfaceTexture
@@ -220,7 +220,7 @@ class CameraFragment : Fragment() {
                                     .permission
                                     .WRITE_EXTERNAL_STORAGE
                             ),
-                            REQUEST_CAMERA_PERMISSION
+                                REQUEST_CAMERA_PERMISSION
                         )
                 }
                 return
@@ -326,7 +326,6 @@ class CameraFragment : Fragment() {
         } catch (e: InterruptedException) {
             e.printStackTrace()
         }
-
     }
 
     private fun startBackgroundThread() {

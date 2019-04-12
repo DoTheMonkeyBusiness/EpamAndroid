@@ -16,4 +16,10 @@
     <string name="configure_failed">Configure Failed</string>
     <string name="back_to_menu">back to menu</string>
     <string name="uninitialized_classifier">Uninitialized Classifier or invalid context.</string>
+    <string name="dog_photo_description">dog photo</string>
+    <string name="dog_breed">dog breed</string>
+    <string name="can_live_at_home">can live at home</string>
+    <string name="affectionate">affectionate</string>
+    <string name="is_affectionate_icon_description">is affectionate icon description</string>
+    <string name="is_can_live_at_home_icon_description">is can live at home icon description</string>
 </resources>

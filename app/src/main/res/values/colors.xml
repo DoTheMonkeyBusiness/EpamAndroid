@@ -6,7 +6,8 @@
     <!--<color name="colorBackgroundNight">#4A6572</color>-->
     <color name="colorPrimaryNight">#1F3440</color>
     <color name="colorPrimaryDarkNight">#0E1A1F</color>
-    <color name="colorAccentNight">#E4951E</color>
+    <!--<color name="colorAccentNight">#E4951E</color>-->
+    <color name="colorAccentNight">#ECEFF1</color>
     <color name="colorBackgroundNight">#35505D</color>
 
     <color name="colorPrimaryDay">#FEEAE6</color>

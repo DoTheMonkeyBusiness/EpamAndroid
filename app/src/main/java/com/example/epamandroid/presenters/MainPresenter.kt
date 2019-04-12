@@ -1,9 +1,9 @@
 package com.example.epamandroid.presenters
 
-import com.example.epamandroid.contracts.MainContract
+import com.example.epamandroid.contracts.IMainContract
 
-class MainPresenter(private var view: MainContract.View) : MainContract.Presenter {
+class MainPresenter(private var view: IMainContract.View) : IMainContract.Presenter {
 
-    private lateinit var model:MainContract.Model
+    private lateinit var model:IMainContract.Model
 
 }

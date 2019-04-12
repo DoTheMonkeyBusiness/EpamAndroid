@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dogView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <ImageView
+        android:id="@+id/dogIcon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@string/dog_photo_description"
+        android:tint="?attr/colorAccent"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/ic_help_outline" />
+
+    <TextView
+        android:id="@+id/dogBreedTextView"
+        android:layout_width="wrap_content"
+        android:layout_alignTop="@id/dogIcon"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/dogIcon"
+        android:text="@string/dog_breed"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/isCanLiveAtHomeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dogBreedTextView"
+        android:layout_marginTop="8dp"
+        android:layout_alignStart="@id/dogBreedTextView"
+        android:gravity="center"
+        android:text="@string/can_live_at_home"
+        android:textColor="?attr/colorAccent" />
+
+    <ImageView
+        android:id="@+id/isCanLiveAtHomeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/isCanLiveAtHomeTextView"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/isCanLiveAtHomeTextView"
+        android:contentDescription="@string/is_can_live_at_home_icon_description"
+        android:tint="?attr/colorAccent"
+        app:srcCompat="@drawable/ic_check" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/isAffectionateTextView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/isCanLiveAtHomeTextView"-->
+        <!--android:layout_alignStart="@id/isCanLiveAtHomeTextView"-->
+        <!--android:layout_alignEnd="@id/isCanLiveAtHomeTextView"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:layout_marginBottom="16dp"-->
+        <!--android:gravity="center"-->
+        <!--android:text="@string/affectionate"-->
+        <!--android:textColor="?attr/colorAccent" />-->
+
+    <!--<ImageView-->
+        <!--android:id="@+id/isAffectionateIcon"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignBottom="@id/isAffectionateTextView"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_toEndOf="@id/isAffectionateTextView"-->
+        <!--android:contentDescription="@string/is_affectionate_icon_description"-->
+        <!--android:tint="?attr/colorAccent"-->
+        <!--app:srcCompat="@drawable/ic_close" />-->
+
+
+</merge>
