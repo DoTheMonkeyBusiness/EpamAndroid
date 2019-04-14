@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.*
 import com.example.epamandroid.R
 import com.example.epamandroid.entities.DogEntity
@@ -13,6 +14,7 @@ import com.example.epamandroid.models.HomeModel
 import com.example.epamandroid.presenters.HomePresenter
 import com.example.epamandroid.util.ICallback
 import com.example.epamandroid.util.IShowLastViewAsLoadingCallback
+import com.example.epamandroid.util.ItemTouchCallback
 import com.example.epamandroid.views.adapters.HomeRecyclerViewAdapter
 import com.example.epamandroid.views.annotationclasses.ViewType
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -82,6 +84,12 @@ class HomeFragment : Fragment() {
 
             post { viewAdapter.notifyDataSetChanged() }
 
+        }
+
+        ItemTouchCallback(homeFragmentRecyclerView, viewAdapter).let {
+            ItemTouchHelper(it).attachToRecyclerView(
+                    homeFragmentRecyclerView
+            )
         }
     }
 

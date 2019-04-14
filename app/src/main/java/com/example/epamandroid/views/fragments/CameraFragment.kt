@@ -25,7 +25,7 @@ import java.io.IOException
 class CameraFragment : Fragment() {
 
     companion object {
-        private const val TAG: String = "Camera CameraFragment"
+        private const val TAG: String = "CameraFragment"
         private const val REQUEST_CAMERA_PERMISSION: Int = 200
         private const val EMPTY_STRING_KEY: String = ""
         private const val THREAD_NAME_KEY: String = "Camera Background"
@@ -52,13 +52,11 @@ class CameraFragment : Fragment() {
         }
 
         override fun onDisconnected(camera: CameraDevice) {
-            cameraDevice?.close()
-            cameraDevice = null
+            closeCamera()
         }
 
         override fun onError(camera: CameraDevice, error: Int) {
-            cameraDevice?.close()
-            cameraDevice = null
+            closeCamera()
         }
 
     }
@@ -135,6 +133,26 @@ class CameraFragment : Fragment() {
         }
     }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser){
+            startBackgroundThread()
+            if (cameraFragmentTextureView.isAvailable) {
+                openCamera()
+                transformImage(cameraFragmentTextureView.width.toFloat(), cameraFragmentTextureView.height.toFloat())
+            } else {
+                cameraFragmentTextureView.surfaceTextureListener = textureListener
+            }
+
+            Log.d(TAG, "camera is open")
+        } else {
+            stopBackgroundThread()
+            closeCamera()
+
+            Log.d(TAG, "camera is closed")
+        }
+    }
+
     override fun onDestroy() {
         imageClassifier.close()
         super.onDestroy()
@@ -170,6 +188,7 @@ class CameraFragment : Fragment() {
         }
     }
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     private fun updatePreview() {
         if (cameraDevice == null) {
             Toast.makeText(
@@ -293,25 +312,6 @@ class CameraFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        startBackgroundThread()
-
-        if (cameraFragmentTextureView.isAvailable) {
-            openCamera()
-            transformImage(cameraFragmentTextureView.width.toFloat(), cameraFragmentTextureView.height.toFloat())
-        } else {
-            cameraFragmentTextureView.surfaceTextureListener = textureListener
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        stopBackgroundThread()
-    }
-
     private fun stopBackgroundThread() {
         backgroundThread?.quitSafely()
 
@@ -355,6 +355,11 @@ class CameraFragment : Fragment() {
         activity?.runOnUiThread {
             cameraFragmentDogBreed?.text = breed
         }
+    }
+
+    private fun closeCamera(){
+        cameraDevice?.close()
+        cameraDevice = null
     }
 
     interface IChangeFragmentCameraItemCallback {
