@@ -166,7 +166,7 @@ class CameraFragment : Fragment() {
             )
 
         } catch (e: CameraAccessException) {
-            e.printStackTrace()
+            Log.e(TAG, "error while create Camera Preview")
         }
     }
 
@@ -187,7 +187,7 @@ class CameraFragment : Fragment() {
                     captureRequestBuilder?.build(), captureCallback, backgroundHandler
                 )
         } catch (e: CameraAccessException) {
-            e.printStackTrace()
+            Log.e(TAG, "error while updatePreview")
         }
     }
 
@@ -228,7 +228,7 @@ class CameraFragment : Fragment() {
 
             manager.openCamera(cameraId, stateCallback, null)
         } catch (e: CameraAccessException) {
-            e.printStackTrace()
+           Log.e(TAG, "error while open camera")
         }
 
     }
@@ -276,7 +276,6 @@ class CameraFragment : Fragment() {
                 (90 * (rotation - 2)).toFloat(),
                 centerX, centerY
             )
-
         }
         cameraFragmentTextureView.setTransform(matrix)
     }
@@ -324,7 +323,8 @@ class CameraFragment : Fragment() {
                 runClassifier = true
             }
         } catch (e: InterruptedException) {
-            e.printStackTrace()
+            Log.e(TAG, "error while stopping BackgroundThread")
+
         }
     }
 
