@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:parentTag="android.widget.RelativeLayout"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/breedDescriptionHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimaryDark"
+        android:padding="8dp"
+        android:text="@string/dog_breed"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/breedDescriptionDogPhoto"
+        android:layout_width="152dp"
+        android:layout_height="152dp"
+        android:layout_below="@id/breedDescriptionHeader"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/dog_photo_description"
+        android:tint="@color/colorBlack"
+        app:srcCompat="@drawable/ic_help_outline" />
+
+    <TextView
+        android:id="@+id/breedDescriptionCanLiveAtHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/breedDescriptionHeader"
+        android:layout_alignTop="@id/breedDescriptionDogPhoto"
+        android:layout_toEndOf="@id/breedDescriptionDogPhoto"
+        android:text="@string/can_live_at_home"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/breedDescriptionCanLiveAtHomeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/breedDescriptionCanLiveAtHome"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/breedDescriptionCanLiveAtHome"
+        android:contentDescription="@string/is_can_live_at_home_icon_description"
+        android:tint="?attr/colorAccent"
+        app:srcCompat="@drawable/ic_check" />
+
+    <TextView
+        android:id="@+id/breedDescriptionAffectionate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/breedDescriptionCanLiveAtHome"
+        android:layout_alignStart="@id/breedDescriptionCanLiveAtHome"
+        android:layout_alignEnd="@id/breedDescriptionCanLiveAtHome"
+        android:layout_marginTop="16dp"
+        android:text="@string/affectionate"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/breedDescriptionAffectionateIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/breedDescriptionAffectionate"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/breedDescriptionAffectionate"
+        android:contentDescription="@string/is_can_live_at_home_icon_description"
+        android:tint="?attr/colorAccent"
+        app:srcCompat="@drawable/ic_check" />
+
+    <!--<TextView-->
+        <!--android:id="@+id/breedDescriptionRating"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/breedDescriptionAffectionate"-->
+        <!--android:layout_alignStart="@id/breedDescriptionCanLiveAtHome"-->
+        <!--android:layout_alignEnd="@id/breedDescriptionAffectionateIcon"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:text="@string/rating"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textSize="18sp" />-->
+
+    <TextView
+        android:id="@+id/breedDescriptionText"
+        android:padding="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/breedDescriptionDogPhoto"
+        android:text="“Row itself, let it be sorrow; let him love it; let him pursue it, ishing for its acquisitiendum. Because he will ab hold, uniess but through concer, and also of those who resist. Now a pure snore disturbeded sum dust. He ejjnoyes, in order that somewon, also with a severe one, unless of life. May a cusstums offficer somewon nothing of a poison-filled. Until, from a twho, twho chaffinch may also pursue it, not even a lump. But as twho, as a tank; a proverb, yeast; or else they tinscribe nor. Yet yet dewlap bed. Twho may be, let him love fellows of a polecat. Now amour, the, twhose being, drunk, yet twhitch and, an enclosed valley’s always a laugh. In acquisitiendum the Furies are Earth; in (he takes up) a lump vehicles bien"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+
+</merge>

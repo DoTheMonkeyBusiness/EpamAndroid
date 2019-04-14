@@ -54,9 +54,9 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCa
         }
 
         activityMainViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(p0: Int) {}
+            override fun onPageScrollStateChanged(p0: Int) = Unit
 
-            override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {}
+            override fun onPageScrolled(p0: Int, p1: Float, p2: Int) = Unit
 
             override fun onPageSelected(position: Int) {
                 if (isSaveToHistory) {
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCa
             }
             else -> {
                 isSaveToHistory = false
-                activityMainViewPager.currentItem = viewPagerHistory.pop()
+                activityMainViewPager.setCurrentItem(viewPagerHistory.pop(), true)
                 isSaveToHistory = true
             }
         }

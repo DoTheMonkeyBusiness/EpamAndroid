@@ -312,6 +312,25 @@ class CameraFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        startBackgroundThread()
+
+        if (cameraFragmentTextureView.isAvailable) {
+            openCamera()
+            transformImage(cameraFragmentTextureView.width.toFloat(), cameraFragmentTextureView.height.toFloat())
+        } else {
+            cameraFragmentTextureView.surfaceTextureListener = textureListener
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        stopBackgroundThread()
+    }
+
     private fun stopBackgroundThread() {
         backgroundThread?.quitSafely()
 
