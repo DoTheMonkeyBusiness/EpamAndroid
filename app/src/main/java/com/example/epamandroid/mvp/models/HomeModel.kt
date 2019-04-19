@@ -1,4 +1,4 @@
-package com.example.epamandroid.models
+package com.example.epamandroid.mvp.models
 
 import android.os.Handler
 import android.os.Looper
@@ -29,16 +29,22 @@ class HomeModel private constructor(): IHomeContract.IModel<DogEntity> {
         for (i in 0..40) {
             val breed = "Some breed"
             val description = "some description"
+            val weight= " 12 - 15"
+            val height= " 12 - 15"
             val isCanLiveAtHome: Boolean = random.nextBoolean()
             val isAffectionate: Boolean = random.nextBoolean()
+            val isLikes: Boolean = false
             val dogRating: Byte = random.nextInt(5).toByte()
 
             val dog = DogEntity(
                     i,
                     breed,
+                    weight,
+                    height,
                     description,
                     isCanLiveAtHome,
                     isAffectionate,
+                    isLikes,
                     dogRating)
 
             dogsList?.add(dog)

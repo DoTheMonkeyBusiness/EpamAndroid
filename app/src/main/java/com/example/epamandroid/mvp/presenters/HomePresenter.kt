@@ -1,4 +1,4 @@
-package com.example.epamandroid.presenters
+package com.example.epamandroid.mvp.presenters
 
 import android.os.Bundle
 import com.example.epamandroid.contracts.IHomeContract

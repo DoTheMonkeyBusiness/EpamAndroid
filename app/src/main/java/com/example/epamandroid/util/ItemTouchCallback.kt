@@ -2,8 +2,8 @@ package com.example.epamandroid.util
 
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import com.example.epamandroid.views.adapters.HomeRecyclerViewAdapter
-import com.example.epamandroid.views.annotationclasses.ViewType
+import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
+import com.example.epamandroid.mvp.views.annotationclasses.ViewType
 
 class ItemTouchCallback(private val recycler: RecyclerView, private val adapter: HomeRecyclerViewAdapter) :
         ItemTouchHelper.SimpleCallback(

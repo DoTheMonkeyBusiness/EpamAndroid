@@ -1,4 +1,4 @@
-package com.example.epamandroid.views.fragments
+package com.example.epamandroid.mvp.views.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -7,8 +7,8 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.*
-import com.example.epamandroid.Constants.HOME_FRAGMENT_TAG_EXTRA_KEY
-import com.example.epamandroid.Constants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
+import com.example.epamandroid.constants.FragmentConstants.HOME_FRAGMENT_TAG_EXTRA_KEY
+import com.example.epamandroid.constants.FragmentConstants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.R
 import com.example.kotlinextensions.changeFragment
 import com.example.kotlinextensions.changeFragmentWithBackStack
@@ -71,7 +71,7 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
                                 savedInstanceState
                                         .getBoolean(IS_SWIPE_PAGING_ENABLED_KEY))
                 isVisibleMenuItem = savedInstanceState
-                    .getBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY)
+                        .getBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY)
             }
         }
 
@@ -106,8 +106,8 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
                         || !homeFragment.isVisible) {
 
                     mainActivity
-                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
-                                HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY)
+                            .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
+                                    HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY)
                 }
 
                 mainActivity.apply {
@@ -126,8 +126,8 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
                         || !settingsFragment.isVisible) {
 
                     mainActivity
-                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
-                                SettingsFragment(), SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
+                            .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
+                                    SettingsFragment(), SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
                 }
 
                 mainActivity.apply {
@@ -172,7 +172,7 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
 
     interface IChangeFragmentMainItemCallback {
         fun onItemChangedToCamera()
-        fun onItemChangedToInternalFrament()
+        fun onItemChangedToInternalFragment()
         fun onViewPagerSwipePagingEnabled(changeSwipePagingEnabled: Boolean)
     }
 }

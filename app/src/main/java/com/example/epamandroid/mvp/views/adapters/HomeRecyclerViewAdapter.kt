@@ -1,4 +1,4 @@
-package com.example.epamandroid.views.adapters
+package com.example.epamandroid.mvp.views.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.example.epamandroid.R
 import com.example.epamandroid.entities.DogEntity
-import com.example.epamandroid.views.annotationclasses.ViewType
-import com.example.epamandroid.views.annotationclasses.ViewType.Companion.DOG
-import com.example.epamandroid.views.annotationclasses.ViewType.Companion.LOADING
-import com.example.epamandroid.views.compoundviews.DogView
+import com.example.epamandroid.mvp.views.annotationclasses.ViewType
+import com.example.epamandroid.mvp.views.annotationclasses.ViewType.Companion.DOG
+import com.example.epamandroid.mvp.views.annotationclasses.ViewType.Companion.LOADING
+import com.example.epamandroid.mvp.views.compoundviews.DogView
 import java.util.*
 
 class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>() {
@@ -54,8 +54,7 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.Vie
 
             (viewHolder.itemView as DogView)
                     .setDogBreed(dogEntity.breed)
-                    .isCanLiveAtHome(dogEntity.isCanLiveAtHome)
-                    .isAffectionate(dogEntity.isAffectionate)
+                    .isLikes(dogEntity.isLikes)
         }
     }
 

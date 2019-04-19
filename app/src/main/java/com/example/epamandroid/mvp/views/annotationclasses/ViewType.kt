@@ -1,4 +1,4 @@
-package com.example.epamandroid.views.annotationclasses
+package com.example.epamandroid.mvp.views.annotationclasses
 
 import android.support.annotation.IntDef
 

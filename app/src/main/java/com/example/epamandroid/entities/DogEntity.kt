@@ -7,15 +7,21 @@ import android.os.Parcelable
 class DogEntity(
         val id: Int,
         val breed: String,
+        val weight: String,
+        val height: String,
         val description: String,
         val isCanLiveAtHome: Boolean,
         val isAffectionate: Boolean,
+        val isLikes: Boolean,
         val dogRating: Byte) : Parcelable {
 
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
             parcel.readString(),
             parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readByte() != 0.toByte(),
             parcel.readByte() != 0.toByte(),
             parcel.readByte() != 0.toByte(),
             parcel.readByte())
@@ -24,8 +30,11 @@ class DogEntity(
         parcel.writeInt(id)
         parcel.writeString(breed)
         parcel.writeString(description)
+        parcel.writeString(weight)
+        parcel.writeString(height)
         parcel.writeByte(if (isCanLiveAtHome) 1 else 0)
         parcel.writeByte(if (isAffectionate) 1 else 0)
+        parcel.writeByte(if (isLikes) 1 else 0)
         parcel.writeByte(dogRating)
     }
 

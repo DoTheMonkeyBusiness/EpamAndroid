@@ -1,4 +1,4 @@
-package com.example.epamandroid.views.adapters
+package com.example.epamandroid.mvp.views.adapters
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

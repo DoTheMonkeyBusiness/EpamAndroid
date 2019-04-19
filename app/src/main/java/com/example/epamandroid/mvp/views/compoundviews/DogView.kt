@@ -1,4 +1,4 @@
-package com.example.epamandroid.views.compoundviews
+package com.example.epamandroid.mvp.views.compoundviews
 
 import android.content.Context
 import android.util.AttributeSet
@@ -20,18 +20,10 @@ class DogView @JvmOverloads constructor(
         dogBreedTextView.text = breed
         return this
     }
-    fun isCanLiveAtHome(isCanLiveAtHome: Boolean): DogView {
+    fun isLikes(isLikes: Boolean): DogView {
         when {
-            isCanLiveAtHome -> isCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
-            else -> isCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
-        }
-        return this
-    }
-
-    fun isAffectionate(isAffectionate: Boolean): DogView {
-        when {
-            isAffectionate -> isCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
-            else -> isCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
+            isLikes -> dogIsLikes.setImageResource(R.drawable.ic_star)
+            else -> dogIsLikes.setImageResource(R.drawable.ic_star_border)
         }
         return this
     }

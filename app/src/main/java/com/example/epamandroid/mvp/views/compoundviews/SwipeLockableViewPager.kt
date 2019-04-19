@@ -1,4 +1,4 @@
-package com.example.epamandroid.views.compoundviews
+package com.example.epamandroid.mvp.views.compoundviews
 
 import android.content.Context
 import android.support.v4.view.ViewPager

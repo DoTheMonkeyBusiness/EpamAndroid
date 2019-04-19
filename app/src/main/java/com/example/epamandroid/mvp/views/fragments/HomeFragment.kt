@@ -1,4 +1,4 @@
-package com.example.epamandroid.views.fragments
+package com.example.epamandroid.mvp.views.fragments
 
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.Bundle
@@ -10,13 +10,13 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.*
 import com.example.epamandroid.R
 import com.example.epamandroid.entities.DogEntity
-import com.example.epamandroid.models.HomeModel
-import com.example.epamandroid.presenters.HomePresenter
+import com.example.epamandroid.mvp.models.HomeModel
+import com.example.epamandroid.mvp.presenters.HomePresenter
 import com.example.epamandroid.util.ICallback
 import com.example.epamandroid.util.IShowLastViewAsLoadingCallback
 import com.example.epamandroid.util.ItemTouchCallback
-import com.example.epamandroid.views.adapters.HomeRecyclerViewAdapter
-import com.example.epamandroid.views.annotationclasses.ViewType
+import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
+import com.example.epamandroid.mvp.views.annotationclasses.ViewType
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : Fragment() {

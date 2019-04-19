@@ -1,4 +1,4 @@
-package com.example.epamandroid.views.fragments
+package com.example.epamandroid.mvp.views.fragments
 
 import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
