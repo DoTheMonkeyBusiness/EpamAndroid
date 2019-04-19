@@ -17,34 +17,32 @@ import android.graphics.Matrix
 import android.graphics.RectF
 import android.hardware.camera2.*
 import android.view.*
-import android.os.HandlerThread
 import android.util.Log
+import com.example.epamandroid.contracts.ICameraContract
+import com.example.epamandroid.mvp.presenters.CameraPresenter
 import com.example.neuralnetwork.ImageClassifier
 import java.io.IOException
 
-class CameraFragment : Fragment() {
+class CameraFragment : Fragment(), ICameraContract.IView {
 
     companion object {
         private const val TAG: String = "CameraFragment"
         private const val REQUEST_CAMERA_PERMISSION: Int = 200
         private const val EMPTY_STRING_KEY: String = ""
-        private const val THREAD_NAME_KEY: String = "Camera Background"
     }
 
     private var callback: IChangeFragmentCameraItemCallback? = null
     private var backgroundHandler: Handler? = null
-    private var backgroundThread: HandlerThread? = null
     private var cameraCaptureSessions: CameraCaptureSession? = null
     private var cameraDevice: CameraDevice? = null
     private var captureRequestBuilder: CaptureRequest.Builder? = null
     private var cameraId: String = EMPTY_STRING_KEY
-    private var runClassifier: Boolean = false
     private var imageDimension: Size? = null
     private var isFragmentVisible: Boolean = false
 
     private lateinit var imageClassifier: ImageClassifier
 
-    private val lock: Any = Any()
+    private val cameraPresenter: ICameraContract.IPresenter? = CameraPresenter.getInstance(this)
 
     private val stateCallback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {
@@ -91,17 +89,6 @@ class CameraFragment : Fragment() {
         }
     }
 
-    private val periodicClassify = object : Runnable {
-        override fun run() {
-            synchronized(lock) {
-                if (runClassifier) {
-                    classifyFrame()
-                }
-            }
-            backgroundHandler?.post(this)
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.camera_fragment, container, false)
     }
@@ -138,7 +125,7 @@ class CameraFragment : Fragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser) {
-            startBackgroundThread()
+            cameraPresenter?.startBackgroundThread()
             if (cameraFragmentTextureView.isAvailable) {
                 openCamera()
                 transformImage(cameraFragmentTextureView.width.toFloat(), cameraFragmentTextureView.height.toFloat())
@@ -148,7 +135,7 @@ class CameraFragment : Fragment() {
 
             isFragmentVisible = true
         } else {
-            stopBackgroundThread()
+            cameraPresenter?.stopBackgroundThread()
             closeCamera()
             isFragmentVisible = false
         }
@@ -308,8 +295,7 @@ class CameraFragment : Fragment() {
         ) {
             Toast.makeText(
                     context, getString(R.string.permissions_error), Toast.LENGTH_SHORT
-            )
-                    .show()
+            ).show()
         }
     }
 
@@ -317,7 +303,7 @@ class CameraFragment : Fragment() {
         super.onResume()
 
         if (isFragmentVisible) {
-            startBackgroundThread()
+            cameraPresenter?.startBackgroundThread()
 
             if (cameraFragmentTextureView.isAvailable) {
                 openCamera()
@@ -331,57 +317,36 @@ class CameraFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
-        stopBackgroundThread()
+        cameraPresenter?.stopBackgroundThread()
     }
 
-    private fun stopBackgroundThread() {
-        backgroundThread?.quitSafely()
-
-        try {
-            backgroundThread?.join()
-            backgroundThread = null
-            backgroundHandler = null
-            synchronized(lock) {
-                runClassifier = true
-            }
-        } catch (e: InterruptedException) {
-            Log.e(TAG, "error while stopping BackgroundThread")
-
-        }
+    private fun closeCamera() {
+        cameraDevice?.close()
+        cameraDevice = null
     }
 
-    private fun startBackgroundThread() {
-        backgroundThread = HandlerThread(THREAD_NAME_KEY)
-        backgroundThread?.start()
-        backgroundHandler = Handler(backgroundThread?.looper)
-        synchronized(lock) {
-            runClassifier = true
-        }
-        backgroundHandler?.post(periodicClassify)
-    }
-
-    private fun classifyFrame() {
+    override fun classifyFrame() {
         if (activity == null || cameraDevice == null) {
             setBreedText(getString(R.string.uninitialized_classifier))
             return
         }
 
         val bitmap: Bitmap =
-                cameraFragmentTextureView.getBitmap(ImageClassifier.DIM_IMG_SIZE_X, ImageClassifier.DIM_IMG_SIZE_Y)
+                cameraFragmentTextureView.getBitmap(ImageClassifier.DIM_IMG_SIZE_X,
+                        ImageClassifier.DIM_IMG_SIZE_Y)
         val textToShow = imageClassifier.classifyFrame(bitmap)
         bitmap.recycle()
         setBreedText(textToShow)
     }
 
-    private fun setBreedText(breed: String) {
+    override fun setBreedText(breed: String?) {
         activity?.runOnUiThread {
-            cameraFragmentDogBreed?.text = breed
+            if (breed != null || activity != null) {
+                cameraFragmentDogBreed?.text = breed
+            } else {
+                cameraFragmentDogBreed?.text = getString(R.string.uninitialized_classifier)
+            }
         }
-    }
-
-    private fun closeCamera() {
-        cameraDevice?.close()
-        cameraDevice = null
     }
 
     interface IChangeFragmentCameraItemCallback {
