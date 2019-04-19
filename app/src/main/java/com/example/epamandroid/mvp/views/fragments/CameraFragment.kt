@@ -287,7 +287,9 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         cameraFragmentTextureView.setTransform(matrix)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<out String>,
+                                            grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == REQUEST_CAMERA_PERMISSION
@@ -335,6 +337,7 @@ class CameraFragment : Fragment(), ICameraContract.IView {
                 cameraFragmentTextureView.getBitmap(ImageClassifier.DIM_IMG_SIZE_X,
                         ImageClassifier.DIM_IMG_SIZE_Y)
         val textToShow = imageClassifier.classifyFrame(bitmap)
+
         bitmap.recycle()
         setBreedText(textToShow)
     }

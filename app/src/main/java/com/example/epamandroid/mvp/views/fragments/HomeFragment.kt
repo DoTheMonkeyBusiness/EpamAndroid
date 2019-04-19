@@ -22,8 +22,6 @@ import kotlinx.android.synthetic.main.home_fragment.*
 class HomeFragment : Fragment() {
 
     companion object {
-        const val NEW_STUDENT_DIALOG_KEY: String = "newStudentDialog"
-        const val EDIT_STUDENT_INFO_STUDENT_DIALOG_KEY: String = "editStudentInfoDialog"
         const val RECYCLER_STATE_KEY: String = "recyclerViewKey"
         const val LINEAR_LAYOUT_MANAGER_KEY: String = "linearLayoutKey"
         const val STUDENT_LIST_KEY: String = "studentListKey"
@@ -155,6 +153,7 @@ class HomeFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
+
         homePresenter?.recyclerViewState = Bundle()
 
         homePresenter?.recyclerViewState?.putParcelable(RECYCLER_STATE_KEY, homeFragmentRecyclerView.layoutManager?.onSaveInstanceState())
