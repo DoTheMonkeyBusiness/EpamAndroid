@@ -1,4 +1,4 @@
-package com.example.epamandroid.contracts
+package com.example.epamandroid.mvp.contracts
 
 interface IMainContract {
     interface View {

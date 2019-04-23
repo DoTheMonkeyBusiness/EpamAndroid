@@ -31,6 +31,11 @@
         android:src="@drawable/ic_help_outline"
         android:tint="@color/colorBlack" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/breedDescriptionRatingText"
@@ -51,20 +56,19 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="?attr/colorPrimaryDark"
-        />
+        android:background="?attr/colorPrimaryDark" />
 
     <com.example.epamandroid.mvp.views.compoundviews.BreedDescriptionGridView
         android:id="@+id/breedDescriptionGridView"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?attr/colorPrimaryDark"
         android:layout_marginBottom="8dp"
-        />
+        android:background="?attr/colorPrimaryDark" />
 
     <TextView
         android:id="@+id/breedDescriptionText"

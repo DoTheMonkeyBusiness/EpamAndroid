@@ -1,20 +1,12 @@
 package com.example.epamandroid.mvp.presenters
 
-import android.os.Bundle
-import com.example.epamandroid.contracts.IHomeContract
+import com.example.epamandroid.mvp.contracts.IHomeContract
+import com.example.epamandroid.mvp.models.HomeModel
+import com.example.epamandroid.mvp.views.fragments.HomeFragment
 
-class HomePresenter private constructor() : IHomeContract.IPresenter {
+class HomePresenter(
+        private val view: HomeFragment) : IHomeContract.IPresenter {
 
-    var recyclerViewState: Bundle? = null
+    private val homeModel: HomeModel? = HomeModel.getInstance()
 
-    companion object {
-        private var instance: HomePresenter? = null
-        fun getInstance(): HomePresenter? {
-            if(instance == null){
-                instance = HomePresenter()
-            }
-
-            return instance
-        }
-    }
 }

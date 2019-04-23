@@ -28,13 +28,19 @@ class HomeFragment : Fragment() {
     }
 
     private val webService: HomeModel? = HomeModel.getInstance()
-    private val homePresenter: HomePresenter? = HomePresenter.getInstance()
 
     private var isLoading: Boolean = false
     private var studentId: Int = 0
+    private lateinit var homePresenter: HomePresenter
 
     private lateinit var viewAdapter: HomeRecyclerViewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        homePresenter = HomePresenter(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.home_fragment, container, false)
@@ -89,32 +95,37 @@ class HomeFragment : Fragment() {
                     homeFragmentRecyclerView
             )
         }
+        loadStartItems()
     }
 
     override fun onResume() {
         super.onResume()
-        restoringState()
+//        restoringState()
     }
 
-    private fun restoringState() {
-        if (homePresenter?.recyclerViewState != null) {
-            homeFragmentRecyclerView
-                    .layoutManager
-                    ?.onRestoreInstanceState(
-                            homePresenter.recyclerViewState?.getParcelable(
-                                    RECYCLER_STATE_KEY
-                            )
-                    )
-            linearLayoutManager
-                    .onRestoreInstanceState(homePresenter.recyclerViewState
-                            ?.getParcelable(LINEAR_LAYOUT_MANAGER_KEY))
-            viewAdapter
-                    .addItems(homePresenter.recyclerViewState
-                            ?.getParcelableArrayList(STUDENT_LIST_KEY))
-        } else {
-            loadStartItems()
-        }
+    override fun setRetainInstance(retain: Boolean) {
+        super.setRetainInstance(retain)
     }
+
+//    private fun restoringState() {
+//        if (homePresenter?.recyclerViewState != null) {
+//            homeFragmentRecyclerView
+//                    .layoutManager
+//                    ?.onRestoreInstanceState(
+//                            homePresenter.recyclerViewState?.getParcelable(
+//                                    RECYCLER_STATE_KEY
+//                            )
+//                    )
+//            linearLayoutManager
+//                    .onRestoreInstanceState(homePresenter.recyclerViewState
+//                            ?.getParcelable(LINEAR_LAYOUT_MANAGER_KEY))
+//            viewAdapter
+//                    .addItems(homePresenter.recyclerViewState
+//                            ?.getParcelableArrayList(STUDENT_LIST_KEY))
+//        } else {
+//            loadStartItems()
+//        }
+//    }
 
     private fun setLinearLayoutManager() {
         linearLayoutManager = LinearLayoutManager(this@HomeFragment.context, LinearLayoutManager.VERTICAL, false)
@@ -154,10 +165,10 @@ class HomeFragment : Fragment() {
     override fun onPause() {
         super.onPause()
 
-        homePresenter?.recyclerViewState = Bundle()
-
-        homePresenter?.recyclerViewState?.putParcelable(RECYCLER_STATE_KEY, homeFragmentRecyclerView.layoutManager?.onSaveInstanceState())
-        homePresenter?.recyclerViewState?.putParcelable(LINEAR_LAYOUT_MANAGER_KEY, linearLayoutManager.onSaveInstanceState())
-        homePresenter?.recyclerViewState?.putParcelableArrayList(STUDENT_LIST_KEY, viewAdapter.getItems())
+//        homePresenter?.recyclerViewState = Bundle()
+//
+//        homePresenter?.recyclerViewState?.putParcelable(RECYCLER_STATE_KEY, homeFragmentRecyclerView.layoutManager?.onSaveInstanceState())
+//        homePresenter?.recyclerViewState?.putParcelable(LINEAR_LAYOUT_MANAGER_KEY, linearLayoutManager.onSaveInstanceState())
+//        homePresenter?.recyclerViewState?.putParcelableArrayList(STUDENT_LIST_KEY, viewAdapter.getItems())
     }
 }

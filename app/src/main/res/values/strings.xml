@@ -24,7 +24,9 @@
     <string name="is_can_live_at_home_icon_description">is can live at home icon description</string>
     <string name="breed_popularity">breed popularity</string>
     <string name="dash">-</string>
-    <string name="weight_kg">weight (kg):</string>
-    <string name="height_kg">height (kg):</string>
+    <string name="weight_kg">weight (pounds):</string>
+    <string name="height_kg">height (inches):</string>
     <string name="is_likes">is likes</string>
+    <string name="life_expectancy">life expectancy</string>
+    <string name="cost_dollars">cost ($):</string>
 </resources>

@@ -54,7 +54,7 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.Vie
 
             (viewHolder.itemView as DogView)
                     .setDogBreed(dogEntity.breed)
-                    .isLikes(dogEntity.isLikes)
+//                    .isLikes(dogEntity.isLikes)
         }
     }
 

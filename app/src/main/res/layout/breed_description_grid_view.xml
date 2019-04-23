@@ -82,4 +82,41 @@
         android:text="@string/dash"
         android:textSize="18sp" />
 
+
+    <TextView
+        android:id="@+id/breedDescriptionLifeExpectancy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/life_expectancy"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/breedDescriptionLifeExpectancyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/dash"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/breedDescriptionCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/cost_dollars"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/breedDescriptionCostText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/dash"
+        android:textSize="18sp" />
+
 </merge>

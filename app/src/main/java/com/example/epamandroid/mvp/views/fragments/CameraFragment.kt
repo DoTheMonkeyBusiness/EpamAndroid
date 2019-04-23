@@ -18,7 +18,7 @@ import android.graphics.RectF
 import android.hardware.camera2.*
 import android.view.*
 import android.util.Log
-import com.example.epamandroid.contracts.ICameraContract
+import com.example.epamandroid.mvp.contracts.ICameraContract
 import com.example.epamandroid.mvp.presenters.CameraPresenter
 import com.example.neuralnetwork.ImageClassifier
 import java.io.IOException
@@ -41,8 +41,7 @@ class CameraFragment : Fragment(), ICameraContract.IView {
     private var isFragmentVisible: Boolean = false
 
     private lateinit var imageClassifier: ImageClassifier
-
-    private val cameraPresenter: ICameraContract.IPresenter? = CameraPresenter.getInstance(this)
+    private  val cameraPresenter: ICameraContract.IPresenter? = CameraPresenter(this)
 
     private val stateCallback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {
@@ -87,6 +86,11 @@ class CameraFragment : Fragment(), ICameraContract.IView {
             openCamera()
             transformImage(width.toFloat(), height.toFloat())
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

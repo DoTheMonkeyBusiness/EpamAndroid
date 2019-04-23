@@ -1,4 +1,4 @@
-package com.example.epamandroid.contracts
+package com.example.epamandroid.mvp.contracts
 
 import com.example.epamandroid.util.IShowLastViewAsLoadingCallback
 import com.example.epamandroid.util.ICallback

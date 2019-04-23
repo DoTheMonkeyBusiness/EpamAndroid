@@ -1,6 +1,6 @@
 package com.example.epamandroid.mvp.presenters
 
-import com.example.epamandroid.contracts.IMainContract
+import com.example.epamandroid.mvp.contracts.IMainContract
 
 class MainPresenter(private var view: IMainContract.View) : IMainContract.Presenter {
 
