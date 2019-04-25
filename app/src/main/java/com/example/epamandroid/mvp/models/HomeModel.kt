@@ -2,9 +2,8 @@ package com.example.epamandroid.mvp.models
 
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import com.example.epamandroid.mvp.contracts.IHomeContract
 import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.mvp.contracts.IHomeContract
 import com.example.epamandroid.util.ICallback
 import com.example.epamandroid.util.IShowLastViewAsLoadingCallback
 import com.google.gson.Gson
@@ -15,23 +14,12 @@ import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executors
-import kotlin.collections.ArrayList
-import kotlin.collections.LinkedHashMap
 
-class HomeModel private constructor() : IHomeContract.IModel<DogEntity> {
+object HomeModel : IHomeContract.IModel<DogEntity> {
 
-    companion object {
-        private const val TAG: String = "HomeModel"
-        private var instance: HomeModel? = null
-        fun getInstance(): HomeModel? {
-            if (instance == null) {
-                instance = HomeModel()
-            }
-
-            return instance
-        }
-    }
+    private const val TAG: String = "HomeModel"
 
     private var dogsList: HashMap<Int, DogEntity>? = hashMapOf()
     private val random = Random()
@@ -86,27 +74,33 @@ class HomeModel private constructor() : IHomeContract.IModel<DogEntity> {
 //        }
 
         try {
-            showLastViewAsLoading.onShowLastViewAsLoadingCallback(true)
-            val request = Request.Builder().url("$urlString?orderBy=\"id\"&startAt=$startRange&endAt=$endRange").build()
+            Thread {
+                Runnable {
+                    showLastViewAsLoading.onShowLastViewAsLoadingCallback(true)
+                    val request =
+                        Request.Builder().url("$urlString?orderBy=\"id\"&startAt=$startRange&endAt=$endRange").build()
 
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(request: Request?, e: IOException?) {
-                    // pResult.onResult(Collections.<String>emptyList());
-                }
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(request: Request?, e: IOException?) {
+                            // pResult.onResult(Collections.<String>emptyList());
+                        }
 
-                override fun onResponse(response: Response?) {
-                    if (response?.isSuccessful == true) {
-                        val gson = Gson()
-                        val dogs: HashMap<Int, DogEntity>? = gson.fromJson(response
-                            .body()
-                            .string(),
-                            object : TypeToken<Map<Int, DogEntity>>() {}.type
-                        )
+                        override fun onResponse(response: Response?) {
+                            if (response?.isSuccessful == true) {
+                                val gson = Gson()
+                                val dogs: ConcurrentHashMap<Int, DogEntity>? = gson.fromJson(
+                                    response
+                                        .body()
+                                        .string(),
+                                    object : TypeToken<Map<Int, DogEntity>>() {}.type
+                                )
 
-                        dogs?.let { dogsList?.putAll(it) }
-                    }
-                }
-            })
+                                dogs?.let { dogsList?.putAll(it) }
+                            }
+                        }
+                    })
+                }.run()
+            }
 
 
         } catch (e: Exception) {
