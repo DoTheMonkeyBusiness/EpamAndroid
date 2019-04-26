@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import com.example.epamandroid.R
 import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
@@ -29,7 +30,10 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.Vie
     ): ViewHolder {
         return when (viewType) {
             DOG -> {
-                ViewHolder(DogView(parent.context))
+                val dogView =  DogView(parent.context)
+                val lp =  RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                dogView.layoutParams = lp
+                ViewHolder(dogView)
             }
             LOADING -> {
                 ViewHolder(

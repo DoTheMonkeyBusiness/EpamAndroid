@@ -12,11 +12,10 @@ import com.example.epamandroid.R
 import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.models.HomeModel
 import com.example.epamandroid.mvp.presenters.HomePresenter
-import com.example.epamandroid.util.ICallback
-import com.example.epamandroid.util.IShowLastViewAsLoadingCallback
 import com.example.epamandroid.util.ItemTouchCallback
 import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
+import com.example.epamandroid.util.IAddItemsToRecyclerCallback
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : Fragment() {
@@ -27,7 +26,7 @@ class HomeFragment : Fragment() {
         const val STUDENT_LIST_KEY: String = "studentListKey"
     }
 
-    private val webService: HomeModel? = HomeModel.getInstance()
+    private val webService: HomeModel? = HomeModel
 
     private var isLoading: Boolean = false
     private var studentId: Int = 0
@@ -66,19 +65,19 @@ class HomeFragment : Fragment() {
                     val totalItemCount = linearLayoutManager.itemCount
                     val startPosition = viewAdapter.getMaxStudentId()?.plus(1)
 
-                    if (totalItemCount >= webService?.getEntitiesSize() ?: 0) {
-                        viewAdapter.setShowLastViewAsLoading(false)
-
-                        return
-                    }
+//                    if (totalItemCount >= webService?.getEntitiesSize() ?: 0) {
+//                        viewAdapter.setShowLastViewAsLoading(false)
+//
+//                        return
+//                    }
 
                     val visibleItemCount = linearLayoutManager.childCount
                     val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
 
                     if (!isLoading
-                            && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                                    && firstVisibleItemPosition >= 0
-                                    && totalItemCount >= PAGE_SIZE)
+                        && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                                && firstVisibleItemPosition >= 0
+                                && totalItemCount >= PAGE_SIZE)
                     ) {
                         startPosition?.let { loadMoreItems(it, startPosition + PAGE_SIZE) }
                     }
@@ -92,7 +91,7 @@ class HomeFragment : Fragment() {
 
         ItemTouchCallback(homeFragmentRecyclerView, viewAdapter).let {
             ItemTouchHelper(it).attachToRecyclerView(
-                    homeFragmentRecyclerView
+                homeFragmentRecyclerView
             )
         }
         loadStartItems()
@@ -149,17 +148,28 @@ class HomeFragment : Fragment() {
     private fun loadMoreItems(startPosition: Int, endPosition: Int) {
         isLoading = true
 
-        webService?.getEntities(startPosition, endPosition,
-                object : ICallback<List<DogEntity>> {
-                    override fun onResult(result: List<DogEntity>) {
-                        viewAdapter.addItems(result)
-                        isLoading = false
-                    }
-                }, object : IShowLastViewAsLoadingCallback {
-            override fun onShowLastViewAsLoadingCallback(isShow: Boolean) {
+        homePresenter.getMoreItems(startPosition, endPosition, object : IAddItemsToRecyclerCallback<List<DogEntity>> {
+            override fun onShowLastViewAsLoading(isShow: Boolean) {
                 viewAdapter.setShowLastViewAsLoading(isShow)
             }
+
+            override fun onResult(result: List<DogEntity>?) {
+                viewAdapter.addItems(result)
+                isLoading = false
+            }
         })
+
+//        webService?.getEntities(startPosition, endPosition,
+//                object : IAddItemsToRecyclerCallback<List<DogEntity>> {
+//                    override fun onResult(result: List<DogEntity>) {
+//                        viewAdapter.addItems(result)
+//                        isLoading = false
+//                    }
+//                }, object : IShowLastViewAsLoadingCallback {
+//            override fun onShowLastViewAsLoading(isShow: Boolean) {
+//                viewAdapter.setShowLastViewAsLoading(isShow)
+//            }
+//        })
     }
 
     override fun onPause() {
