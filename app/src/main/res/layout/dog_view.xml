@@ -33,14 +33,12 @@
 
     <ImageView
         android:id="@+id/dogIsLikes"
-        android:layout_width="wrap_content"
+        android:layout_width="48dp"
         android:layout_height="48dp"
         android:contentDescription="@string/is_likes"
         android:tint="?attr/colorAccent"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/dogBreedTextView"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="80dp"
         android:layout_marginEnd="16dp"
         app:srcCompat="@drawable/ic_star_border" />
 

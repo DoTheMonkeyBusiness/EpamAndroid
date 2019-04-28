@@ -3,12 +3,14 @@ package com.example.epamandroid.mvp.views.fragments
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.*
 import com.example.epamandroid.R
+import com.example.epamandroid.constants.FragmentConstants.DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.models.HomeModel
 import com.example.epamandroid.mvp.presenters.HomePresenter
@@ -16,6 +18,7 @@ import com.example.epamandroid.util.ItemTouchCallback
 import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
 import com.example.epamandroid.util.IAddItemsToRecyclerCallback
+import com.example.kotlinextensions.changeFragmentWithBackStack
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : Fragment() {
@@ -29,11 +32,12 @@ class HomeFragment : Fragment() {
     private val webService: HomeModel? = HomeModel
 
     private var isLoading: Boolean = false
-    private var studentId: Int = 0
-    private lateinit var homePresenter: HomePresenter
+    private var dogId: Int = 0
 
+    private lateinit var homePresenter: HomePresenter
     private lateinit var viewAdapter: HomeRecyclerViewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
+    private lateinit var mainActivity: AppCompatActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,12 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.home_fragment, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        mainActivity = (activity as AppCompatActivity)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +73,7 @@ class HomeFragment : Fragment() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     val totalItemCount = linearLayoutManager.itemCount
-                    val startPosition = viewAdapter.getMaxStudentId()?.plus(1)
+                    val startPosition = viewAdapter.getMaxId()?.plus(1)
 
 //                    if (totalItemCount >= webService?.getEntitiesSize() ?: 0) {
 //                        viewAdapter.setShowLastViewAsLoading(false)
@@ -75,9 +85,9 @@ class HomeFragment : Fragment() {
                     val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
 
                     if (!isLoading
-                        && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                                && firstVisibleItemPosition >= 0
-                                && totalItemCount >= PAGE_SIZE)
+                            && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                                    && firstVisibleItemPosition >= 0
+                                    && totalItemCount >= PAGE_SIZE)
                     ) {
                         startPosition?.let { loadMoreItems(it, startPosition + PAGE_SIZE) }
                     }
@@ -91,7 +101,7 @@ class HomeFragment : Fragment() {
 
         ItemTouchCallback(homeFragmentRecyclerView, viewAdapter).let {
             ItemTouchHelper(it).attachToRecyclerView(
-                homeFragmentRecyclerView
+                    homeFragmentRecyclerView
             )
         }
         loadStartItems()
@@ -133,10 +143,14 @@ class HomeFragment : Fragment() {
     private fun setViewAdapter() {
         viewAdapter = HomeRecyclerViewAdapter()
 
-        viewAdapter.onItemClick = { student ->
-            studentId = student.id
-            if (viewAdapter.getItemViewType(studentId) == ViewType.DOG) {
-//                editStudentInfoFragment.show(supportFragmentManager, EDIT_STUDENT_INFO_STUDENT_DIALOG_KEY)
+        viewAdapter.onItemClick = { dog ->
+            dogId = dog.id
+            if (viewAdapter.getItemViewType(dogId) == ViewType.DOG) {
+                val breedDescriptionFragment =BreedDescriptionFragment()
+                breedDescriptionFragment.arguments = homePresenter.putDogInfoInBundle(viewAdapter.getEntityById(dogId))
+                mainActivity
+                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
+                                breedDescriptionFragment, DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY)
             }
         }
     }
@@ -147,6 +161,7 @@ class HomeFragment : Fragment() {
 
     private fun loadMoreItems(startPosition: Int, endPosition: Int) {
         isLoading = true
+        viewAdapter.setShowLastViewAsLoading(isLoading)
 
         homePresenter.getMoreItems(startPosition, endPosition, object : IAddItemsToRecyclerCallback<List<DogEntity>> {
             override fun onShowLastViewAsLoading(isShow: Boolean) {

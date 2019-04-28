@@ -9,6 +9,7 @@ import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 import java.io.IOException
+import java.util.concurrent.Executors
 import kotlin.collections.HashMap
 
 object HomeModel : IHomeContract.IModel<DogEntity> {

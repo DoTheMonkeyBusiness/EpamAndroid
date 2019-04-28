@@ -81,6 +81,7 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.Vie
     fun setShowLastViewAsLoading(isShow: Boolean) {
         if (isShow != isShowLastViewAsLoading) {
             isShowLastViewAsLoading = isShow
+            notifyDataSetChanged()
         }
     }
 
@@ -98,7 +99,7 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.Vie
         notifyItemRangeChanged(i, dogsList.size - 1)
     }
 
-    fun getMaxStudentId(): Int? {
+    fun getMaxId(): Int? {
 
         return when {
             dogsList.size == 0 -> {
@@ -113,6 +114,8 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.Vie
 
         }
     }
+
+    fun getEntityById(id: Int): DogEntity = dogsList[id]
 
     fun onItemMove(fromPosition: Int, toPosition: Int) {
         if (fromPosition < toPosition) {
