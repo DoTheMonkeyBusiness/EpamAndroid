@@ -27,6 +27,8 @@
     <string name="weight_kg">weight (pounds):</string>
     <string name="height_kg">height (inches):</string>
     <string name="is_likes">is likes</string>
-    <string name="life_expectancy">life expectancy</string>
+    <string name="life_expectancy">life expectancy: </string>
     <string name="cost_dollars">cost ($):</string>
+    <string name="no_description">No description</string>
+    <string name="close_button">close button</string>
 </resources>

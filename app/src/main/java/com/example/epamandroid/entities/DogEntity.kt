@@ -1,30 +1,30 @@
 package com.example.epamandroid.entities
 
-import com.example.epamandroid.constants.DogEntitieConstants
+import com.example.epamandroid.constants.DogEntityConstants
 import com.google.gson.annotations.SerializedName
 
 class DogEntity(
-    @SerializedName(DogEntitieConstants.id)
+    @SerializedName(DogEntityConstants.id)
     val id: Int,
-    @SerializedName(DogEntitieConstants.breed)
+    @SerializedName(DogEntityConstants.breed)
     val breed: String,
-    @SerializedName(DogEntitieConstants.weight)
+    @SerializedName(DogEntityConstants.weight)
     val weight: String,
-    @SerializedName(DogEntitieConstants.height)
+    @SerializedName(DogEntityConstants.height)
     val height: String,
-    @SerializedName(DogEntitieConstants.description)
+    @SerializedName(DogEntityConstants.description)
     val description: String,
-    @SerializedName(DogEntitieConstants.canLiveAtHome)
+    @SerializedName(DogEntityConstants.canLiveAtHome)
     val isCanLiveAtHome: Boolean,
-    @SerializedName(DogEntitieConstants.affectionate)
+    @SerializedName(DogEntityConstants.affectionate)
     val isAffectionate: Boolean,
-    @SerializedName(DogEntitieConstants.breedPopularity)
+    @SerializedName(DogEntityConstants.breedPopularity)
     val breedPopularity: Float,
-    @SerializedName(DogEntitieConstants.cost)
+    @SerializedName(DogEntityConstants.cost)
     val cost: Int,
-    @SerializedName(DogEntitieConstants.lifeExpectancy)
+    @SerializedName(DogEntityConstants.lifeExpectancy)
     val lifeExpectancy: String,
-    @SerializedName(DogEntitieConstants.photo)
+    @SerializedName(DogEntityConstants.photo)
     val photo: String
 
 )

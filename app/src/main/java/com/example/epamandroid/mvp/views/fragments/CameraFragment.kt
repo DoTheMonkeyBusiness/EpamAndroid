@@ -16,10 +16,13 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.RectF
 import android.hardware.camera2.*
+import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.util.Log
+import com.example.epamandroid.constants.FragmentConstants
 import com.example.epamandroid.mvp.contracts.ICameraContract
 import com.example.epamandroid.mvp.presenters.CameraPresenter
+import com.example.kotlinextensions.changeFragmentWithBackStack
 import com.example.neuralnetwork.ImageClassifier
 import java.io.IOException
 
@@ -40,7 +43,9 @@ class CameraFragment : Fragment(), ICameraContract.IView {
     private var imageDimension: Size? = null
     private var isFragmentVisible: Boolean = false
 
+    private lateinit var mainActivity: AppCompatActivity
     private lateinit var imageClassifier: ImageClassifier
+
     private  val cameraPresenter: ICameraContract.IPresenter? = CameraPresenter(this)
 
     private val stateCallback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
@@ -97,18 +102,29 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         return inflater.inflate(R.layout.camera_fragment, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-//        cameraFragmentTextureView.surfaceTextureListener = textureListener
+        mainActivity = (activity as AppCompatActivity)
 
         cameraFragmentBackToMenuButton.setOnClickListener {
             callback?.onItemChangedToMain()
         }
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        cameraFragmentDogBreed.setOnClickListener {
+            if(cameraFragmentDogBreed.text != getString(R.string.uninitialized_classifier)) {
+                val breedDescriptionFragment = BreedDescriptionFragment()
+
+                callback?.onItemChangedToMain()
+                breedDescriptionFragment.arguments = cameraPresenter
+                        ?.putDogInfoInBundle(cameraFragmentDogBreed.text.toString())
+
+                mainActivity
+                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
+                                breedDescriptionFragment,
+                                FragmentConstants.DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY)
+            }
+        }
 
         try {
             imageClassifier = ImageClassifier(activity)

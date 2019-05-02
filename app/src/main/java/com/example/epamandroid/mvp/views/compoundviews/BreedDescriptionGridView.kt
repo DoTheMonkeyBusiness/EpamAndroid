@@ -28,28 +28,39 @@ class BreedDescriptionGridView @JvmOverloads constructor(
     }
 
     fun updateDogGridInfo(
-            isCanLiveAtHome: Boolean,
-            isAffectionate: Boolean,
-            height: String,
-            weight: String,
-            lifeExpectancy: String,
-            cost: Int
+            height: String?,
+            weight: String?,
+            lifeExpectancy: String?,
+            cost: Int?,
+            isCanLiveAtHome: Boolean?,
+            isAffectionate: Boolean?
     ) {
-        when {
-            isCanLiveAtHome -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
-            else -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
+        when (isCanLiveAtHome) {
+            true -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
+            false -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
+            null -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
         }
-
-        when {
-            isAffectionate -> breedDescriptionAffectionateIcon.setImageResource(R.drawable.ic_check)
-            else -> breedDescriptionAffectionateIcon.setImageResource(R.drawable.ic_close)
+        when (isAffectionate) {
+            true -> breedDescriptionAffectionateIcon.setImageResource(R.drawable.ic_check)
+            false -> breedDescriptionAffectionateIcon.setImageResource(R.drawable.ic_close)
+            null -> breedDescriptionAffectionateIcon.setImageResource(R.drawable.ic_close)
         }
-
-        breedDescriptionHeightText.text = height
-        breedDescriptionWeightText.text = weight
-        breedDescriptionLifeExpectancyText.text = lifeExpectancy
-        breedDescriptionCostText.text = cost.toString()
-
+        when(height){
+            null -> {breedDescriptionHeightText?.setText(R.string.dash)}
+            else -> {breedDescriptionHeightText?.text = height}
+        }
+        when(weight){
+            null -> {breedDescriptionWeightText?.setText(R.string.dash)}
+            else -> {breedDescriptionWeightText?.text = weight}
+        }
+        when(lifeExpectancy){
+            null -> {breedDescriptionLifeExpectancyText?.setText(R.string.dash)}
+            else -> {breedDescriptionLifeExpectancyText?.text = lifeExpectancy}
+        }
+        when(cost){
+            null -> {breedDescriptionCostText?.setText(R.string.dash)}
+            else -> {breedDescriptionCostText?.text = cost.toString()}
+        }
     }
 
 }

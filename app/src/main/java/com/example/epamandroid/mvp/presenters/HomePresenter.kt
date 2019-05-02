@@ -3,7 +3,7 @@ package com.example.epamandroid.mvp.presenters
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import com.example.epamandroid.constants.DogEntitieConstants
+import com.example.epamandroid.constants.DogEntityConstants
 import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.contracts.IHomeContract
 import com.example.epamandroid.mvp.models.HomeModel
@@ -41,15 +41,15 @@ class HomePresenter(view: HomeFragment) : IHomeContract.IPresenter {
         val bundle: Bundle? = Bundle()
 
         return bundle?.apply {
-            putString(DogEntitieConstants.breed, dogEntity.breed)
-            putString(DogEntitieConstants.weight, dogEntity.weight)
-            putString(DogEntitieConstants.height, dogEntity.height)
-            putString(DogEntitieConstants.description, dogEntity.description)
-            putBoolean(DogEntitieConstants.canLiveAtHome, dogEntity.isCanLiveAtHome)
-            putFloat(DogEntitieConstants.breedPopularity, dogEntity.breedPopularity)
-            putInt(DogEntitieConstants.cost, dogEntity.cost)
-            putString(DogEntitieConstants.lifeExpectancy, dogEntity.lifeExpectancy)
-            putString(DogEntitieConstants.photo, dogEntity.photo)
+            putString(DogEntityConstants.breed, dogEntity.breed)
+            putString(DogEntityConstants.weight, dogEntity.weight)
+            putString(DogEntityConstants.height, dogEntity.height)
+            putString(DogEntityConstants.description, dogEntity.description)
+            putBoolean(DogEntityConstants.canLiveAtHome, dogEntity.isCanLiveAtHome)
+            putFloat(DogEntityConstants.breedPopularity, dogEntity.breedPopularity)
+            putInt(DogEntityConstants.cost, dogEntity.cost)
+            putString(DogEntityConstants.lifeExpectancy, dogEntity.lifeExpectancy)
+            putString(DogEntityConstants.photo, dogEntity.photo)
         }
 
     }

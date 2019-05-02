@@ -1,8 +1,10 @@
 package com.example.epamandroid.mvp.presenters
 
+import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
+import com.example.epamandroid.constants.DogEntityConstants
 import com.example.epamandroid.mvp.contracts.ICameraContract
 
 class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter {
@@ -54,5 +56,14 @@ class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter 
             Log.e(TAG, "error while stopping BackgroundThread")
 
         }
+    }
+
+    override fun putDogInfoInBundle(dogBreed: String): Bundle? {
+        val bundle: Bundle? = Bundle()
+
+        return bundle?.apply {
+            putString(DogEntityConstants.breedFromCamera, dogBreed)
+        }
+
     }
 }

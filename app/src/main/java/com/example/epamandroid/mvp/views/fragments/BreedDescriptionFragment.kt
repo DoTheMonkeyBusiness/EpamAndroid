@@ -5,9 +5,8 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.example.epamandroid.R
-import com.example.epamandroid.constants.DogEntitieConstants
+import com.example.epamandroid.constants.DogEntityConstants
 import kotlinx.android.synthetic.main.breed_description.*
 
 class BreedDescriptionFragment : Fragment() {
@@ -21,6 +20,8 @@ class BreedDescriptionFragment : Fragment() {
 
         val bundle = arguments
 
+
+        if (bundle != null && bundle.containsKey(DogEntityConstants.breedFromCamera))
         breedDescription.updateDogInfo(bundle)
     }
 }

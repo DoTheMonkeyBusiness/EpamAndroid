@@ -1,6 +1,6 @@
 package com.example.epamandroid.constants
 
-object DogEntitieConstants {
+object DogEntityConstants {
     const val id: String = "id"
     const val breed: String = "breed"
     const val weight: String = "weight"
@@ -12,4 +12,5 @@ object DogEntitieConstants {
     const val cost: String = "cost"
     const val lifeExpectancy: String = "lifeExpectancy"
     const val photo: String = "photo"
+    const val breedFromCamera: String = "breedFromCamera"
 }

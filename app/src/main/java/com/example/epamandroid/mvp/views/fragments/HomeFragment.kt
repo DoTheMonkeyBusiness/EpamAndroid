@@ -2,6 +2,7 @@ package com.example.epamandroid.mvp.views.fragments
 
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
@@ -14,11 +15,14 @@ import com.example.epamandroid.constants.FragmentConstants.DOG_BREED_DESCRIPTION
 import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.models.HomeModel
 import com.example.epamandroid.mvp.presenters.HomePresenter
+import com.example.epamandroid.mvp.views.activities.MainActivity
 import com.example.epamandroid.util.ItemTouchCallback
 import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
 import com.example.epamandroid.util.IAddItemsToRecyclerCallback
 import com.example.kotlinextensions.changeFragmentWithBackStack
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.breed_description.*
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : Fragment() {
@@ -146,11 +150,12 @@ class HomeFragment : Fragment() {
         viewAdapter.onItemClick = { dog ->
             dogId = dog.id
             if (viewAdapter.getItemViewType(dogId) == ViewType.DOG) {
-                val breedDescriptionFragment =BreedDescriptionFragment()
-                breedDescriptionFragment.arguments = homePresenter.putDogInfoInBundle(viewAdapter.getEntityById(dogId))
-                mainActivity
-                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
-                                breedDescriptionFragment, DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY)
+//                val breedDescriptionFragment =BreedDescriptionFragment()
+//                breedDescriptionFragment.arguments = homePresenter.putDogInfoInBundle(viewAdapter.getEntityById(dogId))
+//                mainActivity
+//                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
+//                                breedDescriptionFragment, DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY)
+
             }
         }
     }

@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.view.ViewPager
 import com.example.epamandroid.constants.FragmentConstants.HOME_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.constants.FragmentConstants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
@@ -12,6 +13,7 @@ import com.example.epamandroid.mvp.views.fragments.CameraFragment
 import com.example.epamandroid.mvp.views.fragments.MainFragment
 import com.example.epamandroid.mvp.views.adapters.ViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.breed_description.*
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.*
 
@@ -70,6 +72,12 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCa
         isSaveToHistory = true
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        expandeBottomSheet()
+    }
+
     override fun onBackPressed() {
         val homeFragment = supportFragmentManager
             .findFragmentByTag(HOME_FRAGMENT_TAG_EXTRA_KEY)
@@ -98,6 +106,13 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCa
                 isSaveToHistory = true
             }
         }
+    }
+
+    fun expandeBottomSheet() {
+        val bsh = BottomSheetBehavior
+                .from(breedDescriptionBottomSheet)
+
+        bsh.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     private fun configureViewPager() {

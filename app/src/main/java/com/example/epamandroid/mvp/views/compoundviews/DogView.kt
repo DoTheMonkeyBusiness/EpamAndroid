@@ -15,12 +15,17 @@ class DogView @JvmOverloads constructor(
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
     init {
-        layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//        layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         inflate(getContext(), R.layout.dog_view, this)
     }
 
-    fun setDogBreed(breed: String): DogView {
-        dogBreedTextView.text = breed
+    fun setDogBreed(breed: String?): DogView {
+
+        when (breed){
+            null -> {dogBreedTextView?.setText(R.string.error)}
+            else -> {dogBreedTextView?.text = breed}
+        }
+
         return this
     }
     fun isLikes(isLikes: Boolean): DogView {

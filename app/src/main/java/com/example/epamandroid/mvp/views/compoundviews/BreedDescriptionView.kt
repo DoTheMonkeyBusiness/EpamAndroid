@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import com.example.epamandroid.R
-import com.example.epamandroid.constants.DogEntitieConstants
+import com.example.epamandroid.constants.DogEntityConstants
+import com.example.epamandroid.entities.DogEntity
 import kotlinx.android.synthetic.main.breed_description_view.view.*
 
 class BreedDescriptionView @JvmOverloads constructor(
@@ -20,20 +21,31 @@ class BreedDescriptionView @JvmOverloads constructor(
     }
 
     fun updateDogInfo(bundle: Bundle?) {
-        if (bundle != null) {
-            breedDescriptionHeader.text = bundle.getString(DogEntitieConstants.breed)
-            breedDescriptionRatingBar.rating = bundle.getFloat(DogEntitieConstants.breedPopularity)
-            breedDescriptionText.text = bundle.getString(DogEntitieConstants.description)
-
-            breedDescriptionGridView.updateDogGridInfo(
-                    bundle.getBoolean(DogEntitieConstants.canLiveAtHome),
-                    bundle.getBoolean(DogEntitieConstants.affectionate),
-                    bundle.getString(DogEntitieConstants.height),
-                    bundle.getString(DogEntitieConstants.weight),
-                    bundle.getString(DogEntitieConstants.lifeExpectancy),
-                    bundle.getInt(DogEntitieConstants.cost)
-
-            )
+        when(bundle?.getString(DogEntityConstants.breed)){
+            null -> {breedDescriptionHeader.setText(R.string.dog_breed)}
+            else -> {breedDescriptionHeader?.text = bundle.getString(DogEntityConstants.breed)}
         }
+        when(bundle?.getString(DogEntityConstants.description)){
+            null -> {breedDescriptionText.setText(R.string.no_description)}
+            else -> {breedDescriptionText?.text = bundle.getString(DogEntityConstants.description)}
+        }
+        when(bundle?.getFloat(DogEntityConstants.breedPopularity)){
+            null -> {breedDescriptionRatingBar?.rating = 0F}
+            else -> {breedDescriptionRatingBar?.rating = bundle.getFloat(DogEntityConstants.breedPopularity)}
+        }
+
+        breedDescriptionGridView.updateDogGridInfo(
+                bundle?.getString(DogEntityConstants.height),
+                bundle?.getString(DogEntityConstants.weight),
+                bundle?.getString(DogEntityConstants.lifeExpectancy),
+                bundle?.getInt(DogEntityConstants.cost),
+                bundle?.getBoolean(DogEntityConstants.canLiveAtHome),
+                bundle?.getBoolean(DogEntityConstants.affectionate)
+
+        )
+
+    }
+    fun updateDogInfo(dogEntity: DogEntity) {
+
     }
 }
