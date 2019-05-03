@@ -9,12 +9,14 @@
     <!--<color name="colorAccentNight">#E4951E</color>-->
     <color name="colorAccentNight">#ECEFF1</color>
     <color name="colorBackgroundNight">#35505D</color>
+    <color name="colorBottomSheetHeaderNight">#2B4653</color>
 
     <color name="colorPrimaryDay">#FEEAE6</color>
     <!--<color name="colorPrimaryDarkDay">#FEDBD0</color>-->
     <color name="colorPrimaryDarkDay">#C5A297</color>
     <color name="colorAccentDay">#442C2E</color>
     <color name="colorBackgroundDay">#FFFBFA</color>
+    <color name="colorBottomSheetHeaderDay">#F8F4F3</color>
     <color name="colorBlack">#000000</color>
 
 

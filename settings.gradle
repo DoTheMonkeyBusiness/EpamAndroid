@@ -1,1 +1,1 @@
-include ':mysubmodule', ':app', ':neuralNetwork', ':kotlinextensions'
+include ':mysubmodule', ':app', ':neuralNetwork', ':kotlinextensions', ':imageloader'

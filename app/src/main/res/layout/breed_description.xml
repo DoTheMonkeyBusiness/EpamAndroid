@@ -1,59 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/breedDescriptionBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorBackground"
+    android:background="@drawable/rounded_top_layout"
+    android:orientation="vertical"
     app:behavior_hideable="true"
-    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
-    app:behavior_peekHeight="0dp">
-
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <ImageButton
-            android:id="@+id/breedDescriptionCloseButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_close"
-            android:tint="?attr/colorAccent"
-            android:background="@null"
-            android:layout_alignParentStart="true"
-            android:layout_margin="8dp"
-            android:layout_alignParentTop="true"
-            android:contentDescription="@string/close_button" />
+        android:id="@+id/breedDescriptionCloseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@null"
+        android:contentDescription="@string/close_button"
+        android:tint="?attr/colorAccent"
+        app:srcCompat="@drawable/ic_close" />
 
-    <android.support.v4.widget.NestedScrollView
+    <View
         android:layout_width="match_parent"
-        android:layout_below="@id/breedDescriptionCloseButton"
-        android:layout_height="wrap_content">
+        android:layout_height="1dp"
+        android:background="?attr/colorPrimaryDark" />
 
     <FrameLayout
         android:id="@+id/breedDescriptionFrameLayout"
         android:layout_width="match_parent"
-        android:background="?attr/colorBackground"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="?attr/colorBackground">
 
         <TextView
+            android:id="@+id/breedDescriptionError"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/error"
+            android:textAlignment="center"
+            android:textColor="?attr/colorAccent"
             android:textSize="30sp"
             android:visibility="gone" />
 
         <ProgressBar
-            android:id="@android:id/progress"
+            android:id="@+id/breedDescriptionProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="?attr/colorBackground"
             android:visibility="gone" />
 
-        <com.example.epamandroid.mvp.views.compoundviews.BreedDescriptionView
-            android:id="@+id/breedDescription"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content">
+            <com.example.epamandroid.mvp.views.compoundviews.BreedDescriptionView
+                android:id="@+id/breedDescription"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/colorBackground"
+                android:visibility="gone" />
+
+        </android.support.v4.widget.NestedScrollView>
     </FrameLayout>
 
-    </android.support.v4.widget.NestedScrollView>
-
-</RelativeLayout>
+</LinearLayout>

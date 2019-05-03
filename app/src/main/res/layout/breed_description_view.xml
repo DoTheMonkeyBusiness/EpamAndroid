@@ -15,6 +15,7 @@
         android:padding="8dp"
         android:text="@string/dog_breed"
         android:textAlignment="center"
+        android:textColor="?attr/colorAccent"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -43,6 +44,7 @@
         android:layout_height="wrap_content"
         android:text="@string/breed_popularity"
         android:textAlignment="center"
+        android:textColor="?attr/colorAccent"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -78,6 +80,7 @@
         android:layout_centerHorizontal="true"
         android:padding="16dp"
         android:text="@string/no_description"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp"
         android:textStyle="italic" />
 

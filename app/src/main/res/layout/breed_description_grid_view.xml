@@ -15,6 +15,7 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:text="@string/can_live_at_home"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp" />
 
     <ImageView
@@ -34,6 +35,7 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:text="@string/affectionate"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp" />
 
     <ImageView
@@ -53,6 +55,7 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:text="@string/height_kg"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp" />
 
     <TextView
@@ -62,6 +65,7 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:text="@string/dash"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp" />
 
     <TextView
@@ -71,6 +75,7 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:text="@string/weight_kg"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp" />
 
     <TextView
@@ -80,6 +85,7 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:text="@string/dash"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp" />
 
 
@@ -90,6 +96,7 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:text="@string/life_expectancy"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp" />
 
     <TextView
@@ -99,6 +106,7 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:text="@string/dash"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp" />
 
     <TextView
@@ -108,6 +116,7 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:text="@string/cost_dollars"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp" />
 
     <TextView
@@ -117,6 +126,7 @@
         android:layout_gravity="center"
         android:layout_margin="4dp"
         android:text="@string/dash"
+        android:textColor="?attr/colorAccent"
         android:textSize="18sp" />
 
 </merge>

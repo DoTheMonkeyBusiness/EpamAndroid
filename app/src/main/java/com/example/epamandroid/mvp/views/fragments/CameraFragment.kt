@@ -20,6 +20,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.util.Log
 import com.example.epamandroid.constants.FragmentConstants
+import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.contracts.ICameraContract
 import com.example.epamandroid.mvp.presenters.CameraPresenter
 import com.example.kotlinextensions.changeFragmentWithBackStack
@@ -34,7 +35,8 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         private const val EMPTY_STRING_KEY: String = ""
     }
 
-    private var callback: IChangeFragmentCameraItemCallback? = null
+    private var ChangeFragmentCallback: IChangeFragmentCameraItemCallback? = null
+    private var showBottomSheetCallback: IShowBottomSheetCallback? = null
     private var backgroundHandler: Handler? = null
     private var cameraCaptureSessions: CameraCaptureSession? = null
     private var cameraDevice: CameraDevice? = null
@@ -46,7 +48,7 @@ class CameraFragment : Fragment(), ICameraContract.IView {
     private lateinit var mainActivity: AppCompatActivity
     private lateinit var imageClassifier: ImageClassifier
 
-    private  val cameraPresenter: ICameraContract.IPresenter? = CameraPresenter(this)
+    private val cameraPresenter: ICameraContract.IPresenter? = CameraPresenter(this)
 
     private val stateCallback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {
@@ -108,21 +110,27 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         mainActivity = (activity as AppCompatActivity)
 
         cameraFragmentBackToMenuButton.setOnClickListener {
-            callback?.onItemChangedToMain()
+            ChangeFragmentCallback?.onItemChangedToMain()
         }
 
         cameraFragmentDogBreed.setOnClickListener {
-            if(cameraFragmentDogBreed.text != getString(R.string.uninitialized_classifier)) {
+            if (cameraFragmentDogBreed.text != getString(R.string.uninitialized_classifier)) {
                 val breedDescriptionFragment = BreedDescriptionFragment()
 
-                callback?.onItemChangedToMain()
-                breedDescriptionFragment.arguments = cameraPresenter
-                        ?.putDogInfoInBundle(cameraFragmentDogBreed.text.toString())
-
-                mainActivity
-                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
-                                breedDescriptionFragment,
-                                FragmentConstants.DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY)
+//                ChangeFragmentCallback?.onItemChangedToMain()
+//                breedDescriptionFragment.arguments = cameraPresenter
+//                        ?.putDogInfoInBundle(cameraFragmentDogBreed.text.toString())
+//
+//                mainActivity
+//                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
+//                                breedDescriptionFragment,
+//                                FragmentConstants.DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY)
+                showBottomSheetCallback
+                        ?.onShowBottomSheetFromCamera(
+                                cameraFragmentDogBreed
+                                        .text
+                                        .toString()
+                        )
             }
         }
 
@@ -138,7 +146,10 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         super.onAttach(context)
 
         if (context is IChangeFragmentCameraItemCallback) {
-            callback = context
+            ChangeFragmentCallback = context
+        }
+        if (context is IShowBottomSheetCallback) {
+            showBottomSheetCallback = context
         }
     }
 
@@ -374,5 +385,9 @@ class CameraFragment : Fragment(), ICameraContract.IView {
 
     interface IChangeFragmentCameraItemCallback {
         fun onItemChangedToMain()
+    }
+
+    interface IShowBottomSheetCallback {
+        fun onShowBottomSheetFromCamera(dogBreed: String)
     }
 }

@@ -45,7 +45,30 @@ class BreedDescriptionView @JvmOverloads constructor(
         )
 
     }
-    fun updateDogInfo(dogEntity: DogEntity) {
+    fun updateDogInfo(dogEntity: DogEntity?) {
 
+
+        when(dogEntity?.breed){
+            null -> {breedDescriptionHeader.setText(R.string.dog_breed)}
+            else -> {breedDescriptionHeader.text = dogEntity.breed}
+        }
+        when(dogEntity?.description){
+            null -> {breedDescriptionText?.setText(R.string.no_description)}
+            else -> {breedDescriptionText?.text = dogEntity.description}
+        }
+        when(dogEntity?.breedPopularity){
+            null -> {breedDescriptionRatingBar?.rating = 0F}
+            else -> {breedDescriptionRatingBar?.rating = dogEntity.breedPopularity}
+        }
+
+        breedDescriptionGridView.updateDogGridInfo(
+                dogEntity?.height,
+                dogEntity?.weight,
+                dogEntity?.lifeExpectancy,
+                dogEntity?.cost,
+                dogEntity?.isCanLiveAtHome,
+                dogEntity?.isAffectionate
+
+        )
     }
 }

@@ -6,19 +6,31 @@ import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.view.ViewPager
+import android.view.View
 import com.example.epamandroid.constants.FragmentConstants.HOME_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.constants.FragmentConstants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.R
+import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.mvp.contracts.IMainActivityContract
+import com.example.epamandroid.mvp.core.IMainActivityView
+import com.example.epamandroid.mvp.presenters.MainActivityPresenter
 import com.example.epamandroid.mvp.views.fragments.CameraFragment
 import com.example.epamandroid.mvp.views.fragments.MainFragment
 import com.example.epamandroid.mvp.views.adapters.ViewPagerAdapter
+import com.example.epamandroid.mvp.views.fragments.HomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.breed_description.*
 import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.*
 
-class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCallback,
-        CameraFragment.IChangeFragmentCameraItemCallback {
+class MainActivity : AppCompatActivity(),
+        MainFragment.IChangeFragmentMainItemCallback,
+        CameraFragment.IChangeFragmentCameraItemCallback,
+        HomeFragment.IShowBottomSheetCallback,
+        CameraFragment.IShowBottomSheetCallback,
+        IMainActivityView,
+        IMainActivityContract.View
+{
 
     companion object {
         private const val CAMERA_ITEM_KEY: Int = 0
@@ -32,6 +44,8 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCa
 
     private var isSaveToHistory: Boolean = false
     private var currentPage: Int = 1
+    private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
+    private var mainActivityPresenter: MainActivityPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val isDarkModeEnabled = PreferenceManager.getDefaultSharedPreferences(this)
@@ -69,13 +83,29 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCa
 
         })
 
+        bottomSheetBehavior =  BottomSheetBehavior.from(breedDescriptionBottomSheet)
+
         isSaveToHistory = true
-    }
 
-    override fun onStart() {
-        super.onStart()
+        breedDescriptionCloseButton.setOnClickListener {
+            collapseBottomSheet()
+        }
 
-        expandeBottomSheet()
+        bottomSheetBehavior?.setBottomSheetCallback( object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(p0: View, p1: Float) = Unit
+
+            override fun onStateChanged(p0: View, p1: Int) {
+                when(bottomSheetBehavior?.state){
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        hideError()
+                        hideProgress()
+                        hideDescription()
+                    }
+                }
+            }
+        })
+
+        mainActivityPresenter = MainActivityPresenter(this)
     }
 
     override fun onBackPressed() {
@@ -108,11 +138,24 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCa
         }
     }
 
-    fun expandeBottomSheet() {
-        val bsh = BottomSheetBehavior
-                .from(breedDescriptionBottomSheet)
+    private fun expandBottomSheet() {
+       bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+    private fun collapseBottomSheet() {
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
 
-        bsh.state = BottomSheetBehavior.STATE_EXPANDED
+    override fun updateBreedDescription(dogEntity: DogEntity?) {
+        if(dogEntity != null) {
+            breedDescription.updateDogInfo(dogEntity)
+            hideProgress()
+            hideError()
+            showDescription()
+        } else {
+            hideProgress()
+            hideDescription()
+            showError()
+        }
     }
 
     private fun configureViewPager() {
@@ -125,6 +168,41 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCa
             }
 
         activityMainViewPager.adapter = adapter
+    }
+
+    private fun hideProgress() {
+        if (breedDescriptionProgressBar.visibility != View.GONE) {
+            breedDescriptionProgressBar.visibility = View.GONE
+        }
+    }
+
+    private fun showProgress() {
+        if (breedDescriptionProgressBar.visibility != View.VISIBLE) {
+            breedDescriptionProgressBar.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideError() {
+        if (breedDescriptionError.visibility != View.GONE) {
+            breedDescriptionError.visibility = View.GONE
+        }
+    }
+
+    private fun showError() {
+        if (breedDescriptionError.visibility != View.VISIBLE) {
+            breedDescriptionError.visibility = View.VISIBLE
+        }
+    }
+    private fun hideDescription() {
+        if (breedDescription.visibility != View.GONE) {
+            breedDescription.visibility = View.GONE
+        }
+    }
+
+    private fun showDescription() {
+        if (breedDescription.visibility != View.VISIBLE) {
+            breedDescription.visibility = View.VISIBLE
+        }
     }
 
     override fun onItemChangedToCamera() {
@@ -144,5 +222,22 @@ class MainActivity : AppCompatActivity(), MainFragment.IChangeFragmentMainItemCa
     override fun onViewPagerSwipePagingEnabled(changeSwipePagingEnabled: Boolean) {
         activityMainViewPager
             .setSwipePagingEnabled(changeSwipePagingEnabled)
+    }
+
+    override fun onShowBottomSheetFromHome(dogEntity: DogEntity?) {
+        expandBottomSheet()
+        if (dogEntity !== null) {
+            breedDescription.updateDogInfo(dogEntity)
+            hideError()
+            hideProgress()
+            showDescription()
+        } else {
+            showError()
+        }
+    }
+    override fun onShowBottomSheetFromCamera(dogBreed: String) {
+        expandBottomSheet()
+        showProgress()
+        mainActivityPresenter?.loadDogByBreed(dogBreed)
     }
 }

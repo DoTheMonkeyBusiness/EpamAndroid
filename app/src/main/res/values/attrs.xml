@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="dayStyle">
         <attr name="colorBackground" format="color"/>
+        <attr name="colorBottomSheetHeader" format="color"/>
     </declare-styleable>
 </resources>

@@ -1,8 +1,8 @@
 package com.example.epamandroid.mvp.views.fragments
 
+import android.content.Context
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.Bundle
-import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
@@ -11,18 +11,13 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.*
 import com.example.epamandroid.R
-import com.example.epamandroid.constants.FragmentConstants.DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.models.HomeModel
 import com.example.epamandroid.mvp.presenters.HomePresenter
-import com.example.epamandroid.mvp.views.activities.MainActivity
 import com.example.epamandroid.util.ItemTouchCallback
 import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
 import com.example.epamandroid.util.IAddItemsToRecyclerCallback
-import com.example.kotlinextensions.changeFragmentWithBackStack
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.breed_description.*
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : Fragment() {
@@ -37,11 +32,20 @@ class HomeFragment : Fragment() {
 
     private var isLoading: Boolean = false
     private var dogId: Int = 0
+    private var callback: IShowBottomSheetCallback? = null
 
     private lateinit var homePresenter: HomePresenter
     private lateinit var viewAdapter: HomeRecyclerViewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var mainActivity: AppCompatActivity
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        if (context is IShowBottomSheetCallback) {
+            callback = context
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,6 +159,7 @@ class HomeFragment : Fragment() {
 //                mainActivity
 //                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
 //                                breedDescriptionFragment, DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY)
+                callback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(dogId))
 
             }
         }
@@ -200,5 +205,9 @@ class HomeFragment : Fragment() {
 //        homePresenter?.recyclerViewState?.putParcelable(RECYCLER_STATE_KEY, homeFragmentRecyclerView.layoutManager?.onSaveInstanceState())
 //        homePresenter?.recyclerViewState?.putParcelable(LINEAR_LAYOUT_MANAGER_KEY, linearLayoutManager.onSaveInstanceState())
 //        homePresenter?.recyclerViewState?.putParcelableArrayList(STUDENT_LIST_KEY, viewAdapter.getItems())
+    }
+
+    interface IShowBottomSheetCallback {
+        fun onShowBottomSheetFromHome(dogEntity: DogEntity?)
     }
 }
