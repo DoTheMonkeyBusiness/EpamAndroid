@@ -15,7 +15,6 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:contentDescription="@string/dog_photo_description"
-        android:tint="?attr/colorAccent"
         app:srcCompat="@drawable/ic_help_outline" />
 
     <TextView

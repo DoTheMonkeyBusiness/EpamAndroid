@@ -3,6 +3,7 @@ package com.example.epamandroid.mvp.views.compoundviews
 import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
+import android.widget.ImageView
 import android.widget.LinearLayout
 import com.example.epamandroid.R
 import com.example.epamandroid.constants.DogEntityConstants
@@ -19,6 +20,8 @@ class BreedDescriptionView @JvmOverloads constructor(
         inflate(getContext(), R.layout.breed_description_view, this)
         breedDescriptionRatingBar.setIsIndicator(true)
     }
+
+    fun getDogPhoto(): ImageView = breedDescriptionDogPhoto
 
     fun updateDogInfo(bundle: Bundle?) {
         when(bundle?.getString(DogEntityConstants.breed)){

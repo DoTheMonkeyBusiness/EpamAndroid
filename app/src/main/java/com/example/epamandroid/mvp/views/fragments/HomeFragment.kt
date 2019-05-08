@@ -149,7 +149,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setViewAdapter() {
-        viewAdapter = HomeRecyclerViewAdapter()
+        viewAdapter = HomeRecyclerViewAdapter(context)
 
         viewAdapter.onItemClick = { dog ->
             dogId = dog.id

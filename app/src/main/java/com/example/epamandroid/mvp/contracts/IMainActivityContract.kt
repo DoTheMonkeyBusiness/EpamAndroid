@@ -4,7 +4,7 @@ import com.example.epamandroid.entities.DogEntity
 
 interface IMainActivityContract {
     interface View {
-       fun updateBreedDescription(dogEntity: DogEntity?)
+        fun updateBreedDescription(dogEntity: DogEntity?)
     }
 
     interface Presenter

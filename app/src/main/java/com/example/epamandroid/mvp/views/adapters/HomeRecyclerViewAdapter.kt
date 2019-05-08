@@ -1,5 +1,6 @@
 package com.example.epamandroid.mvp.views.adapters
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +12,15 @@ import com.example.epamandroid.mvp.views.annotationclasses.ViewType
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType.Companion.DOG
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType.Companion.LOADING
 import com.example.epamandroid.mvp.views.compoundviews.DogView
+import com.example.imageloader.IMichelangelo
+import com.example.imageloader.Michelangelo
 import java.util.*
 
-class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>() {
+class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>() {
 
+    private val michelangelo: IMichelangelo = Michelangelo(context)
     private val dogsList = ArrayList<DogEntity>()
+    private val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     private var isShowLastViewAsLoading = false
 
@@ -24,27 +29,24 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.Vie
     var onItemClick: ((DogEntity) -> Unit)? = null
 
     override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
+        parent: ViewGroup,
+        viewType: Int
     ): ViewHolder {
         return when (viewType) {
             DOG -> {
 //                ViewHolder(DogView(parent.context))
-                ViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.dog_view_item, parent, false))
+                ViewHolder(layoutInflater.inflate(R.layout.dog_view_item, parent, false))
             }
             LOADING -> {
                 ViewHolder(
-                        LayoutInflater.from(parent.context)
-                                .inflate(R.layout.layout_progress, parent, false)
-                                as FrameLayout
+                    layoutInflater.inflate(R.layout.layout_progress, parent, false)
+                            as FrameLayout
                 )
             }
             else -> {
                 ViewHolder(
-                        LayoutInflater.from(parent.context)
-                                .inflate(R.layout.error_view, parent, false)
-                                as FrameLayout
+                    layoutInflater.inflate(R.layout.error_view, parent, false)
+                            as FrameLayout
                 )
             }
         }
@@ -52,11 +54,12 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.Vie
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         if (getItemViewType(position) == ViewType.DOG) {
+            val holder = (viewHolder.itemView as DogView)
             dogEntity = dogsList[position]
 
-            (viewHolder.itemView as DogView)
-                    .setDogBreed(dogEntity.breed)
-//                    .isLikes(dogEntity.isLikes)
+            holder
+                .setDogBreed(dogEntity.breed)
+            michelangelo.load(holder.getDogIcon(), dogEntity.photo)
         }
     }
 
@@ -87,6 +90,7 @@ class HomeRecyclerViewAdapter : RecyclerView.Adapter<HomeRecyclerViewAdapter.Vie
         result?.let { dogsList.addAll(it) }
         notifyDataSetChanged()
     }
+
     fun getItems(): ArrayList<DogEntity> {
         return dogsList
     }

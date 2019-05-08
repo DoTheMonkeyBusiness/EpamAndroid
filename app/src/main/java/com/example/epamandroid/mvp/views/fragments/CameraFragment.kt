@@ -19,11 +19,8 @@ import android.hardware.camera2.*
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.util.Log
-import com.example.epamandroid.constants.FragmentConstants
-import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.contracts.ICameraContract
 import com.example.epamandroid.mvp.presenters.CameraPresenter
-import com.example.kotlinextensions.changeFragmentWithBackStack
 import com.example.neuralnetwork.ImageClassifier
 import java.io.IOException
 
@@ -35,7 +32,7 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         private const val EMPTY_STRING_KEY: String = ""
     }
 
-    private var ChangeFragmentCallback: IChangeFragmentCameraItemCallback? = null
+    private var changeFragmentCallback: IChangeFragmentCameraItemCallback? = null
     private var showBottomSheetCallback: IShowBottomSheetCallback? = null
     private var backgroundHandler: Handler? = null
     private var cameraCaptureSessions: CameraCaptureSession? = null
@@ -95,11 +92,6 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.camera_fragment, container, false)
     }
@@ -110,14 +102,14 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         mainActivity = (activity as AppCompatActivity)
 
         cameraFragmentBackToMenuButton.setOnClickListener {
-            ChangeFragmentCallback?.onItemChangedToMain()
+            changeFragmentCallback?.onItemChangedToMain()
         }
 
         cameraFragmentDogBreed.setOnClickListener {
             if (cameraFragmentDogBreed.text != getString(R.string.uninitialized_classifier)) {
                 val breedDescriptionFragment = BreedDescriptionFragment()
 
-//                ChangeFragmentCallback?.onItemChangedToMain()
+//                changeFragmentCallback?.onItemChangedToMain()
 //                breedDescriptionFragment.arguments = cameraPresenter
 //                        ?.putDogInfoInBundle(cameraFragmentDogBreed.text.toString())
 //
@@ -140,13 +132,14 @@ class CameraFragment : Fragment(), ICameraContract.IView {
             Log.e(TAG, "Failed to initialize an image classifier.")
         }
 
+        cameraFragmentTextureView.isOpaque = true
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
         if (context is IChangeFragmentCameraItemCallback) {
-            ChangeFragmentCallback = context
+            changeFragmentCallback = context
         }
         if (context is IShowBottomSheetCallback) {
             showBottomSheetCallback = context

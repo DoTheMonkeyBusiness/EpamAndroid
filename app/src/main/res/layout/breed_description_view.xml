@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@null"
     tools:parentTag="android.widget.LinearLayout">
 
     <TextView
@@ -29,8 +30,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/dog_photo_description"
-        android:src="@drawable/ic_help_outline"
-        android:tint="@color/colorBlack" />
+        android:src="@drawable/ic_help_outline" />
 
     <View
         android:layout_width="match_parent"

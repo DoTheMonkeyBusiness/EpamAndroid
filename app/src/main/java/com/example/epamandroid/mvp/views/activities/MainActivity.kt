@@ -1,5 +1,6 @@
 package com.example.epamandroid.mvp.views.activities
 
+import android.content.Context
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -18,6 +19,8 @@ import com.example.epamandroid.mvp.views.fragments.CameraFragment
 import com.example.epamandroid.mvp.views.fragments.MainFragment
 import com.example.epamandroid.mvp.views.adapters.ViewPagerAdapter
 import com.example.epamandroid.mvp.views.fragments.HomeFragment
+import com.example.imageloader.IMichelangelo
+import com.example.imageloader.Michelangelo
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.breed_description.*
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -46,6 +49,8 @@ class MainActivity : AppCompatActivity(),
     private var currentPage: Int = 1
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
     private var mainActivityPresenter: MainActivityPresenter? = null
+
+    private lateinit var michelangelo: IMichelangelo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val isDarkModeEnabled = PreferenceManager.getDefaultSharedPreferences(this)
@@ -106,6 +111,7 @@ class MainActivity : AppCompatActivity(),
         })
 
         mainActivityPresenter = MainActivityPresenter(this)
+        michelangelo = Michelangelo(applicationContext)
     }
 
     override fun onBackPressed() {
@@ -148,6 +154,7 @@ class MainActivity : AppCompatActivity(),
     override fun updateBreedDescription(dogEntity: DogEntity?) {
         if(dogEntity != null) {
             breedDescription.updateDogInfo(dogEntity)
+            michelangelo.load(breedDescription.getDogPhoto(), dogEntity.photo)
             hideProgress()
             hideError()
             showDescription()
@@ -228,6 +235,7 @@ class MainActivity : AppCompatActivity(),
         expandBottomSheet()
         if (dogEntity !== null) {
             breedDescription.updateDogInfo(dogEntity)
+            michelangelo.load(breedDescription.getDogPhoto(), dogEntity.photo)
             hideError()
             hideProgress()
             showDescription()

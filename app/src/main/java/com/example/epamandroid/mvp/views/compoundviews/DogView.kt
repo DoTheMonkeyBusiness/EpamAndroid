@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.example.epamandroid.R
 import kotlinx.android.synthetic.main.dog_view.view.*
@@ -19,6 +20,7 @@ class DogView @JvmOverloads constructor(
         inflate(getContext(), R.layout.dog_view, this)
     }
 
+    fun getDogIcon(): ImageView = dogIcon
     fun setDogBreed(breed: String?): DogView {
 
         when (breed){
@@ -28,6 +30,7 @@ class DogView @JvmOverloads constructor(
 
         return this
     }
+
     fun isLikes(isLikes: Boolean): DogView {
         when {
             isLikes -> dogIsLikes.setImageResource(R.drawable.ic_star)

@@ -28,8 +28,7 @@
     <FrameLayout
         android:id="@+id/breedDescriptionFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/colorBackground">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/breedDescriptionError"
@@ -53,6 +52,7 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <com.example.epamandroid.mvp.views.compoundviews.BreedDescriptionView
                 android:id="@+id/breedDescription"
                 android:layout_width="match_parent"
