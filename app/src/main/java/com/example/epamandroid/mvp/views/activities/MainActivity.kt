@@ -1,11 +1,14 @@
 package com.example.epamandroid.mvp.views.activities
 
-import android.content.Context
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
 import com.example.epamandroid.constants.FragmentConstants.HOME_FRAGMENT_TAG_EXTRA_KEY
@@ -13,7 +16,7 @@ import com.example.epamandroid.constants.FragmentConstants.SETTINGS_FRAGMENT_TAG
 import com.example.epamandroid.R
 import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
-import com.example.epamandroid.mvp.core.IMainActivityView
+import com.example.epamandroid.mvp.core.IBaseView
 import com.example.epamandroid.mvp.presenters.MainActivityPresenter
 import com.example.epamandroid.mvp.views.fragments.CameraFragment
 import com.example.epamandroid.mvp.views.fragments.MainFragment
@@ -31,9 +34,8 @@ class MainActivity : AppCompatActivity(),
         CameraFragment.IChangeFragmentCameraItemCallback,
         HomeFragment.IShowBottomSheetCallback,
         CameraFragment.IShowBottomSheetCallback,
-        IMainActivityView,
-        IMainActivityContract.View
-{
+        IBaseView,
+        IMainActivityContract.View {
 
     companion object {
         private const val CAMERA_ITEM_KEY: Int = 0
@@ -48,7 +50,7 @@ class MainActivity : AppCompatActivity(),
     private var isSaveToHistory: Boolean = false
     private var currentPage: Int = 1
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
-    private var mainActivityPresenter: MainActivityPresenter? = null
+    private var mainActivityPresenter: IMainActivityContract.Presenter? = null
 
     private lateinit var michelangelo: IMichelangelo
 
@@ -56,8 +58,8 @@ class MainActivity : AppCompatActivity(),
         val isDarkModeEnabled = PreferenceManager.getDefaultSharedPreferences(this)
 
         if (isDarkModeEnabled.getBoolean(
-                getString(R.string.switch_day_night_mode_key), false
-            )
+                        getString(R.string.switch_day_night_mode_key), false
+                )
         ) {
 
             setTheme(R.style.AppThemeNight)
@@ -69,6 +71,8 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
 
         configureViewPager()
+
+        checkExternalStoragePermission()
 
         if (savedInstanceState == null) {
             activityMainViewPager.setCurrentItem(MAIN_ITEM_KEY, true)
@@ -88,7 +92,7 @@ class MainActivity : AppCompatActivity(),
 
         })
 
-        bottomSheetBehavior =  BottomSheetBehavior.from(breedDescriptionBottomSheet)
+        bottomSheetBehavior = BottomSheetBehavior.from(breedDescriptionBottomSheet)
 
         isSaveToHistory = true
 
@@ -96,11 +100,11 @@ class MainActivity : AppCompatActivity(),
             collapseBottomSheet()
         }
 
-        bottomSheetBehavior?.setBottomSheetCallback( object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior?.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(p0: View, p1: Float) = Unit
 
             override fun onStateChanged(p0: View, p1: Int) {
-                when(bottomSheetBehavior?.state){
+                when (bottomSheetBehavior?.state) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         hideError()
                         hideProgress()
@@ -116,9 +120,9 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         val homeFragment = supportFragmentManager
-            .findFragmentByTag(HOME_FRAGMENT_TAG_EXTRA_KEY)
+                .findFragmentByTag(HOME_FRAGMENT_TAG_EXTRA_KEY)
         val settingsFragment = supportFragmentManager
-            .findFragmentByTag(SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
+                .findFragmentByTag(SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
 
         when {
             (viewPagerHistory.empty()
@@ -128,11 +132,11 @@ class MainActivity : AppCompatActivity(),
                 when {
                     (homeFragment !== null && homeFragment.isVisible) -> {
                         (mainFragmentBottomNavigationView as BottomNavigationView)
-                            .selectedItemId = R.id.bottomNavigationHome
+                                .selectedItemId = R.id.bottomNavigationHome
                     }
                     (settingsFragment !== null && settingsFragment.isVisible) -> {
                         (mainFragmentBottomNavigationView as BottomNavigationView)
-                            .selectedItemId = R.id.bottomNavigationSettings
+                                .selectedItemId = R.id.bottomNavigationSettings
                     }
                 }
             }
@@ -144,15 +148,23 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    private fun expandBottomSheet() {
-       bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+    private fun checkExternalStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 135)
+        }
     }
+
+    private fun expandBottomSheet() {
+        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
     private fun collapseBottomSheet() {
         bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     override fun updateBreedDescription(dogEntity: DogEntity?) {
-        if(dogEntity != null) {
+        if (dogEntity != null) {
             breedDescription.updateDogInfo(dogEntity)
             michelangelo.load(breedDescription.getDogPhoto(), dogEntity.photo)
             hideProgress()
@@ -167,12 +179,12 @@ class MainActivity : AppCompatActivity(),
 
     private fun configureViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-            .apply {
-                let {
-                    it.addFragment(CameraFragment())
-                    it.addFragment(MainFragment())
+                .apply {
+                    let {
+                        it.addFragment(CameraFragment())
+                        it.addFragment(MainFragment())
+                    }
                 }
-            }
 
         activityMainViewPager.adapter = adapter
     }
@@ -200,6 +212,7 @@ class MainActivity : AppCompatActivity(),
             breedDescriptionError.visibility = View.VISIBLE
         }
     }
+
     private fun hideDescription() {
         if (breedDescription.visibility != View.GONE) {
             breedDescription.visibility = View.GONE
@@ -214,12 +227,12 @@ class MainActivity : AppCompatActivity(),
 
     override fun onItemChangedToCamera() {
         activityMainViewPager
-            .setCurrentItem(CAMERA_ITEM_KEY, true)
+                .setCurrentItem(CAMERA_ITEM_KEY, true)
     }
 
     override fun onItemChangedToMain() {
         activityMainViewPager
-            .setCurrentItem(MAIN_ITEM_KEY, true)
+                .setCurrentItem(MAIN_ITEM_KEY, true)
     }
 
     override fun onItemChangedToInternalFragment() {
@@ -228,7 +241,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onViewPagerSwipePagingEnabled(changeSwipePagingEnabled: Boolean) {
         activityMainViewPager
-            .setSwipePagingEnabled(changeSwipePagingEnabled)
+                .setSwipePagingEnabled(changeSwipePagingEnabled)
     }
 
     override fun onShowBottomSheetFromHome(dogEntity: DogEntity?) {
@@ -243,6 +256,7 @@ class MainActivity : AppCompatActivity(),
             showError()
         }
     }
+
     override fun onShowBottomSheetFromCamera(dogBreed: String) {
         expandBottomSheet()
         showProgress()

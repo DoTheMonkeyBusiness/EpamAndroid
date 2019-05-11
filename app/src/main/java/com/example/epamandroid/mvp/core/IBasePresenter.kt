@@ -1,6 +1,6 @@
 package com.example.epamandroid.mvp.core
 
-interface IMainActivityPresenter {
+interface IBasePresenter {
     fun onCreate()
     fun onDestroy()
 }

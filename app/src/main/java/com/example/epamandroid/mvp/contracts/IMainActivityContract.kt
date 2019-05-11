@@ -7,7 +7,11 @@ interface IMainActivityContract {
         fun updateBreedDescription(dogEntity: DogEntity?)
     }
 
-    interface Presenter
-    interface Model {
+    interface Presenter {
+        fun loadDogByBreed(breed: String)
+    }
+
+    interface Model<T> {
+        fun getEntity(breed: String) : DogEntity?
     }
 }

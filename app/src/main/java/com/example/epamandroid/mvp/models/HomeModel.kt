@@ -9,7 +9,7 @@ import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
 import kotlin.collections.HashMap
 
-object HomeModel : IHomeContract.IModel<DogEntity> {
+object HomeModel : IHomeContract.Model<DogEntity> {
 
     private const val TAG: String = "HomeModel"
     private val client = OkHttpClient()

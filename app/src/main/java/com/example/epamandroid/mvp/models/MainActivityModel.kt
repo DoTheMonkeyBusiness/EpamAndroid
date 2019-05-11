@@ -2,18 +2,19 @@ package com.example.epamandroid.mvp.models
 
 import com.example.epamandroid.constants.URLConstants.URL_STRING_EXTRA_KEY
 import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.mvp.contracts.IMainActivityContract
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
 import java.util.*
 
-object MainActivityModel {
+object MainActivityModel: IMainActivityContract.Model<DogEntity> {
     private const val TAG: String = "MainActivityModel"
 
     private val client = OkHttpClient()
 
-    fun getEntity(breed:String): DogEntity? {
+    override fun getEntity(breed:String): DogEntity? {
         try {
             val request =
                 Request

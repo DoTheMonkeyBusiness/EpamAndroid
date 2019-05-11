@@ -9,30 +9,30 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.example.epamandroid.R
 import com.example.epamandroid.entities.DogEntity
-import com.example.epamandroid.mvp.models.HomeModel
+import com.example.epamandroid.mvp.contracts.IHomeContract
 import com.example.epamandroid.mvp.presenters.HomePresenter
-import com.example.epamandroid.util.ItemTouchCallback
 import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
-import com.example.epamandroid.util.IAddItemsToRecyclerCallback
+import com.example.epamandroid.util.ItemTouchCallback
 import kotlinx.android.synthetic.main.home_fragment.*
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), IHomeContract.View {
 
     companion object {
         const val RECYCLER_STATE_KEY: String = "recyclerViewKey"
         const val LINEAR_LAYOUT_MANAGER_KEY: String = "linearLayoutKey"
-        const val STUDENT_LIST_KEY: String = "studentListKey"
+        const val DOGS_LIST_KEY: String = "dogsListKey"
     }
-
-    private val webService: HomeModel? = HomeModel
 
     private var isLoading: Boolean = false
     private var dogId: Int = 0
     private var callback: IShowBottomSheetCallback? = null
+    private var isEndOfList: Boolean = false
 
     private lateinit var homePresenter: HomePresenter
     private lateinit var viewAdapter: HomeRecyclerViewAdapter
@@ -82,20 +82,18 @@ class HomeFragment : Fragment() {
                     super.onScrolled(recyclerView, dx, dy)
                     val totalItemCount = linearLayoutManager.itemCount
                     val startPosition = viewAdapter.getMaxId()?.plus(1)
-
-//                    if (totalItemCount >= webService?.getEntitiesSize() ?: 0) {
-//                        viewAdapter.setShowLastViewAsLoading(false)
-//
-//                        return
-//                    }
-
                     val visibleItemCount = linearLayoutManager.childCount
                     val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
 
+                    if (firstVisibleItemPosition + (PAGE_SIZE * 3) <= totalItemCount) {
+                        isEndOfList = false
+                    }
+
                     if (!isLoading
-                            && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                                    && firstVisibleItemPosition >= 0
-                                    && totalItemCount >= PAGE_SIZE)
+                        && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                                && firstVisibleItemPosition >= 0
+                                && totalItemCount >= PAGE_SIZE
+                                && !isEndOfList)
                     ) {
                         startPosition?.let { loadMoreItems(it, startPosition + PAGE_SIZE) }
                     }
@@ -109,40 +107,30 @@ class HomeFragment : Fragment() {
 
         ItemTouchCallback(homeFragmentRecyclerView, viewAdapter).let {
             ItemTouchHelper(it).attachToRecyclerView(
-                    homeFragmentRecyclerView
+                homeFragmentRecyclerView
             )
         }
-        loadStartItems()
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(DOGS_LIST_KEY)) {
+            viewAdapter.updateDogsList(savedInstanceState.getParcelableArrayList(DOGS_LIST_KEY))
+
+        }
+
+        isLoading = true
+        viewAdapter.setShowLastViewAsLoading(isLoading)
+
+        homePresenter.onCreate()
+
+        retainInstance = true
     }
 
-    override fun onResume() {
-        super.onResume()
-//        restoringState()
-    }
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
 
-    override fun setRetainInstance(retain: Boolean) {
-        super.setRetainInstance(retain)
+        if (savedInstanceState != null && savedInstanceState.containsKey(DOGS_LIST_KEY)) {
+            viewAdapter.updateDogsList(savedInstanceState.getParcelableArrayList(DOGS_LIST_KEY))
+        }
     }
-
-//    private fun restoringState() {
-//        if (homePresenter?.recyclerViewState != null) {
-//            homeFragmentRecyclerView
-//                    .layoutManager
-//                    ?.onRestoreInstanceState(
-//                            homePresenter.recyclerViewState?.getParcelable(
-//                                    RECYCLER_STATE_KEY
-//                            )
-//                    )
-//            linearLayoutManager
-//                    .onRestoreInstanceState(homePresenter.recyclerViewState
-//                            ?.getParcelable(LINEAR_LAYOUT_MANAGER_KEY))
-//            viewAdapter
-//                    .addItems(homePresenter.recyclerViewState
-//                            ?.getParcelableArrayList(STUDENT_LIST_KEY))
-//        } else {
-//            loadStartItems()
-//        }
-//    }
 
     private fun setLinearLayoutManager() {
         linearLayoutManager = LinearLayoutManager(this@HomeFragment.context, LinearLayoutManager.VERTICAL, false)
@@ -154,57 +142,32 @@ class HomeFragment : Fragment() {
         viewAdapter.onItemClick = { dog ->
             dogId = dog.id
             if (viewAdapter.getItemViewType(dogId) == ViewType.DOG) {
-//                val breedDescriptionFragment =BreedDescriptionFragment()
-//                breedDescriptionFragment.arguments = homePresenter.putDogInfoInBundle(viewAdapter.getEntityById(dogId))
-//                mainActivity
-//                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
-//                                breedDescriptionFragment, DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY)
                 callback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(dogId))
-
             }
         }
-    }
-
-    private fun loadStartItems() {
-        loadMoreItems(0, PAGE_SIZE * 3)
     }
 
     private fun loadMoreItems(startPosition: Int, endPosition: Int) {
         isLoading = true
         viewAdapter.setShowLastViewAsLoading(isLoading)
-
-        homePresenter.getMoreItems(startPosition, endPosition, object : IAddItemsToRecyclerCallback<List<DogEntity>> {
-            override fun onShowLastViewAsLoading(isShow: Boolean) {
-                viewAdapter.setShowLastViewAsLoading(isShow)
-            }
-
-            override fun onResult(result: List<DogEntity>?) {
-                viewAdapter.addItems(result)
-                isLoading = false
-            }
-        })
-
-//        webService?.getEntities(startPosition, endPosition,
-//                object : IAddItemsToRecyclerCallback<List<DogEntity>> {
-//                    override fun onResult(result: List<DogEntity>) {
-//                        viewAdapter.addItems(result)
-//                        isLoading = false
-//                    }
-//                }, object : IShowLastViewAsLoadingCallback {
-//            override fun onShowLastViewAsLoading(isShow: Boolean) {
-//                viewAdapter.setShowLastViewAsLoading(isShow)
-//            }
-//        })
+        homePresenter.getMoreItems(startPosition, endPosition)
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun addElements(dogList: List<DogEntity>?, isFullList: Boolean) {
+        viewAdapter.addItems(dogList)
+        isLoading = false
+        viewAdapter.setShowLastViewAsLoading(isLoading)
+        isEndOfList = isFullList
+    }
 
-//        homePresenter?.recyclerViewState = Bundle()
-//
-//        homePresenter?.recyclerViewState?.putParcelable(RECYCLER_STATE_KEY, homeFragmentRecyclerView.layoutManager?.onSaveInstanceState())
-//        homePresenter?.recyclerViewState?.putParcelable(LINEAR_LAYOUT_MANAGER_KEY, linearLayoutManager.onSaveInstanceState())
-//        homePresenter?.recyclerViewState?.putParcelableArrayList(STUDENT_LIST_KEY, viewAdapter.getItems())
+    override fun isEmptyRecyclerView(): Boolean {
+        return viewAdapter.isEmptyDogsList()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putParcelableArrayList(DOGS_LIST_KEY, viewAdapter.getDogList())
     }
 
     interface IShowBottomSheetCallback {

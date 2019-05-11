@@ -1,6 +1,7 @@
 package com.example.epamandroid.mvp.views.adapters
 
 import android.content.Context
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +16,19 @@ import com.example.epamandroid.mvp.views.compoundviews.DogView
 import com.example.imageloader.IMichelangelo
 import com.example.imageloader.Michelangelo
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.properties.Delegates
 
-class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>() {
+class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>(),
+    IAutoUpdatableHomeAdapter {
 
     private val michelangelo: IMichelangelo = Michelangelo(context)
     private val dogsList = ArrayList<DogEntity>()
+
+    //    var dogsList: ArrayList<DogEntity> by Delegates.observable(arrayListOf()) {
+//            prop, old, new ->
+//        autoNotify(old, new) { o, n -> o.id == n.id }
+//    }
     private val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     private var isShowLastViewAsLoading = false
@@ -34,7 +43,6 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
     ): ViewHolder {
         return when (viewType) {
             DOG -> {
-//                ViewHolder(DogView(parent.context))
                 ViewHolder(layoutInflater.inflate(R.layout.dog_view_item, parent, false))
             }
             LOADING -> {
@@ -81,17 +89,32 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
 
     fun setShowLastViewAsLoading(isShow: Boolean) {
         if (isShow != isShowLastViewAsLoading) {
+            val oldItems: Any = dogsList.clone()
             isShowLastViewAsLoading = isShow
-            notifyDataSetChanged()
+//            notifyDataSetChanged()
+            notifyChanges(oldItems as List<DogEntity>, dogsList)
         }
     }
 
     fun addItems(result: List<DogEntity>?) {
+        val oldItems: Any = dogsList.clone()
+
         result?.let { dogsList.addAll(it) }
-        notifyDataSetChanged()
+        notifyChanges(oldItems as List<DogEntity>, dogsList)
+//        notifyDataSetChanged()
     }
 
-    fun getItems(): ArrayList<DogEntity> {
+    fun updateDogsList(list: ArrayList<DogEntity>?) {
+        if (list !== null) {
+            val oldItems: Any = dogsList.clone()
+            dogsList.clear()
+            dogsList.addAll(list)
+//            notifyDataSetChanged()
+            notifyChanges(oldItems as List<DogEntity>, dogsList)
+        }
+    }
+
+    fun getDogList(): ArrayList<DogEntity> {
         return dogsList
     }
 
@@ -104,7 +127,7 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
     fun getMaxId(): Int? {
 
         return when {
-            dogsList.size == 0 -> {
+            dogsList.isEmpty() -> {
                 0
             }
             (dogsList.size < dogsList.maxBy { it.id }?.id ?: dogsList.size) -> {
@@ -137,6 +160,31 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         if (getItemViewType(adapterPosition) == ViewType.DOG) {
             deleteByIndex(adapterPosition)
         }
+    }
+
+    fun isEmptyDogsList(): Boolean {
+        return dogsList.isEmpty()
+    }
+
+    private fun notifyChanges(oldList: List<DogEntity>, newList: List<DogEntity>) {
+
+        val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition].id == newList[newItemPosition].id
+            }
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+                return oldList[oldItemPosition] == newList[newItemPosition]
+
+            }
+
+            override fun getOldListSize() = oldList.size
+
+            override fun getNewListSize() = newList.size
+        })
+
+        diff.dispatchUpdatesTo(this@HomeRecyclerViewAdapter)
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

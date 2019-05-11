@@ -1,56 +1,62 @@
 package com.example.epamandroid.mvp.presenters
 
-import android.os.Bundle
+import android.nfc.tech.MifareUltralight
 import android.os.Handler
 import android.os.Looper
-import com.example.epamandroid.constants.DogEntityConstants
 import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.contracts.IHomeContract
 import com.example.epamandroid.mvp.models.HomeModel
-import com.example.epamandroid.mvp.views.fragments.HomeFragment
-import com.example.epamandroid.util.IAddItemsToRecyclerCallback
 
-class HomePresenter(view: HomeFragment) : IHomeContract.IPresenter {
+class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presenter {
 
     companion object {
-        private const val TAG = "HomePresenter"
+        private const val TAG: String = "HomePresenter"
+        private const val START_OF_RANGE_KEY: Int = 0
+        private const val END_OF_RANGE_KEY: Int = MifareUltralight.PAGE_SIZE * 3
     }
 
     private val handler = Handler(Looper.getMainLooper())
 
-    fun getMoreItems(
+    override fun onCreate() {
+        if (view.isEmptyRecyclerView()) {
+            Thread {
+                val dogList: List<DogEntity>? =
+                        HomeModel
+                                .getEntities(START_OF_RANGE_KEY, END_OF_RANGE_KEY)
+                                ?.sortedBy { it.id }
+
+                giveElementsToView(dogList, END_OF_RANGE_KEY)
+            }.start()
+        }
+    }
+
+    override fun getMoreItems(
             startPosition: Int,
-            endPosition: Int,
-            callback: IAddItemsToRecyclerCallback<List<DogEntity>>
-    ) {
+            endPosition: Int) {
         Thread {
             val dogList: List<DogEntity>? =
-                    HomeModel.getEntities(startPosition, endPosition)
+                    HomeModel
+                            .getEntities(startPosition, endPosition)
                             ?.sortedBy { it.id }
 
-            handler.post {
-                Runnable {
-                    callback.onResult(dogList)
-                    callback.onShowLastViewAsLoading(dogList?.last()?.id == endPosition)
-                }.run()
-            }
+            giveElementsToView(dogList, endPosition)
         }.start()
     }
 
-    fun putDogInfoInBundle(dogEntity: DogEntity): Bundle? {
-        val bundle: Bundle? = Bundle()
+    private fun isFoolList(dogList: List<DogEntity>?, endPosition: Int): Boolean {
 
-        return bundle?.apply {
-            putString(DogEntityConstants.breed, dogEntity.breed)
-            putString(DogEntityConstants.weight, dogEntity.weight)
-            putString(DogEntityConstants.height, dogEntity.height)
-            putString(DogEntityConstants.description, dogEntity.description)
-            putBoolean(DogEntityConstants.canLiveAtHome, dogEntity.isCanLiveAtHome)
-            putFloat(DogEntityConstants.breedPopularity, dogEntity.breedPopularity)
-            putInt(DogEntityConstants.cost, dogEntity.cost)
-            putString(DogEntityConstants.lifeExpectancy, dogEntity.lifeExpectancy)
-            putString(DogEntityConstants.photo, dogEntity.photo)
-        }
+        return !(dogList != null &&
+                dogList.size == endPosition)
 
     }
+
+    private fun giveElementsToView(dogList: List<DogEntity>?, endPosition: Int) {
+        handler.post {
+            Runnable {
+                view.addElements(dogList, isFoolList(dogList, endPosition))
+            }.run()
+        }
+    }
+
+    override fun onDestroy() = Unit
 }
