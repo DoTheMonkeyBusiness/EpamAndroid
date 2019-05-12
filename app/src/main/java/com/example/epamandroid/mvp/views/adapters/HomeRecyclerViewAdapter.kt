@@ -87,30 +87,32 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         }
     }
 
+
+    //TODO: DoffUtil doesn't work in this method
     fun setShowLastViewAsLoading(isShow: Boolean) {
         if (isShow != isShowLastViewAsLoading) {
-            val oldItems: Any = dogsList.clone()
+//            val oldItems: Any = dogsList.clone()
             isShowLastViewAsLoading = isShow
-//            notifyDataSetChanged()
-            notifyChanges(oldItems as List<DogEntity>, dogsList)
+            notifyDataSetChanged()
+//            notifyChanges(oldItems as List<DogEntity>, dogsList)
         }
     }
 
     fun addItems(result: List<DogEntity>?) {
-        val oldItems: Any = dogsList.clone()
+        val oldItems: ArrayList<DogEntity> = dogsList.clone() as ArrayList<DogEntity>
 
         result?.let { dogsList.addAll(it) }
-        notifyChanges(oldItems as List<DogEntity>, dogsList)
+        notifyChanges(oldItems, dogsList)
 //        notifyDataSetChanged()
     }
 
     fun updateDogsList(list: ArrayList<DogEntity>?) {
         if (list !== null) {
-            val oldItems: Any = dogsList.clone()
+            val oldItems: ArrayList<DogEntity> = dogsList.clone() as ArrayList<DogEntity>
             dogsList.clear()
             dogsList.addAll(list)
 //            notifyDataSetChanged()
-            notifyChanges(oldItems as List<DogEntity>, dogsList)
+            notifyChanges(oldItems, dogsList)
         }
     }
 
@@ -166,16 +168,21 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         return dogsList.isEmpty()
     }
 
-    private fun notifyChanges(oldList: List<DogEntity>, newList: List<DogEntity>) {
+    private fun notifyChanges(oldList: ArrayList<DogEntity>, newList: ArrayList<DogEntity>) {
 
         val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldList[oldItemPosition].id == newList[newItemPosition].id
+//                return getItemViewType(oldItemPosition) == getItemViewType(newItemPosition)
+                return oldList[oldItemPosition] == newList[newItemPosition]
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                return oldList[oldItemPosition] == newList[newItemPosition]
+                    val oldDogEntity: DogEntity = oldList[oldItemPosition]
+                    val newDogEntity: DogEntity = newList[newItemPosition]
+
+                    return oldDogEntity == newDogEntity
+//                return oldList[oldItemPosition] == newList[newItemPosition]
 
             }
 

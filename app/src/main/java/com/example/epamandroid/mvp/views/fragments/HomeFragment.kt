@@ -114,10 +114,10 @@ class HomeFragment : Fragment(), IHomeContract.View {
         if (savedInstanceState != null && savedInstanceState.containsKey(DOGS_LIST_KEY)) {
             viewAdapter.updateDogsList(savedInstanceState.getParcelableArrayList(DOGS_LIST_KEY))
 
+        } else {
+            isLoading = true
+            viewAdapter.setShowLastViewAsLoading(isLoading)
         }
-
-        isLoading = true
-        viewAdapter.setShowLastViewAsLoading(isLoading)
 
         homePresenter.onCreate()
 
