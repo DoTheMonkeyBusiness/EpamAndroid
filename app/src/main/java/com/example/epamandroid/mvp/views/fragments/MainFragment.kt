@@ -10,6 +10,7 @@ import android.view.*
 import com.example.epamandroid.constants.FragmentConstants.HOME_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.constants.FragmentConstants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.R
+import com.example.epamandroid.constants.FragmentConstants.MAP_FRAGMENT_TAG_EXTRA_KEY
 import com.example.kotlinextensions.changeFragment
 import com.example.kotlinextensions.changeFragmentWithBackStack
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -98,6 +99,9 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
         val settingsFragment = activity
                 ?.supportFragmentManager
                 ?.findFragmentByTag(SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
+        val mapFragment = activity
+                ?.supportFragmentManager
+                ?.findFragmentByTag(MAP_FRAGMENT_TAG_EXTRA_KEY)
 
         when (item.itemId) {
             R.id.bottomNavigationHome -> {
@@ -118,6 +122,26 @@ class MainFragment : Fragment(), BottomNavigationView.OnNavigationItemSelectedLi
                 isVisibleMenuItem = true
                 setMenuVisibility(isVisibleMenuItem)
                 isSwipePagingEnabled = true
+                callback?.onViewPagerSwipePagingEnabled(isSwipePagingEnabled)
+            }
+            R.id.bottomNavigationMap -> {
+
+                if (mapFragment == null
+                        || !mapFragment.isVisible) {
+
+                    mainActivity
+                            .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
+                                    MapFragment(), MAP_FRAGMENT_TAG_EXTRA_KEY)
+                }
+
+                mainActivity.apply {
+                    setTitle(R.string.lost_dogs)
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
+
+                isVisibleMenuItem = false
+                setMenuVisibility(isVisibleMenuItem)
+                isSwipePagingEnabled = false
                 callback?.onViewPagerSwipePagingEnabled(isSwipePagingEnabled)
             }
             R.id.bottomNavigationSettings -> {

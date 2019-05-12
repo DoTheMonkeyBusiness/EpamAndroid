@@ -14,6 +14,7 @@ import android.view.View
 import com.example.epamandroid.constants.FragmentConstants.HOME_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.constants.FragmentConstants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.R
+import com.example.epamandroid.constants.FragmentConstants.MAP_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
 import com.example.epamandroid.mvp.core.IBaseView
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity(),
         private const val MAIN_ITEM_KEY: Int = 1
         private const val VIEW_PAGER_EXTRA_KEY: Int = 0
         private const val INTERNAL_FRAGMENTS_EXTRA_KEY: Int = 1
+        private const val WRITE_EXTERNAL_STORAGE_PERMISSION_KEY: Int = 1212
     }
 
     private val viewPagerHistory: Stack<Int> = Stack()
@@ -61,7 +63,6 @@ class MainActivity : AppCompatActivity(),
                         getString(R.string.switch_day_night_mode_key), false
                 )
         ) {
-
             setTheme(R.style.AppThemeNight)
         } else {
             setTheme(R.style.AppThemeDay)
@@ -123,6 +124,8 @@ class MainActivity : AppCompatActivity(),
                 .findFragmentByTag(HOME_FRAGMENT_TAG_EXTRA_KEY)
         val settingsFragment = supportFragmentManager
                 .findFragmentByTag(SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
+        val mapFragment = supportFragmentManager
+                .findFragmentByTag(MAP_FRAGMENT_TAG_EXTRA_KEY)
 
         when {
             (viewPagerHistory.empty()
@@ -138,6 +141,10 @@ class MainActivity : AppCompatActivity(),
                         (mainFragmentBottomNavigationView as BottomNavigationView)
                                 .selectedItemId = R.id.bottomNavigationSettings
                     }
+                    (mapFragment !== null && mapFragment.isVisible) -> {
+                        (mainFragmentBottomNavigationView as BottomNavigationView)
+                                .selectedItemId = R.id.bottomNavigationMap
+                    }
                 }
             }
             else -> {
@@ -151,7 +158,7 @@ class MainActivity : AppCompatActivity(),
     private fun checkExternalStoragePermission() {
         if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 135)
+            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_EXTERNAL_STORAGE_PERMISSION_KEY)
         }
     }
 
