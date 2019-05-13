@@ -21,12 +21,15 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 
 
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         private const val TAG: String = "MapFragment"
+        private const val LOST_DOG_TITLE_KEY: String = "Add lost dog"
         private const val DEFAULT_ZOOM_KEY: Float = 15F
         private const val LOCATION_PERMISSION_KEY: Int = 1778
     }
@@ -34,6 +37,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var lostDogsMap: GoogleMap? = null
     private var locationPermissionsGranted: Boolean = false
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
+    private var lostDogMarker: Marker? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.map_fragment, container, false)
@@ -106,6 +110,24 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         lostDogsMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
     }
 
+    private fun setOnMapClickListener() {
+        lostDogsMap?.setOnMapClickListener {
+            val marker = MarkerOptions().position(it).title(LOST_DOG_TITLE_KEY)
+
+            lostDogMarker?.remove()
+            lostDogMarker = lostDogsMap?.addMarker(marker)
+        }
+    }
+
+    private fun setOnMarkerClickListener() {
+        lostDogsMap?.setOnMarkerClickListener {
+            if(it.title == LOST_DOG_TITLE_KEY){
+                Toast.makeText(context, it.title, Toast.LENGTH_LONG).show()
+            }
+            true
+        }
+    }
+
     override fun onMapReady(map: GoogleMap?) {
         lostDogsMap = map
 
@@ -118,6 +140,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 return
             }
             lostDogsMap?.isMyLocationEnabled = true
+
+            setOnMapClickListener()
+            setOnMarkerClickListener()
         }
     }
 }
