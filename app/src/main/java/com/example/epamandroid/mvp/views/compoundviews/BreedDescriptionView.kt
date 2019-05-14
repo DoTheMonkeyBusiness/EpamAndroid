@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.example.epamandroid.R
 import com.example.epamandroid.constants.DogEntityConstants
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.models.DogEntity
 import kotlinx.android.synthetic.main.breed_description_view.view.*
 
 class BreedDescriptionView @JvmOverloads constructor(

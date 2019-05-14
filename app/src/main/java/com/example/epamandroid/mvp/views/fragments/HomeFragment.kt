@@ -13,7 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.epamandroid.R
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IHomeContract
 import com.example.epamandroid.mvp.presenters.HomePresenter
 import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
@@ -30,7 +30,6 @@ class HomeFragment : Fragment(), IHomeContract.View {
     }
 
     private var isLoading: Boolean = false
-    private var dogId: Int = 0
     private var callback: IShowBottomSheetCallback? = null
     private var isEndOfList: Boolean = false
 
@@ -81,7 +80,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     val totalItemCount = linearLayoutManager.itemCount
-                    val startPosition = viewAdapter.getMaxId()?.plus(1)
+                    val startPosition = viewAdapter.getSize()?.plus(1)
                     val visibleItemCount = linearLayoutManager.childCount
                     val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
 
@@ -140,9 +139,8 @@ class HomeFragment : Fragment(), IHomeContract.View {
         viewAdapter = HomeRecyclerViewAdapter(context)
 
         viewAdapter.onItemClick = { dog ->
-            dogId = dog.id
-            if (viewAdapter.getItemViewType(dogId) == ViewType.DOG) {
-                callback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(dogId))
+            if (dog.id?.let { viewAdapter.getItemViewType(it) } == ViewType.DOG) {
+                callback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(dog.id))
             }
         }
     }

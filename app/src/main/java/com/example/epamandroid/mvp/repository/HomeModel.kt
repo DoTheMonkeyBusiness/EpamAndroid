@@ -1,7 +1,7 @@
-package com.example.epamandroid.mvp.models
+package com.example.epamandroid.mvp.repository
 
 import com.example.epamandroid.constants.URLConstants.URL_STRING_EXTRA_KEY
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IHomeContract
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

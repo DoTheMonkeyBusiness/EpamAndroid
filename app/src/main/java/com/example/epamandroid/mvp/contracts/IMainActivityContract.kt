@@ -1,6 +1,6 @@
 package com.example.epamandroid.mvp.contracts
 
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.models.DogEntity
 
 interface IMainActivityContract {
     interface View {

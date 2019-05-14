@@ -35,8 +35,18 @@ public class Michelangelo implements IMichelangelo {
         }
     };
 
-    public Michelangelo(final Context context) {
+    private Michelangelo(final Context context) {
         diskCache = new BitmapDiskCache(context);
+    }
+
+    private static Michelangelo singleInstance = null;
+
+    public static Michelangelo getInstance(final Context context)
+    {
+        if (singleInstance == null)
+            singleInstance = new Michelangelo(context);
+
+        return singleInstance;
     }
 
     @Override

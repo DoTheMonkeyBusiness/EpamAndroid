@@ -15,7 +15,7 @@ import com.example.epamandroid.constants.FragmentConstants.HOME_FRAGMENT_TAG_EXT
 import com.example.epamandroid.constants.FragmentConstants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.R
 import com.example.epamandroid.constants.FragmentConstants.MAP_FRAGMENT_TAG_EXTRA_KEY
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
 import com.example.epamandroid.mvp.core.IBaseView
 import com.example.epamandroid.mvp.presenters.MainActivityPresenter
@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity(),
         })
 
         mainActivityPresenter = MainActivityPresenter(this)
-        michelangelo = Michelangelo(applicationContext)
+        michelangelo = Michelangelo.getInstance(applicationContext)
     }
 
     override fun onBackPressed() {

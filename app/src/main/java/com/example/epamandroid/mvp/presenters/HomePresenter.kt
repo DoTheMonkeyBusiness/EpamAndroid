@@ -3,9 +3,9 @@ package com.example.epamandroid.mvp.presenters
 import android.nfc.tech.MifareUltralight
 import android.os.Handler
 import android.os.Looper
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IHomeContract
-import com.example.epamandroid.mvp.models.HomeModel
+import com.example.epamandroid.mvp.repository.HomeModel
 
 class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presenter {
 

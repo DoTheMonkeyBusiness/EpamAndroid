@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.example.epamandroid.R
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType.Companion.DOG
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType.Companion.LOADING
@@ -17,29 +17,23 @@ import com.example.imageloader.IMichelangelo
 import com.example.imageloader.Michelangelo
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.properties.Delegates
 
-class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>(),
-    IAutoUpdatableHomeAdapter {
+class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>() {
 
-    private val michelangelo: IMichelangelo = Michelangelo(context)
-    private val dogsList = ArrayList<DogEntity>()
+    private val michelangelo: IMichelangelo = Michelangelo.getInstance(context)
+    private val dogsList = ArrayList<DogEntity?>()
 
-    //    var dogsList: ArrayList<DogEntity> by Delegates.observable(arrayListOf()) {
-//            prop, old, new ->
-//        autoNotify(old, new) { o, n -> o.id == n.id }
-//    }
     private val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     private var isShowLastViewAsLoading = false
 
-    private lateinit var dogEntity: DogEntity
+    private var dogEntity: DogEntity? = null
 
     var onItemClick: ((DogEntity) -> Unit)? = null
 
     override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
+            parent: ViewGroup,
+            viewType: Int
     ): ViewHolder {
         return when (viewType) {
             DOG -> {
@@ -47,14 +41,14 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
             }
             LOADING -> {
                 ViewHolder(
-                    layoutInflater.inflate(R.layout.layout_progress, parent, false)
-                            as FrameLayout
+                        layoutInflater.inflate(R.layout.layout_progress, parent, false)
+                                as FrameLayout
                 )
             }
             else -> {
                 ViewHolder(
-                    layoutInflater.inflate(R.layout.error_view, parent, false)
-                            as FrameLayout
+                        layoutInflater.inflate(R.layout.error_view, parent, false)
+                                as FrameLayout
                 )
             }
         }
@@ -66,8 +60,8 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
             dogEntity = dogsList[position]
 
             holder
-                .setDogBreed(dogEntity.breed)
-            michelangelo.load(holder.getDogIcon(), dogEntity.photo)
+                    .setDogBreed(dogEntity?.breed)
+            michelangelo.load(holder.getDogIcon(), dogEntity?.photo)
         }
     }
 
@@ -99,7 +93,7 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
     }
 
     fun addItems(result: List<DogEntity>?) {
-        val oldItems: ArrayList<DogEntity> = dogsList.clone() as ArrayList<DogEntity>
+        val oldItems: ArrayList<DogEntity?> = dogsList.clone() as ArrayList<DogEntity?>
 
         result?.let { dogsList.addAll(it) }
         notifyChanges(oldItems, dogsList)
@@ -108,7 +102,7 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
 
     fun updateDogsList(list: ArrayList<DogEntity>?) {
         if (list !== null) {
-            val oldItems: ArrayList<DogEntity> = dogsList.clone() as ArrayList<DogEntity>
+            val oldItems: ArrayList<DogEntity?> = dogsList.clone() as ArrayList<DogEntity?>
             dogsList.clear()
             dogsList.addAll(list)
 //            notifyDataSetChanged()
@@ -116,7 +110,7 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         }
     }
 
-    fun getDogList(): ArrayList<DogEntity> {
+    fun getDogList(): ArrayList<DogEntity?> {
         return dogsList
     }
 
@@ -126,23 +120,27 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         notifyItemRangeChanged(i, dogsList.size - 1)
     }
 
-    fun getMaxId(): Int? {
+//    fun getMaxId(): Int? {
+//
+//        dogsList.maxBy { it?.id }
+//
+//        return when {
+//            dogsList.isEmpty() -> {
+//                0
+//            }
+//            (dogsList.size < dogsList.maxBy { it?.id }?.id ?: dogsList.size) -> {
+//                dogsList.size - 1
+//            }
+//            else -> {
+//                dogsList.maxBy { it?.id }?.id
+//            }
+//
+//        }
+//    }
 
-        return when {
-            dogsList.isEmpty() -> {
-                0
-            }
-            (dogsList.size < dogsList.maxBy { it.id }?.id ?: dogsList.size) -> {
-                dogsList.size - 1
-            }
-            else -> {
-                dogsList.maxBy { it.id }?.id
-            }
+    fun getSize(): Int? = dogsList.size
 
-        }
-    }
-
-    fun getEntityById(id: Int): DogEntity = dogsList[id]
+    fun getEntityById(id: Int): DogEntity? = dogsList[id]
 
     fun onItemMove(fromPosition: Int, toPosition: Int) {
         if (fromPosition < toPosition) {
@@ -168,7 +166,7 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         return dogsList.isEmpty()
     }
 
-    private fun notifyChanges(oldList: ArrayList<DogEntity>, newList: ArrayList<DogEntity>) {
+    private fun notifyChanges(oldList: ArrayList<DogEntity?>, newList: ArrayList<DogEntity?>) {
 
         val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
 
@@ -178,10 +176,10 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                    val oldDogEntity: DogEntity = oldList[oldItemPosition]
-                    val newDogEntity: DogEntity = newList[newItemPosition]
+                val oldDogEntity: DogEntity? = oldList[oldItemPosition]
+                val newDogEntity: DogEntity? = newList[newItemPosition]
 
-                    return oldDogEntity == newDogEntity
+                return oldDogEntity == newDogEntity
 //                return oldList[oldItemPosition] == newList[newItemPosition]
 
             }
@@ -198,7 +196,7 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         init {
             view.setOnClickListener {
                 if (itemViewType == ViewType.DOG) {
-                    onItemClick?.invoke(dogsList[adapterPosition])
+                    dogsList[adapterPosition]?.let { it1 -> onItemClick?.invoke(it1) }
                 }
             }
         }

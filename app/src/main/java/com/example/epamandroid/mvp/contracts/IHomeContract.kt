@@ -1,6 +1,6 @@
 package com.example.epamandroid.mvp.contracts
 
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.core.IBasePresenter
 import com.example.epamandroid.mvp.core.IBaseView
 

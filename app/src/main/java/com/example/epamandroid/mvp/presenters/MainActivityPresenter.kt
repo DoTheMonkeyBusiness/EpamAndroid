@@ -2,10 +2,10 @@ package com.example.epamandroid.mvp.presenters
 
 import android.os.Handler
 import android.os.Looper
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
 import com.example.epamandroid.mvp.core.IBasePresenter
-import com.example.epamandroid.mvp.models.MainActivityModel
+import com.example.epamandroid.mvp.repository.MainActivityModel
 
 class MainActivityPresenter(
     private var mainActivityView: IMainActivityContract.View
