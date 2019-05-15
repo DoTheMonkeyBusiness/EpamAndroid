@@ -33,12 +33,12 @@ import kotlinx.android.synthetic.main.main_fragment.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(),
-        MainFragment.IChangeFragmentMainItemCallback,
-        CameraFragment.IChangeFragmentCameraItemCallback,
-        HomeFragment.IShowBottomSheetCallback,
-        CameraFragment.IShowBottomSheetCallback,
-        IBaseView,
-        IMainActivityContract.View {
+    MainFragment.IChangeFragmentMainItemCallback,
+    CameraFragment.IChangeFragmentCameraItemCallback,
+    HomeFragment.IShowBottomSheetCallback,
+    CameraFragment.IShowBottomSheetCallback,
+    IBaseView,
+    IMainActivityContract.View {
 
     companion object {
         private const val CAMERA_ITEM_KEY: Int = 0
@@ -62,13 +62,14 @@ class MainActivity : AppCompatActivity(),
         val isDarkModeEnabled = PreferenceManager.getDefaultSharedPreferences(this)
 
         if (isDarkModeEnabled.getBoolean(
-                        getString(R.string.switch_day_night_mode_key), false
-                )
+                getString(R.string.switch_day_night_mode_key), false
+            )
         ) {
             setTheme(R.style.AppThemeNight)
         } else {
             setTheme(R.style.AppThemeDay)
         }
+
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -123,11 +124,11 @@ class MainActivity : AppCompatActivity(),
 
     override fun onBackPressed() {
         val homeFragment = supportFragmentManager
-                .findFragmentByTag(HOME_FRAGMENT_TAG_EXTRA_KEY)
+            .findFragmentByTag(HOME_FRAGMENT_TAG_EXTRA_KEY)
         val settingsFragment = supportFragmentManager
-                .findFragmentByTag(SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
+            .findFragmentByTag(SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
         val mapFragment = supportFragmentManager
-                .findFragmentByTag(MAP_FRAGMENT_TAG_EXTRA_KEY)
+            .findFragmentByTag(MAP_FRAGMENT_TAG_EXTRA_KEY)
 
         when {
             (viewPagerHistory.empty()
@@ -137,15 +138,15 @@ class MainActivity : AppCompatActivity(),
                 when {
                     (homeFragment !== null && homeFragment.isVisible) -> {
                         (mainFragmentBottomNavigationView as BottomNavigationView)
-                                .selectedItemId = R.id.bottomNavigationHome
+                            .selectedItemId = R.id.bottomNavigationHome
                     }
                     (settingsFragment !== null && settingsFragment.isVisible) -> {
                         (mainFragmentBottomNavigationView as BottomNavigationView)
-                                .selectedItemId = R.id.bottomNavigationSettings
+                            .selectedItemId = R.id.bottomNavigationSettings
                     }
                     (mapFragment !== null && mapFragment.isVisible) -> {
                         (mainFragmentBottomNavigationView as BottomNavigationView)
-                                .selectedItemId = R.id.bottomNavigationMap
+                            .selectedItemId = R.id.bottomNavigationMap
                     }
                 }
             }
@@ -158,9 +159,16 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun checkExternalStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_EXTERNAL_STORAGE_PERMISSION_KEY)
+        if (ContextCompat.checkSelfPermission(
+                this@MainActivity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_DENIED
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                WRITE_EXTERNAL_STORAGE_PERMISSION_KEY
+            )
         }
     }
 
@@ -180,12 +188,12 @@ class MainActivity : AppCompatActivity(),
 
     private fun configureViewPager() {
         val adapter = ViewPagerAdapter(supportFragmentManager)
-                .apply {
-                    let {
-                        it.addFragment(CameraFragment())
-                        it.addFragment(MainFragment())
-                    }
+            .apply {
+                let {
+                    it.addFragment(CameraFragment())
+                    it.addFragment(MainFragment())
                 }
+            }
 
         activityMainViewPager.adapter = adapter
     }
@@ -228,12 +236,12 @@ class MainActivity : AppCompatActivity(),
 
     override fun onItemChangedToCamera() {
         activityMainViewPager
-                .setCurrentItem(CAMERA_ITEM_KEY, true)
+            .setCurrentItem(CAMERA_ITEM_KEY, true)
     }
 
     override fun onItemChangedToMain() {
         activityMainViewPager
-                .setCurrentItem(MAIN_ITEM_KEY, true)
+            .setCurrentItem(MAIN_ITEM_KEY, true)
     }
 
     override fun onItemChangedToInternalFragment() {
@@ -242,7 +250,7 @@ class MainActivity : AppCompatActivity(),
 
     override fun onViewPagerSwipePagingEnabled(changeSwipePagingEnabled: Boolean) {
         activityMainViewPager
-                .setSwipePagingEnabled(changeSwipePagingEnabled)
+            .setSwipePagingEnabled(changeSwipePagingEnabled)
     }
 
     override fun onShowBottomSheetFromHome(dogEntity: DogEntity?) {

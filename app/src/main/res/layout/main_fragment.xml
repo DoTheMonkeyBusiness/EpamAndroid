@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
-    <FrameLayout
-        android:id="@+id/mainFragmentFrameLayout"
+    <com.example.epamandroid.mvp.views.compoundviews.SwipeLockableViewPager
+        android:id="@+id/mainFragmentViewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/mainFragmentBottomNavigationView"

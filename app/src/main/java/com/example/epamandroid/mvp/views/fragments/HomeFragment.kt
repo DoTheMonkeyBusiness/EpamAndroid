@@ -34,10 +34,10 @@ class HomeFragment : Fragment(), IHomeContract.View {
     }
 
     private var isLoading: Boolean = false
-    private var callback: IShowBottomSheetCallback? = null
+    private var showBottomSheetCallback: IShowBottomSheetCallback? = null
     private var isEndOfList: Boolean = false
     private var bottomProgress: BottomSheetBehavior<View>? = null
-
+    private var saveHomeFragmentStateCallback: ISaveHomeFragmentStateCallback? = null
 
     private lateinit var homePresenter: HomePresenter
     private lateinit var viewAdapter: HomeRecyclerViewAdapter
@@ -48,7 +48,10 @@ class HomeFragment : Fragment(), IHomeContract.View {
         super.onAttach(context)
 
         if (context is IShowBottomSheetCallback) {
-            callback = context
+            showBottomSheetCallback = context
+        }
+        if (context is ISaveHomeFragmentStateCallback) {
+            saveHomeFragmentStateCallback = context
         }
     }
 
@@ -137,8 +140,6 @@ class HomeFragment : Fragment(), IHomeContract.View {
         homePresenter.onCreate()
 
         retainInstance = true
-
-
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -147,6 +148,11 @@ class HomeFragment : Fragment(), IHomeContract.View {
         if (savedInstanceState != null && savedInstanceState.containsKey(DOGS_LIST_KEY)) {
             viewAdapter.updateDogsList(savedInstanceState.getParcelableArrayList(DOGS_LIST_KEY))
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        saveHomeFragmentStateCallback?.onSaveHomeFragmentState(this@HomeFragment)
     }
 
     private fun setLinearLayoutManager() {
@@ -158,7 +164,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
         viewAdapter.onItemClick = { dog ->
             if (dog.id?.let { viewAdapter.getItemViewType(it) } == ViewType.DOG) {
-                callback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(dog.id))
+                showBottomSheetCallback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(dog.id))
             }
         }
     }
@@ -188,5 +194,9 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
     interface IShowBottomSheetCallback {
         fun onShowBottomSheetFromHome(dogEntity: DogEntity?)
+    }
+
+    interface ISaveHomeFragmentStateCallback {
+        fun onSaveHomeFragmentState(fragment: HomeFragment)
     }
 }
