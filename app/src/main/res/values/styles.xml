@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimaryNight</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkNight</item>
         <item name="colorAccent">@color/colorAccentNight</item>
+        <item name="colorAccentGrey">@color/colorAccentGreyNight</item>
         <item name="colorBackground">@color/colorBackgroundNight</item>
         <item name="colorBottomSheetHeader">@color/colorBottomSheetHeaderNight</item>
         <!--<item name="colorSwitchThumbNormal">@color/colorPrimaryDark</item>-->
@@ -18,6 +19,7 @@
         <item name="colorPrimary">@color/colorPrimaryDay</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkDay</item>
         <item name="colorAccent">@color/colorAccentDay</item>
+        <item name="colorAccentGrey">@color/colorAccentGreyDay</item>
         <item name="colorBackground">@color/colorBackgroundDay</item>
         <item name="colorBottomSheetHeader">@color/colorBottomSheetHeaderDay</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>

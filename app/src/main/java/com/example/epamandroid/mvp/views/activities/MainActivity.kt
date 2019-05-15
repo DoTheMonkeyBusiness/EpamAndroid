@@ -25,6 +25,8 @@ import com.example.epamandroid.mvp.views.adapters.ViewPagerAdapter
 import com.example.epamandroid.mvp.views.fragments.HomeFragment
 import com.example.imageloader.IMichelangelo
 import com.example.imageloader.Michelangelo
+import com.example.kotlinextensions.collapseBottomSheet
+import com.example.kotlinextensions.expandBottomSheet
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.breed_description.*
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -98,7 +100,7 @@ class MainActivity : AppCompatActivity(),
         isSaveToHistory = true
 
         breedDescriptionCloseButton.setOnClickListener {
-            collapseBottomSheet()
+            bottomSheetBehavior.collapseBottomSheet()
         }
 
         bottomSheetBehavior?.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -160,14 +162,6 @@ class MainActivity : AppCompatActivity(),
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_EXTERNAL_STORAGE_PERMISSION_KEY)
         }
-    }
-
-    private fun expandBottomSheet() {
-        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-    }
-
-    private fun collapseBottomSheet() {
-        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     override fun updateBreedDescription(dogEntity: DogEntity?) {
@@ -252,7 +246,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onShowBottomSheetFromHome(dogEntity: DogEntity?) {
-        expandBottomSheet()
+        bottomSheetBehavior.expandBottomSheet()
         if (dogEntity !== null) {
             breedDescription.updateDogInfo(dogEntity)
             michelangelo.load(breedDescription.getDogPhoto(), dogEntity.photo)
@@ -265,7 +259,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onShowBottomSheetFromCamera(dogBreed: String) {
-        expandBottomSheet()
+        bottomSheetBehavior.expandBottomSheet()
         showProgress()
         mainActivityPresenter?.loadDogByBreed(dogBreed)
     }

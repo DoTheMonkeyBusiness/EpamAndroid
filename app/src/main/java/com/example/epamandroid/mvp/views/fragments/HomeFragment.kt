@@ -3,6 +3,7 @@ package com.example.epamandroid.mvp.views.fragments
 import android.content.Context
 import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
@@ -19,6 +20,9 @@ import com.example.epamandroid.mvp.presenters.HomePresenter
 import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
 import com.example.epamandroid.util.ItemTouchCallback
+import com.example.kotlinextensions.collapseBottomSheet
+import com.example.kotlinextensions.expandBottomSheet
+import kotlinx.android.synthetic.main.bottom_progressbar.*
 import kotlinx.android.synthetic.main.home_fragment.*
 
 class HomeFragment : Fragment(), IHomeContract.View {
@@ -32,6 +36,8 @@ class HomeFragment : Fragment(), IHomeContract.View {
     private var isLoading: Boolean = false
     private var callback: IShowBottomSheetCallback? = null
     private var isEndOfList: Boolean = false
+    private var bottomProgress: BottomSheetBehavior<View>? = null
+
 
     private lateinit var homePresenter: HomePresenter
     private lateinit var viewAdapter: HomeRecyclerViewAdapter
@@ -68,6 +74,8 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
         setViewAdapter()
 
+        bottomProgress = BottomSheetBehavior.from(bottomProgressbar)
+
         homeFragmentRecyclerView.apply {
 
             layoutManager = linearLayoutManager
@@ -83,9 +91,17 @@ class HomeFragment : Fragment(), IHomeContract.View {
                     val startPosition = viewAdapter.getSize()?.plus(1)
                     val visibleItemCount = linearLayoutManager.childCount
                     val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
+                    val lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition()
 
                     if (firstVisibleItemPosition + (PAGE_SIZE * 3) <= totalItemCount) {
                         isEndOfList = false
+                    }
+
+                    if (lastVisibleItemPosition +1 == totalItemCount)
+                    {
+                        bottomProgress.expandBottomSheet()
+                    } else {
+                        bottomProgress.collapseBottomSheet()
                     }
 
                     if (!isLoading
@@ -121,6 +137,8 @@ class HomeFragment : Fragment(), IHomeContract.View {
         homePresenter.onCreate()
 
         retainInstance = true
+
+
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

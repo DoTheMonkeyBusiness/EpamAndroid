@@ -36,9 +36,9 @@ class BreedDescriptionGridView @JvmOverloads constructor(
             isAffectionate: Boolean?
     ) {
         when (isCanLiveAtHome) {
-            true -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
-            false -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
-            null -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
+            true -> dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
+            false -> dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
+            null -> dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
         }
         when (isAffectionate) {
             true -> breedDescriptionAffectionateIcon.setImageResource(R.drawable.ic_check)

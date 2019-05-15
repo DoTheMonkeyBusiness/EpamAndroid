@@ -16,7 +16,7 @@ class DogView @JvmOverloads constructor(
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
     init {
-//        layoutParams = RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+//        layoutParams = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         inflate(getContext(), R.layout.dog_view, this)
     }
 
@@ -28,6 +28,14 @@ class DogView @JvmOverloads constructor(
             else -> {dogBreedTextView?.text = breed}
         }
 
+        return this
+    }
+    fun isCanLiveAtHome(isCanLiveAtHome: Boolean?): DogView {
+        when {
+            isCanLiveAtHome == null -> { dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)}
+            isCanLiveAtHome -> dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
+            else -> dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
+        }
         return this
     }
 

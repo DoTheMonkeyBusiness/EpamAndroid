@@ -17,16 +17,3 @@ fun AppCompatActivity.changeFragment(layoutId: Int, fragmentClass: Fragment, fra
             .replace(layoutId, fragmentClass, fragmentKey)
             .commit()
 }
-
-fun AppCompatActivity.changeFragmentWithBackStackAndAnimation(
-        layoutId: Int,
-        fragmentClass: Fragment,
-        fragmentKey: String,
-        startAnimation: Int,
-        endAinmation: Int) {
-    this.supportFragmentManager
-            .beginTransaction()
-            .setCustomAnimations(startAnimation, endAinmation)
-            .replace(layoutId, fragmentClass, fragmentKey)
-            .commit()
-}

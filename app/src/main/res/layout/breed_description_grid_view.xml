@@ -9,7 +9,7 @@
     tools:parentTag="android.widget.GridLayout">
 
     <TextView
-        android:id="@+id/breedDescriptionCanLiveAtHome"
+        android:id="@+id/dogViewCanLiveAtHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -19,7 +19,7 @@
         android:textSize="18sp" />
 
     <ImageView
-        android:id="@+id/breedDescriptionCanLiveAtHomeIcon"
+        android:id="@+id/dogViewCanLiveAtHomeIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

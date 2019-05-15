@@ -9,7 +9,6 @@ import com.example.epamandroid.mvp.contracts.ICameraContract
 
 class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter {
 
-
     companion object {
         private const val TAG: String = "CameraPresenter"
         private const val THREAD_NAME_KEY: String = "Camera Background"

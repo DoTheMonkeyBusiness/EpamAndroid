@@ -23,8 +23,6 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
     private val michelangelo: IMichelangelo = Michelangelo.getInstance(context)
     private val dogsList = ArrayList<DogEntity?>()
 
-    private val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
     private var isShowLastViewAsLoading = false
 
     private var dogEntity: DogEntity? = null
@@ -35,23 +33,7 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
             parent: ViewGroup,
             viewType: Int
     ): ViewHolder {
-        return when (viewType) {
-            DOG -> {
-                ViewHolder(layoutInflater.inflate(R.layout.dog_view_item, parent, false))
-            }
-            LOADING -> {
-                ViewHolder(
-                        layoutInflater.inflate(R.layout.layout_progress, parent, false)
-                                as FrameLayout
-                )
-            }
-            else -> {
-                ViewHolder(
-                        layoutInflater.inflate(R.layout.error_view, parent, false)
-                                as FrameLayout
-                )
-            }
-        }
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dog_view_item, parent, false))
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
@@ -61,16 +43,13 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
 
             holder
                     .setDogBreed(dogEntity?.breed)
+                    .isCanLiveAtHome(dogEntity?.isCanLiveAtHome)
             michelangelo.load(holder.getDogIcon(), dogEntity?.photo)
         }
     }
 
     override fun getItemCount(): Int {
-        return if (isShowLastViewAsLoading) {
-            dogsList.size + 1
-        } else {
-            dogsList.size
-        }
+            return dogsList.size
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -81,14 +60,12 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         }
     }
 
-
-    //TODO: DoffUtil doesn't work in this method
     fun setShowLastViewAsLoading(isShow: Boolean) {
         if (isShow != isShowLastViewAsLoading) {
-//            val oldItems: Any = dogsList.clone()
+            val oldItems: ArrayList<DogEntity?> = dogsList.clone() as ArrayList<DogEntity?>
             isShowLastViewAsLoading = isShow
-            notifyDataSetChanged()
-//            notifyChanges(oldItems as List<DogEntity>, dogsList)
+//            notifyDataSetChanged()
+            notifyChanges(oldItems, dogsList)
         }
     }
 
