@@ -30,6 +30,7 @@ class AddLostDogActivity : AppCompatActivity() {
 
     private fun configureSupportActionBar() {
         setSupportActionBar(addLostDogCustomActionBarLayout as Toolbar?)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         title = getString(R.string.add_lost_dog)
     }
