@@ -79,6 +79,26 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
         bottomProgress = BottomSheetBehavior.from(bottomProgressbar)
 
+        setupRecycler()
+
+        ItemTouchCallback(homeFragmentRecyclerView, viewAdapter).let {
+            ItemTouchHelper(it).attachToRecyclerView(
+                homeFragmentRecyclerView
+            )
+        }
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(DOGS_LIST_KEY)) {
+            viewAdapter.updateDogsList(savedInstanceState.getParcelableArrayList(DOGS_LIST_KEY))
+
+        } else {
+            isLoading = true
+            bottomProgress.expandBottomSheet()
+        }
+
+        homePresenter.onCreate()
+    }
+
+    private fun setupRecycler() {
         homeFragmentRecyclerView.apply {
 
             layoutManager = linearLayoutManager
@@ -100,7 +120,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
                         isEndOfList = false
                     }
 
-                    if (lastVisibleItemPosition +1 == totalItemCount)
+                    if (lastVisibleItemPosition +1 == totalItemCount && !isEndOfList)
                     {
                         bottomProgress.expandBottomSheet()
                     } else {
@@ -108,10 +128,10 @@ class HomeFragment : Fragment(), IHomeContract.View {
                     }
 
                     if (!isLoading
-                        && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                                && firstVisibleItemPosition >= 0
-                                && totalItemCount >= PAGE_SIZE
-                                && !isEndOfList)
+                            && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                                    && firstVisibleItemPosition >= 0
+                                    && totalItemCount >= PAGE_SIZE
+                                    && !isEndOfList)
                     ) {
                         startPosition?.let { loadMoreItems(it, startPosition + PAGE_SIZE) }
                     }
@@ -119,27 +139,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
             })
 
-            post { viewAdapter.notifyDataSetChanged() }
-
         }
-
-        ItemTouchCallback(homeFragmentRecyclerView, viewAdapter).let {
-            ItemTouchHelper(it).attachToRecyclerView(
-                homeFragmentRecyclerView
-            )
-        }
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(DOGS_LIST_KEY)) {
-            viewAdapter.updateDogsList(savedInstanceState.getParcelableArrayList(DOGS_LIST_KEY))
-
-        } else {
-            isLoading = true
-            viewAdapter.setShowLastViewAsLoading(isLoading)
-        }
-
-        homePresenter.onCreate()
-
-        retainInstance = true
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -171,14 +171,16 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
     private fun loadMoreItems(startPosition: Int, endPosition: Int) {
         isLoading = true
-        viewAdapter.setShowLastViewAsLoading(isLoading)
+        bottomProgress.expandBottomSheet()
+//        viewAdapter.setShowLastViewAsLoading(isLoading)
         homePresenter.getMoreItems(startPosition, endPosition)
     }
 
     override fun addElements(dogList: List<DogEntity>?, isFullList: Boolean) {
         viewAdapter.addItems(dogList)
         isLoading = false
-        viewAdapter.setShowLastViewAsLoading(isLoading)
+        bottomProgress.collapseBottomSheet()
+//        viewAdapter.setShowLastViewAsLoading(isLoading)
         isEndOfList = isFullList
     }
 

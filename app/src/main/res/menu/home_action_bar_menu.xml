@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/bottomNavigationHome"
+        android:id="@+id/homeActionBarSearch"
         android:icon="@drawable/ic_search"
         android:title="@string/search"
         app:iconTint="?attr/colorAccent"

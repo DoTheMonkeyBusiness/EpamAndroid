@@ -27,6 +27,8 @@ import com.example.imageloader.IMichelangelo
 import com.example.imageloader.Michelangelo
 import com.example.kotlinextensions.collapseBottomSheet
 import com.example.kotlinextensions.expandBottomSheet
+import com.example.kotlinextensions.goneView
+import com.example.kotlinextensions.visibleView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.breed_description.*
 import kotlinx.android.synthetic.main.main_fragment.*
@@ -43,15 +45,9 @@ class MainActivity : AppCompatActivity(),
     companion object {
         private const val CAMERA_ITEM_KEY: Int = 0
         private const val MAIN_ITEM_KEY: Int = 1
-        private const val VIEW_PAGER_EXTRA_KEY: Int = 0
-        private const val INTERNAL_FRAGMENTS_EXTRA_KEY: Int = 1
         private const val WRITE_EXTERNAL_STORAGE_PERMISSION_KEY: Int = 1212
     }
 
-    private val viewPagerHistory: Stack<Int> = Stack()
-    private val mainOrInternalHistory: Stack<Int> = Stack()
-
-    private var isSaveToHistory: Boolean = false
     private var currentPage: Int = 1
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
     private var mainActivityPresenter: IMainActivityContract.Presenter? = null
@@ -88,17 +84,15 @@ class MainActivity : AppCompatActivity(),
             override fun onPageScrolled(p0: Int, p1: Float, p2: Int) = Unit
 
             override fun onPageSelected(position: Int) {
-                if (isSaveToHistory) {
-                    viewPagerHistory.push(currentPage)
-                    mainOrInternalHistory.push((VIEW_PAGER_EXTRA_KEY))
+                when (position) {
+                    CAMERA_ITEM_KEY -> currentPage = CAMERA_ITEM_KEY
+                    MAIN_ITEM_KEY -> currentPage = MAIN_ITEM_KEY
                 }
             }
 
         })
 
         bottomSheetBehavior = BottomSheetBehavior.from(breedDescriptionBottomSheet)
-
-        isSaveToHistory = true
 
         breedDescriptionCloseButton.setOnClickListener {
             bottomSheetBehavior.collapseBottomSheet()
@@ -110,9 +104,9 @@ class MainActivity : AppCompatActivity(),
             override fun onStateChanged(p0: View, p1: Int) {
                 when (bottomSheetBehavior?.state) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        hideError()
-                        hideProgress()
-                        hideDescription()
+                        breedDescriptionError.goneView()
+                        breedDescriptionProgressBar.goneView()
+                        breedDescription.goneView()
                     }
                 }
             }
@@ -123,38 +117,11 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onBackPressed() {
-        val homeFragment = supportFragmentManager
-            .findFragmentByTag(HOME_FRAGMENT_TAG_EXTRA_KEY)
-        val settingsFragment = supportFragmentManager
-            .findFragmentByTag(SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
-        val mapFragment = supportFragmentManager
-            .findFragmentByTag(MAP_FRAGMENT_TAG_EXTRA_KEY)
-
-        when {
-            (viewPagerHistory.empty()
-                    || (mainOrInternalHistory.pop() == INTERNAL_FRAGMENTS_EXTRA_KEY)) -> {
-                super.onBackPressed()
-
-                when {
-                    (homeFragment !== null && homeFragment.isVisible) -> {
-                        (mainFragmentBottomNavigationView as BottomNavigationView)
-                            .selectedItemId = R.id.bottomNavigationHome
-                    }
-                    (settingsFragment !== null && settingsFragment.isVisible) -> {
-                        (mainFragmentBottomNavigationView as BottomNavigationView)
-                            .selectedItemId = R.id.bottomNavigationSettings
-                    }
-                    (mapFragment !== null && mapFragment.isVisible) -> {
-                        (mainFragmentBottomNavigationView as BottomNavigationView)
-                            .selectedItemId = R.id.bottomNavigationMap
-                    }
-                }
-            }
-            else -> {
-                isSaveToHistory = false
-                activityMainViewPager.setCurrentItem(viewPagerHistory.pop(), true)
-                isSaveToHistory = true
-            }
+        if (currentPage == MAIN_ITEM_KEY) {
+            super.onBackPressed()
+        } else {
+            activityMainViewPager
+                .setCurrentItem(MAIN_ITEM_KEY, true)
         }
     }
 
@@ -176,13 +143,13 @@ class MainActivity : AppCompatActivity(),
         if (dogEntity != null) {
             breedDescription.updateDogInfo(dogEntity)
             michelangelo.load(breedDescription.getDogPhoto(), dogEntity.photo)
-            hideProgress()
-            hideError()
-            showDescription()
+            breedDescriptionProgressBar.goneView()
+            breedDescriptionError.goneView()
+            breedDescription.visibleView()
         } else {
-            hideProgress()
-            hideDescription()
-            showError()
+            breedDescriptionProgressBar.goneView()
+            breedDescription.goneView()
+            breedDescriptionError.visibleView()
         }
     }
 
@@ -198,42 +165,6 @@ class MainActivity : AppCompatActivity(),
         activityMainViewPager.adapter = adapter
     }
 
-    private fun hideProgress() {
-        if (breedDescriptionProgressBar.visibility != View.GONE) {
-            breedDescriptionProgressBar.visibility = View.GONE
-        }
-    }
-
-    private fun showProgress() {
-        if (breedDescriptionProgressBar.visibility != View.VISIBLE) {
-            breedDescriptionProgressBar.visibility = View.VISIBLE
-        }
-    }
-
-    private fun hideError() {
-        if (breedDescriptionError.visibility != View.GONE) {
-            breedDescriptionError.visibility = View.GONE
-        }
-    }
-
-    private fun showError() {
-        if (breedDescriptionError.visibility != View.VISIBLE) {
-            breedDescriptionError.visibility = View.VISIBLE
-        }
-    }
-
-    private fun hideDescription() {
-        if (breedDescription.visibility != View.GONE) {
-            breedDescription.visibility = View.GONE
-        }
-    }
-
-    private fun showDescription() {
-        if (breedDescription.visibility != View.VISIBLE) {
-            breedDescription.visibility = View.VISIBLE
-        }
-    }
-
     override fun onItemChangedToCamera() {
         activityMainViewPager
             .setCurrentItem(CAMERA_ITEM_KEY, true)
@@ -242,10 +173,6 @@ class MainActivity : AppCompatActivity(),
     override fun onItemChangedToMain() {
         activityMainViewPager
             .setCurrentItem(MAIN_ITEM_KEY, true)
-    }
-
-    override fun onItemChangedToInternalFragment() {
-        mainOrInternalHistory.push(INTERNAL_FRAGMENTS_EXTRA_KEY)
     }
 
     override fun onViewPagerSwipePagingEnabled(changeSwipePagingEnabled: Boolean) {
@@ -258,17 +185,17 @@ class MainActivity : AppCompatActivity(),
         if (dogEntity !== null) {
             breedDescription.updateDogInfo(dogEntity)
             michelangelo.load(breedDescription.getDogPhoto(), dogEntity.photo)
-            hideError()
-            hideProgress()
-            showDescription()
+            breedDescriptionError.goneView()
+            breedDescriptionProgressBar.goneView()
+            breedDescription.visibleView()
         } else {
-            showError()
+            breedDescriptionError.visibleView()
         }
     }
 
     override fun onShowBottomSheetFromCamera(dogBreed: String) {
         bottomSheetBehavior.expandBottomSheet()
-        showProgress()
+        breedDescriptionProgressBar.visibleView()
         mainActivityPresenter?.loadDogByBreed(dogBreed)
     }
 }

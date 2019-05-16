@@ -17,8 +17,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment(),
-        BottomNavigationView.OnNavigationItemSelectedListener,
-        HomeFragment.ISaveHomeFragmentStateCallback {
+    BottomNavigationView.OnNavigationItemSelectedListener,
+    HomeFragment.ISaveHomeFragmentStateCallback {
 
     companion object {
         private const val TITLE_KEY: String = "titleKey"
@@ -54,10 +54,6 @@ class MainFragment : Fragment(),
         when {
             (savedInstanceState == null) -> {
                 mainActivity.apply {
-//                    changeFragment(
-//                            R.id.mainFragmentViewPager,
-//                            HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY
-//                    )
                     setTitle(R.string.home_page)
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     isVisibleMenuItem = true
@@ -71,26 +67,26 @@ class MainFragment : Fragment(),
                 mainActivity.apply {
                     title = savedInstanceState.getString(TITLE_KEY)
                     supportActionBar
-                            ?.setDisplayHomeAsUpEnabled(
-                                    savedInstanceState
-                                            .getBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY)
-                            )
+                        ?.setDisplayHomeAsUpEnabled(
+                            savedInstanceState
+                                .getBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY)
+                        )
                 }
 
                 callback
-                        ?.onViewPagerSwipePagingEnabled(
-                                savedInstanceState
-                                        .getBoolean(IS_SWIPE_PAGING_ENABLED_KEY)
-                        )
+                    ?.onViewPagerSwipePagingEnabled(
+                        savedInstanceState
+                            .getBoolean(IS_SWIPE_PAGING_ENABLED_KEY)
+                    )
                 isVisibleMenuItem = savedInstanceState
-                        .getBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY)
+                    .getBoolean(ACTIONBAR_ITEMS_VISIBILITY_KEY)
             }
         }
 
         configureViewPager()
 
         (mainFragmentBottomNavigationView as BottomNavigationView)
-                .setOnNavigationItemSelectedListener(this)
+            .setOnNavigationItemSelectedListener(this)
 
     }
 
@@ -107,32 +103,9 @@ class MainFragment : Fragment(),
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-//        val homeFragment = activity
-//                ?.supportFragmentManager
-//                ?.findFragmentByTag(HOME_FRAGMENT_TAG_EXTRA_KEY)
-//        val settingsFragment = activity
-//                ?.supportFragmentManager
-//                ?.findFragmentByTag(SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
-//        val mapFragment = activity
-//                ?.supportFragmentManager
-//                ?.findFragmentByTag(MAP_FRAGMENT_TAG_EXTRA_KEY)
-
-        val homeFragmentObject = HomeFragment()
 
         when (item.itemId) {
             R.id.bottomNavigationHome -> {
-//                homeFragmentObject.setInitialSavedState(homeFragmentState)
-//                homeFragmentState = null
-//                if (homeFragment == null
-//                        || !homeFragment.isVisible
-//                ) {
-//                    mainActivity
-//                            .changeFragment(
-//                                    R.id.mainFragmentViewPager,
-//                                    HomeFragment(), HOME_FRAGMENT_TAG_EXTRA_KEY
-//                            )
-//                }
-
                 mainFragmentViewPager.setCurrentItem(HOME_FRAGMENT_KEY, false)
 
                 mainActivity.apply {
@@ -146,17 +119,6 @@ class MainFragment : Fragment(),
                 callback?.onViewPagerSwipePagingEnabled(isSwipePagingEnabled)
             }
             R.id.bottomNavigationMap -> {
-//                if (mapFragment == null
-//                        || !mapFragment.isVisible
-//                ) {
-//
-//                    mainActivity
-//                            .changeFragment(
-//                                    R.id.mainFragmentViewPager,
-//                                    MapFragment(), MAP_FRAGMENT_TAG_EXTRA_KEY
-//                            )
-//                }
-
                 mainFragmentViewPager.setCurrentItem(MAP_FRAGMENT_KEY, false)
 
                 mainActivity.apply {
@@ -170,17 +132,6 @@ class MainFragment : Fragment(),
                 callback?.onViewPagerSwipePagingEnabled(isSwipePagingEnabled)
             }
             R.id.bottomNavigationSettings -> {
-//                if (settingsFragment == null
-//                        || !settingsFragment.isVisible
-//                ) {
-//
-//                    mainActivity
-//                            .changeFragment(
-//                                    R.id.mainFragmentViewPager,
-//                                    SettingsFragment(), SETTINGS_FRAGMENT_TAG_EXTRA_KEY
-//                            )
-//                }
-
                 mainFragmentViewPager.setCurrentItem(SETTINGS_FRAGMENT_KEY, false)
 
 
@@ -230,20 +181,19 @@ class MainFragment : Fragment(),
 
     private fun configureViewPager() {
         val adapter = ViewPagerAdapter(fragmentManager)
-                .apply {
-                    let {
-                        it.addFragment(HomeFragment())
-                        it.addFragment(MapFragment())
-                        it.addFragment(SettingsFragment())
-                    }
+            .apply {
+                let {
+                    it.addFragment(HomeFragment())
+                    it.addFragment(MapFragment())
+                    it.addFragment(SettingsFragment())
                 }
+            }
         mainFragmentViewPager.adapter = adapter
 
     }
 
     interface IChangeFragmentMainItemCallback {
         fun onItemChangedToCamera()
-        fun onItemChangedToInternalFragment()
         fun onViewPagerSwipePagingEnabled(changeSwipePagingEnabled: Boolean)
     }
 }
