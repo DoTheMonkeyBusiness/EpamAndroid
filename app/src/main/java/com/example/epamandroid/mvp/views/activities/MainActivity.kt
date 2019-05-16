@@ -6,15 +6,11 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
-import com.example.epamandroid.constants.FragmentConstants.HOME_FRAGMENT_TAG_EXTRA_KEY
-import com.example.epamandroid.constants.FragmentConstants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.R
-import com.example.epamandroid.constants.FragmentConstants.MAP_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
 import com.example.epamandroid.mvp.core.IBaseView
@@ -31,8 +27,6 @@ import com.example.kotlinextensions.goneView
 import com.example.kotlinextensions.visibleView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.breed_description.*
-import kotlinx.android.synthetic.main.main_fragment.*
-import java.util.*
 
 class MainActivity : AppCompatActivity(),
     MainFragment.IChangeFragmentMainItemCallback,
@@ -65,7 +59,6 @@ class MainActivity : AppCompatActivity(),
         } else {
             setTheme(R.style.AppThemeDay)
         }
-
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

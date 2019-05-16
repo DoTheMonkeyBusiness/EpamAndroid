@@ -1,6 +1,7 @@
 package com.example.epamandroid.mvp.views.fragments
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
@@ -14,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.epamandroid.R
+import com.example.epamandroid.mvp.views.activities.AddLostDogActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -29,7 +31,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     companion object {
         private const val TAG: String = "MapFragment"
-        private const val LOST_DOG_TITLE_KEY: String = "Add lost dog"
+        private const val LOST_DOG_TITLE_KEY: String = "addLostDog"
         private const val DEFAULT_ZOOM_KEY: Float = 15F
         private const val LOCATION_PERMISSION_KEY: Int = 1778
     }
@@ -122,7 +124,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun setOnMarkerClickListener() {
         lostDogsMap?.setOnMarkerClickListener {
             if(it.title == LOST_DOG_TITLE_KEY){
-                Toast.makeText(context, it.title, Toast.LENGTH_LONG).show()
+                startActivity(Intent(context, AddLostDogActivity::class.java))
             }
             true
         }

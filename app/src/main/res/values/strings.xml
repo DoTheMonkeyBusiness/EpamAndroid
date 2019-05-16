@@ -32,5 +32,6 @@
     <string name="no_description">No description</string>
     <string name="close_button">close button</string>
     <string name="lost_dogs">lost dogs</string>
+    <string name="add_lost_dog">Add lost dog</string>
     <string name="unable_location">unable to get current location</string>
 </resources>

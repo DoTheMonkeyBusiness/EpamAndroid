@@ -23,6 +23,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity android:name="com.example.epamandroid.mvp.views.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +31,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.epamandroid.mvp.views.activities.AddLostDogActivity"
+            android:parentActivityName=".mvp.views.activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mvp.views.activities.MainActivity" />
         </activity>
 
         <meta-data
