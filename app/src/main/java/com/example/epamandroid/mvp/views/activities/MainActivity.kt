@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
 import com.example.epamandroid.R
+import com.example.epamandroid.constants.PermissionsConstants.WRITE_EXTERNAL_STORAGE_PERMISSION_KEY
 import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
 import com.example.epamandroid.mvp.core.IBaseView
@@ -39,7 +40,6 @@ class MainActivity : AppCompatActivity(),
     companion object {
         private const val CAMERA_ITEM_KEY: Int = 0
         private const val MAIN_ITEM_KEY: Int = 1
-        private const val WRITE_EXTERNAL_STORAGE_PERMISSION_KEY: Int = 1212
     }
 
     private var currentPage: Int = 1

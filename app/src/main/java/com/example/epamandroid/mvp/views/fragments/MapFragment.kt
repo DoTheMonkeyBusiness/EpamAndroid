@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.epamandroid.R
+import com.example.epamandroid.constants.PermissionsConstants.LOCATION_PERMISSION_KEY
 import com.example.epamandroid.mvp.views.activities.AddLostDogActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -33,7 +34,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         private const val TAG: String = "MapFragment"
         private const val LOST_DOG_TITLE_KEY: String = "addLostDog"
         private const val DEFAULT_ZOOM_KEY: Float = 15F
-        private const val LOCATION_PERMISSION_KEY: Int = 1778
     }
 
     private var lostDogsMap: GoogleMap? = null

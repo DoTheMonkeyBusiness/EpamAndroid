@@ -33,5 +33,8 @@
     <string name="close_button">close button</string>
     <string name="lost_dogs">lost dogs</string>
     <string name="add_lost_dog">Add lost dog</string>
+    <string name="add_dog_photo">Add dog photo</string>
+    <string name="photo_processing_error">photo processing error</string>
     <string name="unable_location">unable to get current location</string>
+    <string name="select_a_dog">Select a dog:</string>
 </resources>

@@ -28,9 +28,10 @@ import kotlinx.android.synthetic.main.home_fragment.*
 class HomeFragment : Fragment(), IHomeContract.View {
 
     companion object {
-        const val RECYCLER_STATE_KEY: String = "recyclerViewKey"
-        const val LINEAR_LAYOUT_MANAGER_KEY: String = "linearLayoutKey"
-        const val DOGS_LIST_KEY: String = "dogsListKey"
+        private const val TAG: String = "HomeFragment"
+        private const val RECYCLER_STATE_KEY: String = "recyclerViewKey"
+        private const val LINEAR_LAYOUT_MANAGER_KEY: String = "linearLayoutKey"
+        private const val DOGS_LIST_KEY: String = "dogsListKey"
     }
 
     private var isLoading: Boolean = false
@@ -39,7 +40,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
     private var bottomProgress: BottomSheetBehavior<View>? = null
     private var saveHomeFragmentStateCallback: ISaveHomeFragmentStateCallback? = null
 
-    private lateinit var homePresenter: HomePresenter
+    private lateinit var homePresenter: IHomeContract.Presenter
     private lateinit var viewAdapter: HomeRecyclerViewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var mainActivity: AppCompatActivity
@@ -79,11 +80,11 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
         bottomProgress = BottomSheetBehavior.from(bottomProgressbar)
 
-        setupRecycler()
+        setRecycler()
 
         ItemTouchCallback(homeFragmentRecyclerView, viewAdapter).let {
             ItemTouchHelper(it).attachToRecyclerView(
-                homeFragmentRecyclerView
+                    homeFragmentRecyclerView
             )
         }
 
@@ -98,14 +99,15 @@ class HomeFragment : Fragment(), IHomeContract.View {
         homePresenter.onCreate()
     }
 
-    private fun setupRecycler() {
+    private fun setRecycler() {
         homeFragmentRecyclerView.apply {
 
             layoutManager = linearLayoutManager
 
             adapter = viewAdapter
 
-            addItemDecoration(DividerItemDecoration(this@HomeFragment.context, DividerItemDecoration.VERTICAL))
+            addItemDecoration(DividerItemDecoration(this@HomeFragment.context,
+                    DividerItemDecoration.VERTICAL))
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -120,8 +122,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
                         isEndOfList = false
                     }
 
-                    if (lastVisibleItemPosition +1 == totalItemCount && !isEndOfList)
-                    {
+                    if (lastVisibleItemPosition + 1 == totalItemCount && !isEndOfList) {
                         bottomProgress.expandBottomSheet()
                     } else {
                         bottomProgress.collapseBottomSheet()

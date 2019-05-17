@@ -8,6 +8,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.LruCache;
 import android.widget.ImageView;
+
 import com.example.imageloader.util.IMichelangeloCallback;
 import com.example.imageloader.wrappers.BitmapDiskCache;
 import com.example.imageloader.wrappers.IDiskCache;
@@ -41,8 +42,7 @@ public class Michelangelo implements IMichelangelo {
 
     private static Michelangelo singleInstance = null;
 
-    public static Michelangelo getInstance(final Context context)
-    {
+    public static Michelangelo getInstance(final Context context) {
         if (singleInstance == null)
             singleInstance = new Michelangelo(context);
 
@@ -57,13 +57,13 @@ public class Michelangelo implements IMichelangelo {
         }
 
         imageView.setTag(uri);
-        imageView.setImageResource(R.drawable.preview);
 
         loadFromMemoryCache(uri, new IMichelangeloCallback<Bitmap>() {
 
             @Override
             public void onResult(final Bitmap result) {
                 if (result == null) {
+                    imageView.setImageResource(R.drawable.preview);
                     executor.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -89,7 +89,7 @@ public class Michelangelo implements IMichelangelo {
                                                     showErrorImage(uri, imageView);
                                                 }
                                             });
-                                        } catch (IOException|IllegalArgumentException e) {
+                                        } catch (IOException | IllegalArgumentException e) {
                                             showErrorImage(uri, imageView);
                                         }
                                     } else {
