@@ -37,4 +37,6 @@
     <string name="photo_processing_error">photo processing error</string>
     <string name="unable_location">unable to get current location</string>
     <string name="select_a_dog">Select a dog:</string>
+    <string name="add_breed_info">add breed info</string>
+    <string name="ok">Ok</string>
 </resources>

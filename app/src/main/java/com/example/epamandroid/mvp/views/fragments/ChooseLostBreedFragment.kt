@@ -1,5 +1,6 @@
 package com.example.epamandroid.mvp.views.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -23,6 +24,15 @@ class ChooseLostBreedFragment : Fragment(), IChooseLostBreedContract.View {
     private lateinit var viewAdapter: ChooseLostDogRecyclerViewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
 
+    private var setLostBreedCallback: ISetLostBreedCallback? = null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        if (context is ISetLostBreedCallback) {
+            setLostBreedCallback = context
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +64,7 @@ class ChooseLostBreedFragment : Fragment(), IChooseLostBreedContract.View {
         viewAdapter = ChooseLostDogRecyclerViewAdapter()
 
         viewAdapter.onItemClick = {
-            //TODO callback to activity here
+            setLostBreedCallback?.onSelectDogBreed(it)
 //            showBottomSheetCallback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(dog.id))
         }
     }
@@ -74,5 +84,9 @@ class ChooseLostBreedFragment : Fragment(), IChooseLostBreedContract.View {
 
     override fun addElementsToRecyclerView(dogList: List<String>?) {
         viewAdapter.addItems(dogList)
+    }
+
+    interface ISetLostBreedCallback {
+        fun onSelectDogBreed(breed: String)
     }
 }
