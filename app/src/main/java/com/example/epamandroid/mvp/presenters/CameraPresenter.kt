@@ -31,6 +31,8 @@ class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter 
         }
     }
 
+    override fun onCreate() = Unit
+
     override fun startBackgroundThread() {
         backgroundThread = HandlerThread(THREAD_NAME_KEY)
         backgroundThread?.start()
@@ -63,6 +65,7 @@ class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter 
         return bundle?.apply {
             putString(DogEntityConstants.BREED_FROM_CAMERA_EXTRA_KEY, dogBreed)
         }
-
     }
+
+    override fun onDestroy() = Unit
 }
