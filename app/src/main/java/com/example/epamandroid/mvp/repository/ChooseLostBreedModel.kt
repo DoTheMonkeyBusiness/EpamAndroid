@@ -17,7 +17,7 @@ object ChooseLostBreedModel : IChooseLostBreedContract.Model {
             val request =
                     Request
                             .Builder()
-                            .url("${URLConstants.URL_STRING_EXTRA_KEY}?orderBy=\"id\"&startAt=0")
+                            .url("${URLConstants.DOG_BREEDS_URL_STRING_EXTRA_KEY}?orderBy=\"id\"&startAt=0")
                             .build()
             val gson = Gson()
             val dogs: HashMap<Int, DogEntity>?

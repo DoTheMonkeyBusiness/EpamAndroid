@@ -19,8 +19,9 @@
     <color name="colorAccentGreyDay">#6C4649</color>
     <color name="colorBackgroundDay">#FFFBFA</color>
     <color name="colorBottomSheetHeaderDay">#F8F4F3</color>
+
+
+    <color name="colorRed">#B71C1C</color>
     <color name="colorBlack">#000000</color>
-
-
     <color name="colorWhite">#FFFFFF</color>
 </resources>

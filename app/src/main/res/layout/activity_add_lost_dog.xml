@@ -81,31 +81,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addLostDogSelectADogTextView"
                 tools:layout="@layout/choose_lost_breed_fragment" />
 
             <TextView
-                android:id="@+id/addLostDogAddBreedInfo"
-                android:layout_width="match_parent"
+                android:id="@+id/addLostEnterPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/enter_phone_number"
+                android:textColor="?attr/colorAccentGrey"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/addLostEnterPhoneNumberEditText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/addLostEnterPhoneNumberEditText" />
+
+            <EditText
+                android:id="@+id/addLostEnterPhoneNumberEditText"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/add_breed_info"
+                android:ems="10"
+                android:inputType="phone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/addLostEnterPhoneNumber"
+                app:layout_constraintTop_toBottomOf="@+id/addLostDogChooseLostDogFragment"
+                tools:ignore="Autofill,LabelFor" />
+
+            <TextView
+                android:id="@+id/addLostDogAddBreedDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/add_breed_description"
                 android:textAlignment="center"
                 android:textColor="?attr/colorAccentGrey"
                 android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addLostDogChooseLostDogFragment" />
+                app:layout_constraintTop_toBottomOf="@+id/addLostEnterPhoneNumberEditText"
+                tools:layout_editor_absoluteX="16dp" />
 
             <EditText
-                android:id="@+id/addLostDogAddBreedInfoEditText"
+                android:id="@+id/addLostDogAddBreedDescriptionEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -116,7 +138,7 @@
                 android:inputType="textMultiLine"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddBreedInfo"
+                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddBreedDescription"
                 tools:ignore="Autofill,LabelFor" />
 
             <Button
@@ -125,10 +147,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
                 android:background="?attr/colorPrimary"
                 android:text="@string/ok"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddBreedInfoEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddBreedDescriptionEditText" />
+
 
         </android.support.constraint.ConstraintLayout>
 

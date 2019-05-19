@@ -21,7 +21,7 @@ class BreedDescriptionFragment : Fragment() {
         val bundle = arguments
 
 
-        if (bundle != null && bundle.containsKey(DogEntityConstants.breedFromCamera))
+        if (bundle != null && bundle.containsKey(DogEntityConstants.BREED_POPULARITY_EXTRA_KEY))
         breedDescription.updateDogInfo(bundle)
     }
 }

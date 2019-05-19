@@ -11,7 +11,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
 import com.example.epamandroid.R
-import com.example.epamandroid.constants.PermissionsConstants.WRITE_EXTERNAL_STORAGE_PERMISSION_KEY
+import com.example.epamandroid.constants.PermissionsConstants.WRITE_EXTERNAL_STORAGE_PERMISSION_EXTRA_KEY
 import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
 import com.example.epamandroid.mvp.core.IBaseView
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity(),
         ) {
             requestPermissions(
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                WRITE_EXTERNAL_STORAGE_PERMISSION_KEY
+                WRITE_EXTERNAL_STORAGE_PERMISSION_EXTRA_KEY
             )
         }
     }

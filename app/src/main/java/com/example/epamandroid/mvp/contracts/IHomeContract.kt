@@ -22,7 +22,7 @@ interface IHomeContract {
         fun getEntities(
                 startPosition: Int,
                 endPosition: Int
-        ): ArrayList<T>?
+        ): HashMap<Int, T>?
 
     }
 }

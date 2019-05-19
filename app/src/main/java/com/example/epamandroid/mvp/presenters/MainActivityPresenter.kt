@@ -2,6 +2,7 @@ package com.example.epamandroid.mvp.presenters
 
 import android.os.Handler
 import android.os.Looper
+import com.example.epamandroid.gsonmodels.GsonDogEntity
 import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
 import com.example.epamandroid.mvp.core.IBasePresenter
@@ -23,7 +24,19 @@ class MainActivityPresenter(
 
     override fun loadDogByBreed(breed:String){
         Thread {
-            val dogEntity: DogEntity? = MainActivityModel.getEntity(breed)
+            val gsonDogEntity: GsonDogEntity? = MainActivityModel.getEntity(breed)
+            val dogEntity: DogEntity? = DogEntity(
+                    gsonDogEntity?.id,
+                    gsonDogEntity?.breed,
+                    gsonDogEntity?.weight,
+                    gsonDogEntity?.height,
+                    gsonDogEntity?.description,
+                    gsonDogEntity?.isCanLiveAtHome,
+                    gsonDogEntity?.isAffectionate,
+                    gsonDogEntity?.breedPopularity,
+                    gsonDogEntity?.cost,
+                    gsonDogEntity?.lifeExpectancy,
+                    gsonDogEntity?.photo)
 
             handler.post {
                 Runnable {

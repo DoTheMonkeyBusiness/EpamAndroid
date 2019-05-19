@@ -61,7 +61,7 @@ class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter 
         val bundle: Bundle? = Bundle()
 
         return bundle?.apply {
-            putString(DogEntityConstants.breedFromCamera, dogBreed)
+            putString(DogEntityConstants.BREED_FROM_CAMERA_EXTRA_KEY, dogBreed)
         }
 
     }

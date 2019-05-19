@@ -5,12 +5,21 @@ import com.example.epamandroid.mvp.core.IBaseView
 
 interface IAddLostDogContract {
 
-    interface View : IBaseView
+    interface View : IBaseView {
+        fun onPostSuccess()
+        fun onPostError()
+    }
 
-    interface Presenter : IBasePresenter
+    interface Presenter : IBasePresenter {
+        fun uploadLostDog(breed: String,
+                          phoneNumber: String,
+                          description: String,
+                          latitude: Double,
+                          longitude: Double,
+                          photo: String)
+    }
 
-    interface Model {
-        fun getBreeds(
-        ): List<String?>?
+    interface Model<T> {
+        fun putLostBreed(gsonLostDogEntity: T): Boolean
     }
 }

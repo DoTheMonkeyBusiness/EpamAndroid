@@ -24,26 +24,26 @@ class BreedDescriptionView @JvmOverloads constructor(
     fun getDogPhoto(): ImageView = breedDescriptionDogPhoto
 
     fun updateDogInfo(bundle: Bundle?) {
-        when(bundle?.getString(DogEntityConstants.breed)){
+        when(bundle?.getString(DogEntityConstants.BREED_EXTRA_KEY)){
             null -> {breedDescriptionHeader.setText(R.string.dog_breed)}
-            else -> {breedDescriptionHeader?.text = bundle.getString(DogEntityConstants.breed)}
+            else -> {breedDescriptionHeader?.text = bundle.getString(DogEntityConstants.BREED_EXTRA_KEY)}
         }
-        when(bundle?.getString(DogEntityConstants.description)){
+        when(bundle?.getString(DogEntityConstants.DESCRIPTION_EXTRA_KEY)){
             null -> {breedDescriptionText.setText(R.string.no_description)}
-            else -> {breedDescriptionText?.text = bundle.getString(DogEntityConstants.description)}
+            else -> {breedDescriptionText?.text = bundle.getString(DogEntityConstants.DESCRIPTION_EXTRA_KEY)}
         }
-        when(bundle?.getFloat(DogEntityConstants.breedPopularity)){
+        when(bundle?.getFloat(DogEntityConstants.BREED_POPULARITY_EXTRA_KEY)){
             null -> {breedDescriptionRatingBar?.rating = 0F}
-            else -> {breedDescriptionRatingBar?.rating = bundle.getFloat(DogEntityConstants.breedPopularity)}
+            else -> {breedDescriptionRatingBar?.rating = bundle.getFloat(DogEntityConstants.BREED_POPULARITY_EXTRA_KEY)}
         }
 
         breedDescriptionGridView.updateDogGridInfo(
-                bundle?.getString(DogEntityConstants.height),
-                bundle?.getString(DogEntityConstants.weight),
-                bundle?.getString(DogEntityConstants.lifeExpectancy),
-                bundle?.getInt(DogEntityConstants.cost),
-                bundle?.getBoolean(DogEntityConstants.canLiveAtHome),
-                bundle?.getBoolean(DogEntityConstants.affectionate)
+                bundle?.getString(DogEntityConstants.HEIGHT_EXTRA_KEY),
+                bundle?.getString(DogEntityConstants.WEIGHT_EXTRA_KEY),
+                bundle?.getString(DogEntityConstants.LIFE_EXPENTANCY_EXTRA_KEY),
+                bundle?.getInt(DogEntityConstants.COST_EXTRA_KEY),
+                bundle?.getBoolean(DogEntityConstants.CAN_LIVE_AT_HOME_EXTRA_KEY),
+                bundle?.getBoolean(DogEntityConstants.AFFECTIONATE_EXTRA_KEY)
 
         )
 

@@ -12,6 +12,6 @@ interface IMainActivityContract {
     }
 
     interface Model<T> {
-        fun getEntity(breed: String) : DogEntity?
+        fun getEntity(breed: String) : T?
     }
 }

@@ -15,7 +15,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.example.epamandroid.R
-import com.example.epamandroid.constants.PermissionsConstants.LOCATION_PERMISSION_KEY
+import com.example.epamandroid.constants.MapConstants.LATITUDE_EXTRA_KEY
+import com.example.epamandroid.constants.MapConstants.LONGITUDE_EXTRA_KEY
+import com.example.epamandroid.constants.PermissionsConstants.LOCATION_PERMISSION_EXTRA_KEY
 import com.example.epamandroid.mvp.views.activities.AddLostDogActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -63,7 +65,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         if (context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) } == PackageManager.PERMISSION_DENIED
                 && context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_COARSE_LOCATION) } == PackageManager.PERMISSION_DENIED
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(permissions, LOCATION_PERMISSION_KEY)
+            requestPermissions(permissions, LOCATION_PERMISSION_EXTRA_KEY)
         } else {
             locationPermissionsGranted = true
             initMap()
@@ -74,7 +76,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         locationPermissionsGranted = false
 
         when (requestCode) {
-            LOCATION_PERMISSION_KEY -> {
+            LOCATION_PERMISSION_EXTRA_KEY -> {
                 if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
                     locationPermissionsGranted = true
                     initMap()
@@ -124,7 +126,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun setOnMarkerClickListener() {
         lostDogsMap?.setOnMarkerClickListener {
             if(it.title == LOST_DOG_TITLE_KEY){
-                startActivity(Intent(context, AddLostDogActivity::class.java))
+                startActivity(Intent(context, AddLostDogActivity::class.java).apply {
+                    putExtra(LATITUDE_EXTRA_KEY, it.position.latitude)
+                    putExtra(LONGITUDE_EXTRA_KEY, it.position.longitude)
+                })
+//                AddLostDogActivity.startActivity(context,  AddLostDogActivity::class.java)
             }
             true
         }

@@ -37,6 +37,10 @@
     <string name="photo_processing_error">photo processing error</string>
     <string name="unable_location">unable to get current location</string>
     <string name="select_a_dog">Select a dog:</string>
-    <string name="add_breed_info">add breed info</string>
-    <string name="ok">Ok</string>
+    <string name="add_breed_description">add breed description</string>
+    <string name="ok">OK</string>
+    <string name="enter_phone_number">Enter phone number:</string>
+    <string name="all_fields_must_be_filled">all fields must be filled</string>
+    <string name="your_announcement_has_been_moderated">your announcement has been moderated</string>
+    <string name="announcement_posting_error">some error when posting your announcement</string>
 </resources>
