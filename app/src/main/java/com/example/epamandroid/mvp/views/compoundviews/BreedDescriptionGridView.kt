@@ -16,15 +16,6 @@ class BreedDescriptionGridView @JvmOverloads constructor(
         orientation = HORIZONTAL
         columnCount = 4
         inflate(getContext(), R.layout.breed_description_grid_view, this)
-//        breedDescriptionCanLiveAtHome.visibility = View.GONE
-//        breedDescriptionCanLiveAtHomeIcon.visibility = View.GONE
-//        breedDescriptionAffectionate.visibility = View.GONE
-//        breedDescriptionAffectionateIcon.visibility = View.GONE
-//        breedDescriptionHeight.visibility = View.GONE
-//        breedDescriptionHeightText.visibility = View.GONE
-//        breedDescriptionWeight.visibility = View.GONE
-//        breedDescriptionWeightText.visibility = View.GONE
-
     }
 
     fun updateDogGridInfo(

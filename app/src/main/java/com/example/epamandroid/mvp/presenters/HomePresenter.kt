@@ -53,7 +53,7 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
                             it.value.lifeExpectancy,
                             it.value.photo)) }
 
-            giveElementsToView(dogList?.sortedBy { it.breed }, endPosition)
+            giveElementsToView(dogList?.sortedBy { it.id }, endPosition)
         }.start()
     }
 

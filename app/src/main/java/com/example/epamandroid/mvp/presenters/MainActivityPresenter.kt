@@ -25,18 +25,22 @@ class MainActivityPresenter(
     override fun loadDogByBreed(breed:String){
         Thread {
             val gsonDogEntity: GsonDogEntity? = MainActivityModel.getEntity(breed)
-            val dogEntity: DogEntity? = DogEntity(
-                    gsonDogEntity?.id,
-                    gsonDogEntity?.breed,
-                    gsonDogEntity?.weight,
-                    gsonDogEntity?.height,
-                    gsonDogEntity?.description,
-                    gsonDogEntity?.isCanLiveAtHome,
-                    gsonDogEntity?.isAffectionate,
-                    gsonDogEntity?.breedPopularity,
-                    gsonDogEntity?.cost,
-                    gsonDogEntity?.lifeExpectancy,
-                    gsonDogEntity?.photo)
+            var dogEntity: DogEntity? = null
+            if(gsonDogEntity != null) {
+                dogEntity = DogEntity(
+                    gsonDogEntity.id,
+                    gsonDogEntity.breed,
+                    gsonDogEntity.weight,
+                    gsonDogEntity.height,
+                    gsonDogEntity.description,
+                    gsonDogEntity.isCanLiveAtHome,
+                    gsonDogEntity.isAffectionate,
+                    gsonDogEntity.breedPopularity,
+                    gsonDogEntity.cost,
+                    gsonDogEntity.lifeExpectancy,
+                    gsonDogEntity.photo
+                )
+            }
 
             handler.post {
                 Runnable {

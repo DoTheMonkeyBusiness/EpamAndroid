@@ -19,6 +19,7 @@ class AddLostDogPresenter(private val view: IAddLostDogContract.View) : IAddLost
                                longitude: Double,
                                photo: String) {
         Thread {
+            //TODO change to date & to UUID
             val isPostSuccess: Boolean = AddLostDogModel.putLostBreed(
                             GsonLostDogEntity(
                                     UUID.randomUUID(),
@@ -27,7 +28,7 @@ class AddLostDogPresenter(private val view: IAddLostDogContract.View) : IAddLost
                                     description,
                                     latitude,
                                     longitude,
-                                    Calendar.getInstance().time,
+                                    Calendar.getInstance().time.toString(),
                                     photo))
 
             handler.post{

@@ -29,7 +29,6 @@ object MainActivityModel: IMainActivityContract.Model<GsonDogEntity> {
 
             val dog: HashMap<Int, GsonDogEntity>? = GsonParser.parseDogEntity(response.body().string())
 
-
             response.body().close()
 
             return if (dog != null

@@ -18,7 +18,12 @@ import com.example.epamandroid.R
 import com.example.epamandroid.constants.MapConstants.LATITUDE_EXTRA_KEY
 import com.example.epamandroid.constants.MapConstants.LONGITUDE_EXTRA_KEY
 import com.example.epamandroid.constants.PermissionsConstants.LOCATION_PERMISSION_EXTRA_KEY
+import com.example.epamandroid.models.ClusterMarker
+import com.example.epamandroid.mvp.contracts.IHomeContract
+import com.example.epamandroid.mvp.contracts.IMapContract
+import com.example.epamandroid.mvp.presenters.MapPresenter
 import com.example.epamandroid.mvp.views.activities.AddLostDogActivity
+import com.example.epamandroid.util.ClusterManagerRenderer
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -28,9 +33,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterManager
 
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
 
     companion object {
         private const val TAG: String = "MapFragment"
@@ -42,6 +48,16 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var locationPermissionsGranted: Boolean = false
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
     private var lostDogMarker: Marker? = null
+    private var clusterManager: ClusterManager<ClusterMarker>? = null
+    private var clusterManagerRenderer: ClusterManagerRenderer? = null
+
+    private lateinit var mapPresenter: IMapContract.Presenter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        mapPresenter = MapPresenter(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.map_fragment, container, false)
@@ -60,11 +76,22 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun getLocationPermission() {
-        val permissions: Array<String> = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        val permissions: Array<String> =
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
 
-        if (context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) } == PackageManager.PERMISSION_DENIED
-                && context?.let { ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_COARSE_LOCATION) } == PackageManager.PERMISSION_DENIED
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (context?.let {
+                ContextCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } == PackageManager.PERMISSION_DENIED
+            && context?.let {
+                ContextCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } == PackageManager.PERMISSION_DENIED
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, LOCATION_PERMISSION_EXTRA_KEY)
         } else {
             locationPermissionsGranted = true
@@ -94,10 +121,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         try {
             if (locationPermissionsGranted) {
                 val location = fusedLocationProviderClient?.lastLocation
-                location?.addOnCompleteListener{
-                    if (it.isSuccessful){
+                location?.addOnCompleteListener {
+                    if (it.isSuccessful) {
                         val currentLocation = it.result as Location
 
+                        mapPresenter.findLostDogsNearby(LatLng(currentLocation.latitude, currentLocation.longitude))
                         moveCamera(LatLng(currentLocation.latitude, currentLocation.longitude), DEFAULT_ZOOM_KEY)
                     } else {
                         Log.d(TAG, "current location is null")
@@ -125,7 +153,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private fun setOnMarkerClickListener() {
         lostDogsMap?.setOnMarkerClickListener {
-            if(it.title == LOST_DOG_TITLE_KEY){
+            if (it.title == LOST_DOG_TITLE_KEY) {
                 startActivity(Intent(context, AddLostDogActivity::class.java).apply {
                     putExtra(LATITUDE_EXTRA_KEY, it.position.latitude)
                     putExtra(LONGITUDE_EXTRA_KEY, it.position.longitude)
@@ -136,15 +164,44 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    override fun addMapMarkers(clusterMarkerSet: HashSet<ClusterMarker>?) {
+        if (lostDogsMap != null) {
+            if (clusterManager == null) {
+                clusterManager = ClusterManager(activity?.applicationContext, lostDogsMap)
+            }
+            val manager = clusterManager
+            val appContext = activity?.applicationContext
+            val googleMap = lostDogsMap
+
+            if (clusterManagerRenderer == null) {
+                clusterManagerRenderer = ClusterManagerRenderer(appContext, googleMap, manager)
+                manager?.renderer = clusterManagerRenderer
+            }
+            manager?.addItems(clusterMarkerSet)
+            manager?.cluster()
+        }
+    }
+
     override fun onMapReady(map: GoogleMap?) {
+
         lostDogsMap = map
 
-        if(locationPermissionsGranted){
+        if (locationPermissionsGranted) {
             getDeviceLocation()
 
-            if (context?.let { ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) } != PackageManager.PERMISSION_GRANTED
-                    && context?.let { ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_COARSE_LOCATION) } != PackageManager.PERMISSION_GRANTED
-            ){
+            if (context?.let {
+                    ActivityCompat.checkSelfPermission(
+                        it,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                } != PackageManager.PERMISSION_GRANTED
+                && context?.let {
+                    ActivityCompat.checkSelfPermission(
+                        it,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                } != PackageManager.PERMISSION_GRANTED
+            ) {
                 return
             }
             lostDogsMap?.isMyLocationEnabled = true

@@ -25,7 +25,7 @@ class GsonLostDogEntity(
         @SerializedName(LONGITUDE_EXTRA_KEY)
         val longitude: Double?,
         @SerializedName(PUBLICATION_DATE_EXTRA_KEY)
-        val publicationDate: Date?,
+        val publicationDate: String?,
         @SerializedName(PHOTO_EXTRA_KEY)
         val photo: String?
 )

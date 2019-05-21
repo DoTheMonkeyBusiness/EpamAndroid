@@ -4,10 +4,10 @@ import com.google.android.gms.maps.model.LatLng
 import java.util.*
 
 class LostDogEntity(
-    breed: String,
-    description: String,
-    photo: String,
-    doteOfCreation: Date,
-    position: LatLng
-) {
-}
+    val id: UUID?,
+    val breed: String?,
+    val phoneNumber: String?,
+    val description: String?,
+    val position: LatLng?,
+    val photo: String?
+)

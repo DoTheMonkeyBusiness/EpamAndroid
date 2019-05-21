@@ -16,7 +16,7 @@ object ChooseLostBreedModel : IChooseLostBreedContract.Model {
 
     private val client = OkHttpClient()
 
-    override fun getBreeds(): MutableList<String?>? {
+    override fun getBreed(): MutableList<String?>? {
         var response: Response? = null
 
         try {
