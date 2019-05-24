@@ -11,6 +11,7 @@
     <color name="colorAccentGreyNight">#E2E5E7</color>
     <color name="colorBackgroundNight">#35505D</color>
     <color name="colorBottomSheetHeaderNight">#2B4653</color>
+    <color name="colorPhoneNumberNight">#9E9E9E</color>
 
     <color name="colorPrimaryDay">#FEEAE6</color>
     <!--<color name="colorPrimaryDarkDay">#FEDBD0</color>-->
@@ -19,6 +20,7 @@
     <color name="colorAccentGreyDay">#6C4649</color>
     <color name="colorBackgroundDay">#FFFBFA</color>
     <color name="colorBottomSheetHeaderDay">#F8F4F3</color>
+    <color name="colorPhoneNumberDay">#3E2723</color>
 
 
     <color name="colorRed">#B71C1C</color>

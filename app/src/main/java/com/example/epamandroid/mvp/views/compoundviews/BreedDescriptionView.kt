@@ -21,12 +21,12 @@ class BreedDescriptionView @JvmOverloads constructor(
         breedDescriptionRatingBar.setIsIndicator(true)
     }
 
-    fun getDogPhoto(): ImageView = breedDescriptionDogPhoto
+    fun getDogPhoto(): ImageView = lostBreedDescriptionDogPhoto
 
     fun updateDogInfo(bundle: Bundle?) {
         when(bundle?.getString(DogEntityConstants.BREED_EXTRA_KEY)){
-            null -> {breedDescriptionHeader.setText(R.string.dog_breed)}
-            else -> {breedDescriptionHeader?.text = bundle.getString(DogEntityConstants.BREED_EXTRA_KEY)}
+            null -> {lostBreedDescriptionHeader.setText(R.string.dog_breed)}
+            else -> {lostBreedDescriptionHeader?.text = bundle.getString(DogEntityConstants.BREED_EXTRA_KEY)}
         }
         when(bundle?.getString(DogEntityConstants.DESCRIPTION_EXTRA_KEY)){
             null -> {breedDescriptionText.setText(R.string.no_description)}
@@ -52,8 +52,8 @@ class BreedDescriptionView @JvmOverloads constructor(
 
 
         when(dogEntity?.breed){
-            null -> {breedDescriptionHeader.setText(R.string.dog_breed)}
-            else -> {breedDescriptionHeader.text = dogEntity.breed}
+            null -> {lostBreedDescriptionHeader.setText(R.string.dog_breed)}
+            else -> {lostBreedDescriptionHeader.text = dogEntity.breed}
         }
         when(dogEntity?.description){
             null -> {breedDescriptionText?.setText(R.string.no_description)}

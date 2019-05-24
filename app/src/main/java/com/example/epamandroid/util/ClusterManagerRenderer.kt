@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.example.epamandroid.R
 import com.example.epamandroid.models.ClusterMarker
+import com.example.imageloader.IMichelangelo
+import com.example.imageloader.Michelangelo
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.Cluster
 import com.google.maps.android.clustering.ClusterManager
@@ -23,25 +26,29 @@ class ClusterManagerRenderer(
     map,
     clusterManager) {
 
-    private var iconGenerator: IconGenerator
-    private var imageView: ImageView
-    private var markerWidth: Int?
-    private var markerHeight: Int?
+    private var iconGenerator: IconGenerator = IconGenerator(context?.applicationContext)
+    private var imageView: ImageView = ImageView(context?.applicationContext)
+    private var markerWidth: Int? = context?.resources?.getDimension(R.dimen.custom_marker_image)?.toInt()
+    private var markerHeight: Int? = context?.resources?.getDimension(R.dimen.custom_marker_image)?.toInt()
+    private var michelangelo: IMichelangelo = Michelangelo.getInstance(context)
+
 
     init {
-        iconGenerator = IconGenerator(context?.applicationContext)
-        imageView = ImageView(context?.applicationContext)
-        markerWidth = context?.resources?.getDimension(R.dimen.custom_marker_image)?.toInt()
-        markerHeight = context?.resources?.getDimension(R.dimen.custom_marker_image)?.toInt()
         imageView.layoutParams = markerWidth?.let { markerHeight?.let { it1 -> ViewGroup.LayoutParams(it, it1) } }
         val padding: Int? = context?.resources?.getDimension(R.dimen.custom_marker_padding)?.toInt()
         padding?.let { imageView.setPadding(it, it, it, it) }
         iconGenerator.setContentView(imageView)
     }
 
+    override fun onClusterItemRendered(clusterItem: ClusterMarker?, marker: Marker?) {
+//        super.onClusterItemRendered(clusterItem, marker)
+        michelangelo.load(imageView, clusterItem?.iconPicture)
+    }
+
     override fun onBeforeClusterItemRendered(item: ClusterMarker?, markerOptions: MarkerOptions?) {
 //        super.onBeforeClusterItemRendered(item, markerOptions)
-        item?.iconPicture?.let { imageView.setImageResource(it) }
+//        michelangelo.load(imageView, item?.iconPicture)
+//        item?.iconPicture?.let { imageView.setImageResource(it) }
         val icon: Bitmap = iconGenerator.makeIcon()
         markerOptions?.icon(BitmapDescriptorFactory.fromBitmap(icon))?.title(item?.title)
 

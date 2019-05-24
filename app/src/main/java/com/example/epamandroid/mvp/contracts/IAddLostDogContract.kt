@@ -2,6 +2,8 @@ package com.example.epamandroid.mvp.contracts
 
 import com.example.epamandroid.mvp.core.IBasePresenter
 import com.example.epamandroid.mvp.core.IBaseView
+import java.io.File
+import java.util.*
 
 interface IAddLostDogContract {
 
@@ -16,10 +18,11 @@ interface IAddLostDogContract {
                           description: String,
                           latitude: Double,
                           longitude: Double,
-                          photo: String)
+                          imageFile: File?)
     }
 
     interface Model<T> {
         fun putLostBreed(gsonLostDogEntity: T): Boolean
+        fun uploadImage(imageFile: File, id: UUID): Boolean
     }
 }

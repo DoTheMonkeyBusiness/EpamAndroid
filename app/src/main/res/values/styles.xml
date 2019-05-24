@@ -9,6 +9,7 @@
         <item name="colorAccentGrey">@color/colorAccentGreyNight</item>
         <item name="colorBackground">@color/colorBackgroundNight</item>
         <item name="colorBottomSheetHeader">@color/colorBottomSheetHeaderNight</item>
+        <item name="colorPhoneNumber">@color/colorPhoneNumberNight</item>
         <!--<item name="colorSwitchThumbNormal">@color/colorPrimaryDark</item>-->
         <!--<item name="switchStyle">@style/Widget.AppCompat.CompoundButton.Switch</item>-->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
@@ -22,6 +23,7 @@
         <item name="colorAccentGrey">@color/colorAccentGreyDay</item>
         <item name="colorBackground">@color/colorBackgroundDay</item>
         <item name="colorBottomSheetHeader">@color/colorBottomSheetHeaderDay</item>
+        <item name="colorPhoneNumber">@color/colorPhoneNumberDay</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 

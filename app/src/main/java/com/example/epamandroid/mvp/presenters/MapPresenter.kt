@@ -77,7 +77,7 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
                     it.position,
                     it.breed,
                     it.breed,
-                    R.drawable.ic_arrow_back,
+                    it.photo,
                     it
                 )
             )

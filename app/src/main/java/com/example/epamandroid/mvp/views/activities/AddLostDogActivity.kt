@@ -5,7 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.widget.Toast
 import com.example.epamandroid.R
 import com.example.epamandroid.constants.MapConstants.LATITUDE_EXTRA_KEY
@@ -22,8 +23,14 @@ import com.example.epamandroid.constants.PermissionsConstants.READ_EXTERNAL_STOR
 import com.example.epamandroid.mvp.contracts.IAddLostDogContract
 import com.example.epamandroid.mvp.presenters.AddLostDogPresenter
 import com.example.epamandroid.mvp.views.fragments.ChooseLostBreedFragment
+import com.example.filename.ImageFilePath
+import com.squareup.okhttp.*
 import kotlinx.android.synthetic.main.activity_add_lost_dog.*
+import java.io.ByteArrayOutputStream
+import java.io.File
 import java.io.IOException
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class AddLostDogActivity : AppCompatActivity(),
@@ -38,7 +45,7 @@ class AddLostDogActivity : AppCompatActivity(),
         private const val PICK_IMAGE_REQUEST_KEY: Int = 22
     }
 
-    private var filePath: Uri? = null
+    private var imageFile: File? = null
 
     private var imageBitmap: Bitmap? = null
     private var readExternalStoragePermissionsGranted: Boolean = false
@@ -130,47 +137,49 @@ class AddLostDogActivity : AppCompatActivity(),
                     addLostDogAddBreedDescriptionEditText.text.toString(),
                     intent.getDoubleExtra(LATITUDE_EXTRA_KEY, 0.0),
                     intent.getDoubleExtra(LONGITUDE_EXTRA_KEY, 0.0),
-                    "photo")
+                    imageFile)
         }
     }
 
-//    private fun getBitmap(): ByteArray {
-//        val bitmap = (addLostDogAddPhotoImageView.drawable as BitmapDrawable).bitmap
-//        val baos = ByteArrayOutputStream()
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-//        return baos.toByteArray()
-//    }
-//
-//    private fun uploadImage() {
-//        val path: ByteArray
-//        val uploadFilePath = filePath
-//
-//        if (uploadFilePath != null){
-//            path = getBitmap()
-//
-//            Thread {
-//
-//                try {
-//                    val uploadId = UUID.randomUUID().toString()
-//
-//                    val req = MultipartBuilder().type(MultipartBuilder.FORM)
-//                            .addFormDataPart(uploadId, "Path", RequestBody.create(MediaType.parse("headers: { \"Content-Type\":\"image/*\" },mode: \"cors\",cache: \"default\""), path))
-//                            .build()
-//
-//                    val request = Request.Builder()
-//                            .url("https://firebasestorage.googleapis.com/v0/b/dogbreeds-60b2e/o/myBucket%myBucket%2FImage?alt=media")
-//                            .post(req)
-//                            .build()
-//                    val client = OkHttpClient()
-//
-//                    val response = client.newCall(request).execute()
-//                    Log.d(TAG, response.body().string())
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                }
-//            }.start()
-//        }
-//    }
+
+    private fun getBitmap(): ByteArray {
+        val bitmap = (addLostDogAddPhotoImageView.drawable as BitmapDrawable).bitmap
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        return baos.toByteArray()
+    }
+
+    private fun uploadImage() {
+        val path: ByteArray
+        val uploadFile = imageFile
+
+        if (uploadFile != null){
+            path = getBitmap()
+
+            Thread {
+
+                try {
+                    val uploadId = UUID.randomUUID().toString()
+
+                    val req = MultipartBuilder().type(MultipartBuilder.FORM)
+                            .addFormDataPart(uploadId, "Path", RequestBody.create(MediaType.parse(IMAGE_FILE_TYPE_KEY), path))
+                            .build()
+
+                    val request = Request.Builder()
+                            .url("https://firebasestorage.googleapis.com/v0/b/dogbreeds-60b2e.appspot.com/o/somePhoto.jpeg?alt=media")
+                            .post(req)
+                            .build()
+                    val client = OkHttpClient()
+                    client.setConnectTimeout(50, TimeUnit.SECONDS)
+
+                    val response = client.newCall(request).execute()
+                    Log.d(TAG, response.body().string())
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }.start()
+        }
+    }
 
     override fun onPostSuccess() {
         finish()
@@ -185,10 +194,10 @@ class AddLostDogActivity : AppCompatActivity(),
 
         if (requestCode == PICK_IMAGE_REQUEST_KEY
                 && resultCode == Activity.RESULT_OK) {
-            filePath = data?.data
+            imageFile = File(ImageFilePath.getPath(this@AddLostDogActivity, data?.data))
 
             try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, filePath)
+                imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, data?.data)
                 addLostDogAddPhotoImageView.setImageBitmap(imageBitmap)
                 imageSeted = true
             } catch (e: IOException) {

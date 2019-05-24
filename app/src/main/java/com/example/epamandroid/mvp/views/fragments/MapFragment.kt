@@ -69,6 +69,13 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
         getLocationPermission()
     }
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if(isVisibleToUser && !locationPermissionsGranted) {
+            getLocationPermission()
+        }
+    }
+
     private fun initMap() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapFragmentMapView) as SupportMapFragment
 
@@ -115,6 +122,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
 
     }
 
+    //TODO: don't forget to ask
     private fun getDeviceLocation() {
         fusedLocationProviderClient = context?.let { LocationServices.getFusedLocationProviderClient(it) }
 
@@ -122,9 +130,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
             if (locationPermissionsGranted) {
                 val location = fusedLocationProviderClient?.lastLocation
                 location?.addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        val currentLocation = it.result as Location
+                    val currentLocation = it.result
 
+                    if (currentLocation != null) {
                         mapPresenter.findLostDogsNearby(LatLng(currentLocation.latitude, currentLocation.longitude))
                         moveCamera(LatLng(currentLocation.latitude, currentLocation.longitude), DEFAULT_ZOOM_KEY)
                     } else {
@@ -138,7 +146,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
         }
     }
 
-    private fun moveCamera(latLng: LatLng, zoom: Float) {
+    private fun moveCamera(latLng: LatLng?, zoom: Float) {
         lostDogsMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
     }
 

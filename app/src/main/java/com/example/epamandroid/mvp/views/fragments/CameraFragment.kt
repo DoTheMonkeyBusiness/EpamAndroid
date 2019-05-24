@@ -107,7 +107,7 @@ class CameraFragment : Fragment(), ICameraContract.IView {
 
         cameraFragmentDogBreed.setOnClickListener {
             if (cameraFragmentDogBreed.text != getString(R.string.uninitialized_classifier)) {
-                val breedDescriptionFragment = BreedDescriptionFragment()
+                val breedDescriptionFragment = MainBottomSheetFragment()
 
 //                changeFragmentCallback?.onItemChangedToMain()
 //                breedDescriptionFragment.arguments = cameraPresenter

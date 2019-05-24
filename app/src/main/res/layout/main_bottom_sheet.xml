@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/breedDescriptionBottomSheet"
+    android:id="@+id/mainBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/rounded_top_layout"
@@ -11,7 +11,7 @@
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
     <ImageButton
-        android:id="@+id/breedDescriptionCloseButton"
+        android:id="@+id/mainBottomSheetCloseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -26,12 +26,12 @@
         android:background="?attr/colorPrimaryDark" />
 
     <FrameLayout
-        android:id="@+id/breedDescriptionFrameLayout"
+        android:id="@+id/mainBottomSheetFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/breedDescriptionError"
+            android:id="@+id/mainBottomSheetError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -42,7 +42,7 @@
             android:visibility="gone" />
 
         <ProgressBar
-            android:id="@+id/breedDescriptionProgressBar"
+            android:id="@+id/mainBottomSheetProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -53,14 +53,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.example.epamandroid.mvp.views.compoundviews.BreedDescriptionView
-                android:id="@+id/breedDescription"
+            <FrameLayout
+                android:id="@+id/mainBottomSheetFragmentContainer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:background="?attr/colorBackground"
-                android:visibility="gone" />
+                android:layout_height="match_parent" />
 
         </android.support.v4.widget.NestedScrollView>
+
+        <!--<com.example.epamandroid.mvp.views.compoundviews.BreedDescriptionView-->
+        <!--android:id="@+id/breedDescription"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="?attr/colorBackground"-->
+        <!--android:visibility="gone" />-->
     </FrameLayout>
 
 </LinearLayout>

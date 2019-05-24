@@ -4,5 +4,6 @@
         <attr name="colorBackground" format="color"/>
         <attr name="colorAccentGrey" format="color"/>
         <attr name="colorBottomSheetHeader" format="color"/>
+        <attr name="colorPhoneNumber" format="color"/>
     </declare-styleable>
 </resources>
