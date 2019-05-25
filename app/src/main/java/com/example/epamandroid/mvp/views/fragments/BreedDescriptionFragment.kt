@@ -47,42 +47,42 @@ class BreedDescriptionFragment : Fragment(), IBreedDescriptionContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        breedDescriptionFragment.goneView()
-
         val bundle = arguments
         val bundleDogEntity: DogEntity? = bundle?.getParcelable<DogEntity?>(DOG_ENTITY_EXTRA_KEY)
         val bundleDogBreed: String? = bundle?.getString(DOG_BREED_STRING_EXTRA_KEY)
 
+        breedDescriptionFragment.goneView()
+
         if (bundle != null) {
             if (bundleDogEntity !== null) {
                 breedDescriptionFragment.updateDogInfo(bundleDogEntity)
-                michelangelo.load(breedDescriptionFragment.getDogPhoto(), bundleDogEntity.photo)
+                michelangelo.load(breedDescriptionFragment.getBreedPhoto(), bundleDogEntity.photo)
                 breedDescriptionFragment.visibleView()
-                breedDescriptionResultCallback?.onBreedDescriptionConfirm()
+                breedDescriptionResultCallback?.onDescriptionConfirm()
             } else if (bundleDogBreed != null) {
-                breedDescriptionResultCallback?.onBreedDescriptionLoading()
+                breedDescriptionResultCallback?.onDescriptionLoading()
 
                 presenter.loadDogByBreed(bundleDogBreed)
             }
         } else {
-            breedDescriptionResultCallback?.onBreedDescriptionError()
+            breedDescriptionResultCallback?.onDescriptionError()
         }
     }
 
     override fun updateBreedDescription(dogEntity: DogEntity?) {
         if(dogEntity != null) {
             breedDescriptionFragment.updateDogInfo(dogEntity)
-            michelangelo.load(breedDescriptionFragment.getDogPhoto(), dogEntity.photo)
+            michelangelo.load(breedDescriptionFragment.getBreedPhoto(), dogEntity.photo)
             breedDescriptionFragment.visibleView()
-            breedDescriptionResultCallback?.onBreedDescriptionConfirm()
+            breedDescriptionResultCallback?.onDescriptionConfirm()
         } else {
-            breedDescriptionResultCallback?.onBreedDescriptionError()
+            breedDescriptionResultCallback?.onDescriptionError()
         }
     }
 
     interface IBreedDescriptionResultCallback {
-        fun onBreedDescriptionConfirm()
-        fun onBreedDescriptionLoading()
-        fun onBreedDescriptionError()
+        fun onDescriptionConfirm()
+        fun onDescriptionLoading()
+        fun onDescriptionError()
     }
 }

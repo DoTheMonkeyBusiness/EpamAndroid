@@ -38,7 +38,7 @@
         android:background="?attr/colorPrimaryDark" />
 
     <TextView
-        android:id="@+id/breedDescriptionRatingText"
+        android:id="@+id/lostBreedDescriptionPhoneNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/phone_number"
@@ -55,7 +55,7 @@
         android:background="?attr/colorPrimaryDark" />
 
     <TextView
-        android:id="@+id/breedDescriptionText"
+        android:id="@+id/lostBreedDescriptionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/breedDescriptionRatingBar"

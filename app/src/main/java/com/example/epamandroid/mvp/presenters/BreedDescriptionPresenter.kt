@@ -8,7 +8,6 @@ import com.example.epamandroid.mvp.contracts.IBreedDescriptionContract
 import com.example.epamandroid.mvp.repository.BreedDescriptionModel
 
 class BreedDescriptionPresenter(private val view: IBreedDescriptionContract.View) : IBreedDescriptionContract.Presenter {
-
     private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate() = Unit

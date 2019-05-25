@@ -1,9 +1,9 @@
 package com.example.epamandroid.mvp.views.fragments
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -19,7 +19,7 @@ import com.example.epamandroid.constants.MapConstants.LATITUDE_EXTRA_KEY
 import com.example.epamandroid.constants.MapConstants.LONGITUDE_EXTRA_KEY
 import com.example.epamandroid.constants.PermissionsConstants.LOCATION_PERMISSION_EXTRA_KEY
 import com.example.epamandroid.models.ClusterMarker
-import com.example.epamandroid.mvp.contracts.IHomeContract
+import com.example.epamandroid.models.LostDogEntity
 import com.example.epamandroid.mvp.contracts.IMapContract
 import com.example.epamandroid.mvp.presenters.MapPresenter
 import com.example.epamandroid.mvp.views.activities.AddLostDogActivity
@@ -50,8 +50,18 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
     private var lostDogMarker: Marker? = null
     private var clusterManager: ClusterManager<ClusterMarker>? = null
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
+    private var clusterMarkers: HashSet<ClusterMarker>? = null
+    private var showBottomSheetCallback: IShowBottomSheetCallback? = null
 
     private lateinit var mapPresenter: IMapContract.Presenter
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        if (context is IShowBottomSheetCallback) {
+            showBottomSheetCallback = context
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +81,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if(isVisibleToUser && !locationPermissionsGranted) {
+        if (isVisibleToUser && !locationPermissionsGranted) {
             getLocationPermission()
         }
     }
@@ -84,21 +94,21 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
 
     private fun getLocationPermission() {
         val permissions: Array<String> =
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
 
         if (context?.let {
-                ContextCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-            } == PackageManager.PERMISSION_DENIED
-            && context?.let {
-                ContextCompat.checkSelfPermission(
-                    it,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            } == PackageManager.PERMISSION_DENIED
-            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    ContextCompat.checkSelfPermission(
+                            it,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                } == PackageManager.PERMISSION_DENIED
+                && context?.let {
+                    ContextCompat.checkSelfPermission(
+                            it,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                } == PackageManager.PERMISSION_DENIED
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, LOCATION_PERMISSION_EXTRA_KEY)
         } else {
             locationPermissionsGranted = true
@@ -122,7 +132,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
 
     }
 
-    //TODO: don't forget to ask
     private fun getDeviceLocation() {
         fusedLocationProviderClient = context?.let { LocationServices.getFusedLocationProviderClient(it) }
 
@@ -160,13 +169,19 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
     }
 
     private fun setOnMarkerClickListener() {
-        lostDogsMap?.setOnMarkerClickListener {
-            if (it.title == LOST_DOG_TITLE_KEY) {
+        lostDogsMap?.setOnMarkerClickListener { marker ->
+            if (marker.title == LOST_DOG_TITLE_KEY) {
                 startActivity(Intent(context, AddLostDogActivity::class.java).apply {
-                    putExtra(LATITUDE_EXTRA_KEY, it.position.latitude)
-                    putExtra(LONGITUDE_EXTRA_KEY, it.position.longitude)
+                    putExtra(LATITUDE_EXTRA_KEY, marker.position.latitude)
+                    putExtra(LONGITUDE_EXTRA_KEY, marker.position.longitude)
                 })
 //                AddLostDogActivity.startActivity(context,  AddLostDogActivity::class.java)
+            } else {
+                val lostDogEntity = clusterMarkers?.find {
+                    it.title == marker.title
+                }?.lostDogEntity
+
+                showBottomSheetCallback?.onShowBottomSheetFromMap(lostDogEntity)
             }
             true
         }
@@ -177,6 +192,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
             if (clusterManager == null) {
                 clusterManager = ClusterManager(activity?.applicationContext, lostDogsMap)
             }
+
             val manager = clusterManager
             val appContext = activity?.applicationContext
             val googleMap = lostDogsMap
@@ -186,6 +202,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
                 manager?.renderer = clusterManagerRenderer
             }
             manager?.addItems(clusterMarkerSet)
+            clusterMarkers = clusterMarkerSet
+//            clusterMarkerSet?.toList()?.let { clusterMarkers?.addAll(it) }
             manager?.cluster()
         }
     }
@@ -198,17 +216,17 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
             getDeviceLocation()
 
             if (context?.let {
-                    ActivityCompat.checkSelfPermission(
-                        it,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    )
-                } != PackageManager.PERMISSION_GRANTED
-                && context?.let {
-                    ActivityCompat.checkSelfPermission(
-                        it,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                    )
-                } != PackageManager.PERMISSION_GRANTED
+                        ActivityCompat.checkSelfPermission(
+                                it,
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                    } != PackageManager.PERMISSION_GRANTED
+                    && context?.let {
+                        ActivityCompat.checkSelfPermission(
+                                it,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    } != PackageManager.PERMISSION_GRANTED
             ) {
                 return
             }
@@ -217,5 +235,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
             setOnMapClickListener()
             setOnMarkerClickListener()
         }
+    }
+
+    interface IShowBottomSheetCallback {
+        fun onShowBottomSheetFromMap(lostDogEntity: LostDogEntity?)
     }
 }

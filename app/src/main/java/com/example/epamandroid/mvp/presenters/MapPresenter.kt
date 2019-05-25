@@ -75,7 +75,7 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
             clusterMarkerSet?.add(
                 ClusterMarker(
                     it.position,
-                    it.breed,
+                    it.id.toString(),
                     it.breed,
                     it.photo,
                     it

@@ -37,7 +37,9 @@ class MainActivity : AppCompatActivity(),
         CameraFragment.IShowBottomSheetCallback,
         IBaseView,
         IMainActivityContract.View,
-        BreedDescriptionFragment.IBreedDescriptionResultCallback {
+        BreedDescriptionFragment.IBreedDescriptionResultCallback,
+        LostBreedDescriptionFragment.ILostBreedDescriptionResultCallback,
+        MapFragment.IShowBottomSheetCallback {
 
     companion object {
         private const val CAMERA_ITEM_KEY: Int = 0
@@ -166,7 +168,7 @@ class MainActivity : AppCompatActivity(),
             LOST_DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY -> {
                 val lostBreedDescriptionFragment = LostBreedDescriptionFragment()
 
-                if (dogEntity != null) {
+                if (lostDogEntity != null) {
                     bundle.putParcelable(LOST_DOG_ENTITY_EXTRA_KEY, lostDogEntity)
                 }
                 lostBreedDescriptionFragment.arguments = bundle
@@ -202,15 +204,21 @@ class MainActivity : AppCompatActivity(),
         bottomSheetBehavior.expandBottomSheet()
     }
 
-    override fun onBreedDescriptionConfirm() {
+    override fun onShowBottomSheetFromMap(lostDogEntity: LostDogEntity?) {
+        replaceBottomSheetContainer(LOST_DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY, lostDogEntity = lostDogEntity)
+        bottomSheetBehavior.expandBottomSheet()
+    }
+
+    override fun onDescriptionConfirm() {
         mainBottomSheetError.goneView()
         mainBottomSheetProgressBar.goneView()
     }
-    override fun onBreedDescriptionLoading() {
+
+    override fun onDescriptionLoading() {
         mainBottomSheetProgressBar.visibleView()
     }
 
-    override fun onBreedDescriptionError() {
+    override fun onDescriptionError() {
         mainBottomSheetProgressBar.goneView()
         mainBottomSheetError.visibleView()
     }

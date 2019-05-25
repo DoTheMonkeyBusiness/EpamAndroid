@@ -9,7 +9,7 @@
     tools:parentTag="android.widget.LinearLayout">
 
     <TextView
-        android:id="@+id/lostBreedDescriptionHeader"
+        android:id="@+id/breedDescriptionHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
@@ -21,7 +21,7 @@
         android:textStyle="bold" />
 
     <ImageView
-        android:id="@+id/lostBreedDescriptionDogPhoto"
+        android:id="@+id/breedDescriptionDogPhoto"
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_centerHorizontal="true"
