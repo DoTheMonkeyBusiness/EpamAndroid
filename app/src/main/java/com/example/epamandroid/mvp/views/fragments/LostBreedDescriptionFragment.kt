@@ -1,6 +1,8 @@
 package com.example.epamandroid.mvp.views.fragments
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -16,10 +18,15 @@ import com.example.imageloader.Michelangelo
 import com.example.kotlinextensions.goneView
 import com.example.kotlinextensions.visibleView
 import kotlinx.android.synthetic.main.lost_breed_description_fragment.*
+import kotlinx.android.synthetic.main.lost_breed_description_view.*
 
 class LostBreedDescriptionFragment
     : Fragment(),
         ILostBreedDescriptionContract.View {
+
+    companion object {
+        private const val TELEPHONE_SCHEME_KEY: String = "tel"
+    }
 
     private lateinit var michelangelo: IMichelangelo
     private lateinit var presenter: ILostBreedDescriptionContract.Presenter
@@ -62,6 +69,9 @@ class LostBreedDescriptionFragment
             lostBreedDescriptionResultCallback?.onDescriptionError()
         }
 
+        lostBreedDescriptionPhoneNumber.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.fromParts(TELEPHONE_SCHEME_KEY, lostBreedDescriptionPhoneNumber.text.toString(), null)))
+        }
     }
 
     interface ILostBreedDescriptionResultCallback {

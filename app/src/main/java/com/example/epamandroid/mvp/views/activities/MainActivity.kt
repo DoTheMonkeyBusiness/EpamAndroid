@@ -42,8 +42,10 @@ class MainActivity : AppCompatActivity(),
         MapFragment.IShowBottomSheetCallback {
 
     companion object {
+        private const val TAG: String = "MainActivity"
         private const val CAMERA_ITEM_KEY: Int = 0
         private const val MAIN_ITEM_KEY: Int = 1
+        private const val BOTTOM_SHEET_STATE_KEY: String = "bottomSheetStateKey"
     }
 
     private var currentPage: Int = 1
@@ -71,8 +73,12 @@ class MainActivity : AppCompatActivity(),
 
         checkExternalStoragePermission()
 
+        bottomSheetBehavior = BottomSheetBehavior.from(mainBottomSheet)
+
         if (savedInstanceState == null) {
             activityMainViewPager.setCurrentItem(MAIN_ITEM_KEY, true)
+        } else if (savedInstanceState.containsKey(BOTTOM_SHEET_STATE_KEY)){
+            bottomSheetBehavior?.state =  savedInstanceState.getInt(BOTTOM_SHEET_STATE_KEY)
         }
 
         activityMainViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -88,8 +94,6 @@ class MainActivity : AppCompatActivity(),
             }
 
         })
-
-        bottomSheetBehavior = BottomSheetBehavior.from(mainBottomSheet)
 
         mainBottomSheetCloseButton.setOnClickListener {
             bottomSheetBehavior.collapseBottomSheet()
@@ -177,6 +181,12 @@ class MainActivity : AppCompatActivity(),
             }
         }
 
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        bottomSheetBehavior?.state?.let { outState?.putInt(BOTTOM_SHEET_STATE_KEY, it) }
     }
 
     override fun onItemChangedToCamera() {
