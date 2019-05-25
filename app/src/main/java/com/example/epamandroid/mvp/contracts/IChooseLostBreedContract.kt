@@ -11,7 +11,7 @@ interface IChooseLostBreedContract {
     interface Presenter : IBasePresenter
 
     interface Model {
-        fun getBreed(
+        fun getBreeds(
         ): MutableList<String?>?
     }
 }

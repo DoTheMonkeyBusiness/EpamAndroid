@@ -17,7 +17,7 @@ class ChooseLostBreedPresenter(private val view: IChooseLostBreedContract.View) 
         Thread {
             val dogList: MutableList<String>? =
                     ChooseLostBreedModel
-                            .getBreed()
+                            .getBreeds()
                             ?.filterNotNull()
                             ?.toMutableList()
 

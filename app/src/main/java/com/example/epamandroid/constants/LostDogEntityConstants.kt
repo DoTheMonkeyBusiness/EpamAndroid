@@ -1,6 +1,7 @@
 package com.example.epamandroid.constants
 
 object LostDogEntityConstants {
+    const val LOST_DOG_ENTITY_EXTRA_KEY: String = "lostDogEntity"
     const val ID_EXTRA_KEY: String = "id"
     const val BREED_EXTRA_KEY: String = "breed"
     const val PHONE_NUMBER_EXTRA_KEY: String = "phoneNumber"
