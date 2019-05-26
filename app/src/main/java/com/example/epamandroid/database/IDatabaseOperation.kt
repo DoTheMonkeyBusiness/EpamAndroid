@@ -10,5 +10,5 @@ interface IDatabaseOperation {
 
     fun insert(tableName: String, item: DogEntity?): Boolean
 
-    fun delete(tableName: String, sqlString: String, vararg params: String): Long
+    fun deleteAll(tableName: String): Boolean
 }

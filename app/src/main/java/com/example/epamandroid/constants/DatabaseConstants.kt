@@ -2,6 +2,9 @@ package com.example.epamandroid.constants
 
 import android.provider.BaseColumns
 import com.example.epamandroid.constants.DatabaseConstants.DogBreedsTable.TABLE_NAME_DOG_BREEDS_TABLE_EXTRA_KEY
+import com.example.epamandroid.constants.DatabaseConstants.LastModificationTable.COLUMN_NAME_CHANGED_AT_EXTRA_KEY
+import com.example.epamandroid.constants.DatabaseConstants.LastModificationTable.TABLE_NAME_LAST_MODIFICATION_TABLE_EXTRA_KEY
+import com.example.epamandroid.constants.SymbolConstants.SPACE_EXTRA_KEY
 
 object DatabaseConstants {
     object DogBreedsTable : BaseColumns {
@@ -35,7 +38,8 @@ object DatabaseConstants {
         const val COLUMN_NAME_TABLE_NAME_EXTRA_KEY: String = "tableName"
         const val COLUMN_NAME_ACTION_EXTRA_KEY: String = "action"
         const val COLUMN_NAME_CHANGED_AT_EXTRA_KEY: String = "changedAt"
-        const val SECONDS_TO_DROP_TABLES_EXTRA_KEY: Int = 259200
+        const val COLUMN_INDEX_CHANGED_AT_EXTRA_KEY: Int = 2
+        const val SECONDS_TO_DROP_TABLES_EXTRA_KEY: Int = 2
     }
 
     object DogBreedsTrigger {
@@ -45,5 +49,9 @@ object DatabaseConstants {
 
     object SqlStrings {
         const val SELECT_ALL_DOGS_SQL_STRING_EXTRA_KEY: String = "SELECT * FROM $TABLE_NAME_DOG_BREEDS_TABLE_EXTRA_KEY"
+        const val SELECT_LAST_INSERT_TIME_SQL_STRING_EXTRA_KEY: String = "SELECT * FROM" +
+                SPACE_EXTRA_KEY +
+                TABLE_NAME_LAST_MODIFICATION_TABLE_EXTRA_KEY
+
     }
 }

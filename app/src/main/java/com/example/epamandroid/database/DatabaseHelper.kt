@@ -85,9 +85,21 @@ class DatabaseHelper(context: Context?) :
         return cursor
     }
 
-    override fun delete(tableName: String, sqlString: String, vararg params: String): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun deleteAll(tableName: String): Boolean {
+        val writableDatabase = writableDatabase
+        val delete: Int?
+
+
+        writableDatabase.beginTransaction()
+
+        try {
+            delete = writableDatabase?.delete(tableName, null, null)
+            writableDatabase.setTransactionSuccessful()
+        } finally {
+            writableDatabase.endTransaction()
+        }
+
+        return delete != null && delete != -1    }
 
     companion object {
         const val DATABASE_VERSION = 1
