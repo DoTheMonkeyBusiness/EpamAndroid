@@ -21,6 +21,7 @@ import com.example.epamandroid.models.DogEntity
 class DatabaseHelper(context: Context?) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
     IDatabaseOperation {
+
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(SQL_CREATE_DOG_BREEDS_TABLE_EXTRA_KEY)
         db?.execSQL(SQL_CREATE_LAST_MODIFICATION_TABLE_EXTRA_KEY)

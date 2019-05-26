@@ -34,7 +34,6 @@ import android.support.v4.content.ContextCompat.getSystemService
 import android.net.ConnectivityManager
 
 
-
 class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presenter {
 
     companion object {
@@ -48,9 +47,11 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
 
     override fun onCreate() {
         if (view.isEmptyRecyclerView()) {
-            checkDatabaseRelevance()
+            Thread {
+                checkDatabaseRelevance()
 
-            getItemsFromDatabase()
+                getItemsFromDatabase()
+            }.start()
         }
     }
 
@@ -58,9 +59,7 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
         startPosition: Int,
         endPosition: Int
     ) {
-        Thread {
-            getItemsFromModel(startPosition, endPosition)
-        }.start()
+        getItemsFromModel(startPosition, endPosition)
     }
 
     private fun getItemsFromModel(
@@ -126,24 +125,23 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
     }
 
     private fun getItemsFromDatabase() {
-        Thread {
             val dogList: ArrayList<DogEntity>? = arrayListOf()
 
-            databaseHelper.query(SELECT_ALL_DOGS_SQL_STRING_EXTRA_KEY)?.use { cursor ->
-                while (cursor.moveToNext()) {
+            databaseHelper.query(SELECT_ALL_DOGS_SQL_STRING_EXTRA_KEY)?.use {
+                while (it.moveToNext()) {
                     dogList?.add(
                         DogEntity(
-                            cursor.getInt(COLUMN_INDEX_DOG_ID_EXTRA_KEY),
-                            cursor.getString(COLUMN_INDEX_BREED_EXTRA_KEY),
-                            cursor.getString(COLUMN_INDEX_WEIGHT_EXTRA_KEY),
-                            cursor.getString(COLUMN_INDEX_HEIGHT_EXTRA_KEY),
-                            cursor.getString(COLUMN_INDEX_DESCRIPTION_EXTRA_KEY),
-                            cursor.getInt(COLUMN_INDEX_IS_CAN_LIVE_AT_HOME_EXTRA_KEY) == 1,
-                            cursor.getInt(COLUMN_INDEX_IS_AFFECTIONATE_EXTRA_KEY) == 1,
-                            cursor.getFloat(COLUMN_INDEX_BREED_POPULARITY_EXTRA_KEY),
-                            cursor.getInt(COLUMN_INDEX_COST_EXTRA_KEY),
-                            cursor.getString(COLUMN_INDEX_LIFE_EXPECTANCY_EXTRA_KEY),
-                            cursor.getString(COLUMN_INDEX_PHOTO_EXTRA_KEY)
+                            it.getInt(COLUMN_INDEX_DOG_ID_EXTRA_KEY),
+                            it.getString(COLUMN_INDEX_BREED_EXTRA_KEY),
+                            it.getString(COLUMN_INDEX_WEIGHT_EXTRA_KEY),
+                            it.getString(COLUMN_INDEX_HEIGHT_EXTRA_KEY),
+                            it.getString(COLUMN_INDEX_DESCRIPTION_EXTRA_KEY),
+                            it.getInt(COLUMN_INDEX_IS_CAN_LIVE_AT_HOME_EXTRA_KEY) == 1,
+                            it.getInt(COLUMN_INDEX_IS_AFFECTIONATE_EXTRA_KEY) == 1,
+                            it.getFloat(COLUMN_INDEX_BREED_POPULARITY_EXTRA_KEY),
+                            it.getInt(COLUMN_INDEX_COST_EXTRA_KEY),
+                            it.getString(COLUMN_INDEX_LIFE_EXPECTANCY_EXTRA_KEY),
+                            it.getString(COLUMN_INDEX_PHOTO_EXTRA_KEY)
                         )
                     )
                 }
@@ -154,7 +152,6 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
             } else {
                 getItemsFromModel(START_OF_RANGE_KEY, END_OF_RANGE_KEY)
             }
-        }.start()
     }
 
     private fun checkDatabaseRelevance() {
@@ -176,7 +173,8 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
     }
 
     private fun isNetworkConnected(): Boolean {
-        val connectivityManager = view.getContext()?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val connectivityManager =
+            view.getContext()?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
 
         return connectivityManager?.activeNetworkInfo != null
     }

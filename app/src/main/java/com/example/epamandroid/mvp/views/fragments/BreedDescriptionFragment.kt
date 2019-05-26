@@ -20,15 +20,21 @@ import kotlinx.android.synthetic.main.breed_description_fragment.*
 
 class BreedDescriptionFragment : Fragment(), IBreedDescriptionContract.View {
 
+    companion object {
+        private const val TAG: String = "BreedDescriptionFragment"
+        private const val DOG_BREED_ENTITY_STATE_KEY: String = "dogBreedEntityStateKey"
+    }
+
     private lateinit var michelangelo: IMichelangelo
     private lateinit var presenter: IBreedDescriptionContract.Presenter
 
+    private var dogEntityState: DogEntity? = null
     private var breedDescriptionResultCallback: IBreedDescriptionResultCallback? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        if(context is IBreedDescriptionResultCallback){
+        if (context is IBreedDescriptionResultCallback) {
             breedDescriptionResultCallback = context
         }
     }
@@ -54,15 +60,18 @@ class BreedDescriptionFragment : Fragment(), IBreedDescriptionContract.View {
         breedDescriptionFragment.goneView()
 
         if (bundle != null) {
-            if (bundleDogEntity !== null) {
-                breedDescriptionFragment.updateDogInfo(bundleDogEntity)
-                michelangelo.load(breedDescriptionFragment.getBreedPhoto(), bundleDogEntity.photo)
-                breedDescriptionFragment.visibleView()
-                breedDescriptionResultCallback?.onDescriptionConfirm()
-            } else if (bundleDogBreed != null) {
-                breedDescriptionResultCallback?.onDescriptionLoading()
+            when {
+                (bundleDogEntity !== null) -> {
+                    updateBreedDescription(bundleDogEntity)
+                }
+                (savedInstanceState != null && savedInstanceState.containsKey(DOG_BREED_ENTITY_STATE_KEY)) -> {
+                    updateBreedDescription(savedInstanceState.getParcelable(DOG_BREED_ENTITY_STATE_KEY))
+                }
+                (bundleDogBreed != null) -> {
+                    breedDescriptionResultCallback?.onDescriptionLoading()
 
-                presenter.loadDogByBreed(bundleDogBreed)
+                    presenter.loadDogByBreed(bundleDogBreed)
+                }
             }
         } else {
             breedDescriptionResultCallback?.onDescriptionError()
@@ -70,7 +79,8 @@ class BreedDescriptionFragment : Fragment(), IBreedDescriptionContract.View {
     }
 
     override fun updateBreedDescription(dogEntity: DogEntity?) {
-        if(dogEntity != null) {
+        if (dogEntity != null) {
+            dogEntityState = dogEntity
             breedDescriptionFragment.updateDogInfo(dogEntity)
             michelangelo.load(breedDescriptionFragment.getBreedPhoto(), dogEntity.photo)
             breedDescriptionFragment.visibleView()
@@ -78,6 +88,12 @@ class BreedDescriptionFragment : Fragment(), IBreedDescriptionContract.View {
         } else {
             breedDescriptionResultCallback?.onDescriptionError()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putParcelable(DOG_BREED_ENTITY_STATE_KEY, dogEntityState)
     }
 
     interface IBreedDescriptionResultCallback {
