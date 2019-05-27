@@ -24,7 +24,7 @@ import com.example.epamandroid.mvp.presenters.CameraPresenter
 import com.example.neuralnetwork.ImageClassifier
 import java.io.IOException
 
-class CameraFragment : Fragment(), ICameraContract.IView {
+class CameraFragment : Fragment(), ICameraContract.View {
 
     companion object {
         private const val TAG: String = "CameraFragment"
@@ -45,7 +45,7 @@ class CameraFragment : Fragment(), ICameraContract.IView {
     private lateinit var mainActivity: AppCompatActivity
     private lateinit var imageClassifier: ImageClassifier
 
-    private val cameraPresenter: ICameraContract.IPresenter? = CameraPresenter(this)
+    private val cameraPresenter: ICameraContract.Presenter? = CameraPresenter(this)
 
     private val stateCallback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {

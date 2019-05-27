@@ -6,8 +6,10 @@ import android.os.HandlerThread
 import android.util.Log
 import com.example.epamandroid.constants.DogEntityConstants
 import com.example.epamandroid.mvp.contracts.ICameraContract
+import com.example.epamandroid.mvp.repository.Repository
 
-class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter {
+class CameraPresenter(view: ICameraContract.View)
+    : ICameraContract.Presenter {
 
     companion object {
         private const val TAG: String = "CameraPresenter"
@@ -18,6 +20,7 @@ class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter 
     private var backgroundThread: HandlerThread? = null
     private var runClassifier: Boolean = false
 
+    private val repository: ICameraContract.Model = Repository
     private val lock: Any = Any()
 
     private val periodicClassify = object : Runnable {

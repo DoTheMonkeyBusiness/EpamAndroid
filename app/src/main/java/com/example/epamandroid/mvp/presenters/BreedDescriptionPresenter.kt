@@ -20,8 +20,11 @@ import com.example.epamandroid.gsonmodels.GsonDogEntity
 import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IBreedDescriptionContract
 import com.example.epamandroid.mvp.repository.BreedDescriptionModel
+import com.example.epamandroid.mvp.repository.Repository
 
-class BreedDescriptionPresenter(private val view: IBreedDescriptionContract.View) : IBreedDescriptionContract.Presenter {
+class BreedDescriptionPresenter(private val view: IBreedDescriptionContract.View)
+    : IBreedDescriptionContract.Presenter {
+    private val repository: IBreedDescriptionContract.Model = Repository
     private val handler = Handler(Looper.getMainLooper())
     private val databaseHelper: DatabaseHelper = DatabaseHelper(view.getContext())
 
@@ -49,7 +52,7 @@ class BreedDescriptionPresenter(private val view: IBreedDescriptionContract.View
             }
 
             if (dogEntity == null) {
-                val gsonDogEntity: GsonDogEntity? = BreedDescriptionModel.getEntity(breed)
+                val gsonDogEntity: GsonDogEntity? = repository.getEntity(breed)
 
                 if (gsonDogEntity != null) {
                     dogEntity = DogEntity(

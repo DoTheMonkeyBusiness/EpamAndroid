@@ -8,10 +8,12 @@ import com.example.epamandroid.constants.URLConstants.ALT_MEDIA_STRING_EXTRA_KEY
 import com.example.epamandroid.gsonmodels.GsonLostDogEntity
 import com.example.epamandroid.mvp.contracts.IAddLostDogContract
 import com.example.epamandroid.mvp.repository.AddLostDogModel
+import com.example.epamandroid.mvp.repository.Repository
 import java.io.File
 import java.util.*
 
 class AddLostDogPresenter(private val view: IAddLostDogContract.View) : IAddLostDogContract.Presenter {
+    private val repository: IAddLostDogContract.Model = Repository
     private val handler = Handler(Looper.getMainLooper())
     private val imageId: UUID = UUID.randomUUID()
 
@@ -27,9 +29,9 @@ class AddLostDogPresenter(private val view: IAddLostDogContract.View) : IAddLost
                                imageFile: File?) {
         Thread {
             if (imageFile !== null) {
-                AddLostDogModel.uploadImage(imageFile, imageId)
+                repository.uploadImage(imageFile, imageId)
 
-                val isPostSuccess: Boolean = AddLostDogModel.putLostBreed(
+                val isPostSuccess: Boolean = repository.putLostBreed(
                     GsonLostDogEntity(
                         UUID.randomUUID(),
                         breed,

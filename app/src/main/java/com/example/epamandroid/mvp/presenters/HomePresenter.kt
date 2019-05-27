@@ -1,6 +1,7 @@
 package com.example.epamandroid.mvp.presenters
 
 import android.content.Context
+import android.net.ConnectivityManager
 import android.nfc.tech.MifareUltralight
 import android.os.Handler
 import android.os.Looper
@@ -21,15 +22,13 @@ import com.example.epamandroid.constants.DatabaseConstants.LastModificationTable
 import com.example.epamandroid.constants.DatabaseConstants.SqlStrings.SELECT_ALL_DOGS_SQL_STRING_EXTRA_KEY
 import com.example.epamandroid.constants.DatabaseConstants.SqlStrings.SELECT_LAST_INSERT_TIME_SQL_STRING_EXTRA_KEY
 import com.example.epamandroid.constants.DateConstants.DATE_FORMAT_EXTRA_KEY
-import com.example.epamandroid.constants.SymbolConstants.EMPTY_EXTRA_KEY
 import com.example.epamandroid.database.DatabaseHelper
 import com.example.epamandroid.gsonmodels.GsonDogEntity
 import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IHomeContract
-import com.example.epamandroid.mvp.repository.HomeModel
+import com.example.epamandroid.mvp.repository.Repository
 import java.text.SimpleDateFormat
 import java.util.*
-import android.net.ConnectivityManager
 
 
 class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presenter {
@@ -40,6 +39,7 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
         private const val END_OF_RANGE_KEY: Int = MifareUltralight.PAGE_SIZE * 3
     }
 
+    private val repository: IHomeContract.Model = Repository
     private val databaseHelper: DatabaseHelper = DatabaseHelper(view.getContext())
     private val handler = Handler(Looper.getMainLooper())
 
@@ -67,7 +67,7 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
         endPosition: Int
     ) {
         val dogList: ArrayList<DogEntity>? = arrayListOf()
-        val gsonDogMap: HashMap<Int, GsonDogEntity>? = HomeModel
+        val gsonDogMap: HashMap<Int, GsonDogEntity>? = repository
             .getEntities(startPosition, endPosition)
 
         gsonDogMap?.forEach {

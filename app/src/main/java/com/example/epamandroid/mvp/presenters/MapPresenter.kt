@@ -2,18 +2,19 @@ package com.example.epamandroid.mvp.presenters
 
 import android.os.Handler
 import android.os.Looper
-import com.example.epamandroid.R
 import com.example.epamandroid.constants.MapConstants.EARTH_RADIUS_EXTRA_KEY
 import com.example.epamandroid.constants.MapConstants.RADIUS_EXTRA_KEY
 import com.example.epamandroid.gsonmodels.GsonLostDogEntity
 import com.example.epamandroid.models.ClusterMarker
 import com.example.epamandroid.models.LostDogEntity
 import com.example.epamandroid.mvp.contracts.IMapContract
-import com.example.epamandroid.mvp.repository.MapModel
+import com.example.epamandroid.mvp.repository.Repository
 import com.google.android.gms.maps.model.LatLng
 
 
 class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter {
+
+    private val repository: IMapContract.Model = Repository
     private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate() = Unit
@@ -37,7 +38,7 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
         Thread {
             val lostDogsList: ArrayList<LostDogEntity>? = arrayListOf()
             val lostDogsNearbyList: ArrayList<LostDogEntity> = arrayListOf()
-            val gsonLostDogsMap: HashMap<String, GsonLostDogEntity>? = MapModel
+            val gsonLostDogsMap: HashMap<String, GsonLostDogEntity>? = repository
                 .getEntitiesNearby(userPosition.latitude, RADIUS_EXTRA_KEY)
 
             gsonLostDogsMap?.forEach {

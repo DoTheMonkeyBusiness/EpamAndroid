@@ -1,5 +1,6 @@
 package com.example.epamandroid.mvp.repository
 
+import com.example.epamandroid.constants.MapConstants
 import com.example.epamandroid.constants.ParseConstants
 import com.example.epamandroid.constants.SymbolConstants
 import com.example.epamandroid.constants.URLConstants
@@ -19,7 +20,10 @@ object Repository :
     IHomeContract.Model,
     IMainActivityContract.Model,
     IMapContract.Model,
-    IBreedDescriptionContract.Model {
+    IBreedDescriptionContract.Model,
+    ICameraContract.Model,
+    ILostBreedDescriptionContract.Model {
+
     private val JSON = MediaType.parse(ParseConstants.JSON_FILE_TYPE_EXTRA_KEY)
 
     override fun putLostBreed(gsonLostDogEntity: GsonLostDogEntity): Boolean {
@@ -146,7 +150,33 @@ object Repository :
     }
 
     override fun getEntitiesNearby(latitude: Double, radius: Float): HashMap<String, GsonLostDogEntity>? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val client = OkHttpClient()
+        var response: Response? = null
+        val rangeLatitude = radius / MapConstants.KILOMETERS_IN_ONE_DEG_EXTRA_KEY
+        val minLatitude = latitude - rangeLatitude
+        val maxLatitude = latitude + rangeLatitude
+        var lostDogsMap: HashMap<String, GsonLostDogEntity>? = null
+
+        try {
+            val request =
+                Request
+                    .Builder()
+                    .url("${URLConstants.NOT_MODERATED_LOST_DOGS_URL_STRING_EXTRA_KEY}?orderBy=\"latitude\"&startAt=$minLatitude&endAt=$maxLatitude")
+                    .build()
+
+            response = client.newCall(request).execute()
+            lostDogsMap = GsonParser.parseLostDogEntity(response.body().string())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            response?.body()?.close()
+        }
+
+        return if (lostDogsMap != null
+            && lostDogsMap.isNotEmpty()
+        ) {
+            lostDogsMap
+        } else null
     }
 
     override fun getEntity(breed: String): GsonDogEntity? {
