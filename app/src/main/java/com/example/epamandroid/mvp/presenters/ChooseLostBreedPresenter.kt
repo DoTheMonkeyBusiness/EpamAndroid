@@ -3,7 +3,6 @@ package com.example.epamandroid.mvp.presenters
 import android.os.Handler
 import android.os.Looper
 import com.example.epamandroid.mvp.contracts.IChooseLostBreedContract
-import com.example.epamandroid.mvp.repository.ChooseLostBreedModel
 import com.example.epamandroid.mvp.repository.Repository
 
 class ChooseLostBreedPresenter(private val view: IChooseLostBreedContract.View) : IChooseLostBreedContract.Presenter {

@@ -7,7 +7,6 @@ import com.example.epamandroid.constants.URLConstants.STORAGE_LOST_DOGS_URL_STRI
 import com.example.epamandroid.constants.URLConstants.ALT_MEDIA_STRING_EXTRA_KEY
 import com.example.epamandroid.gsonmodels.GsonLostDogEntity
 import com.example.epamandroid.mvp.contracts.IAddLostDogContract
-import com.example.epamandroid.mvp.repository.AddLostDogModel
 import com.example.epamandroid.mvp.repository.Repository
 import java.io.File
 import java.util.*

@@ -2,7 +2,6 @@ package com.example.epamandroid.mvp.presenters
 
 import android.os.Handler
 import android.os.Looper
-import com.example.epamandroid.constants.DatabaseConstants
 import com.example.epamandroid.constants.DatabaseConstants.DogBreedsTable.COLUMN_INDEX_BREED_EXTRA_KEY
 import com.example.epamandroid.constants.DatabaseConstants.DogBreedsTable.COLUMN_INDEX_BREED_POPULARITY_EXTRA_KEY
 import com.example.epamandroid.constants.DatabaseConstants.DogBreedsTable.COLUMN_INDEX_COST_EXTRA_KEY
@@ -19,7 +18,6 @@ import com.example.epamandroid.database.DatabaseHelper
 import com.example.epamandroid.gsonmodels.GsonDogEntity
 import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.contracts.IBreedDescriptionContract
-import com.example.epamandroid.mvp.repository.BreedDescriptionModel
 import com.example.epamandroid.mvp.repository.Repository
 
 class BreedDescriptionPresenter(private val view: IBreedDescriptionContract.View)
