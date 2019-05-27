@@ -1,5 +1,6 @@
 package com.example.epamandroid.mvp.repository
 
+import android.util.Log
 import com.example.epamandroid.constants.MapConstants
 import com.example.epamandroid.constants.ParseConstants
 import com.example.epamandroid.constants.SymbolConstants
@@ -22,8 +23,9 @@ object Repository :
     IMapContract.Model,
     IBreedDescriptionContract.Model,
     ICameraContract.Model,
-    ILostBreedDescriptionContract.Model {
+    ILostBreedDescriptionContract.Model{
 
+    private const val TAG = "Repository"
     private val JSON = MediaType.parse(ParseConstants.JSON_FILE_TYPE_EXTRA_KEY)
 
     override fun putLostBreed(gsonLostDogEntity: GsonLostDogEntity): Boolean {
@@ -78,6 +80,7 @@ object Repository :
             client.setConnectTimeout(URLConstants.RESPONSE_TIME_EXTRA_KEY, TimeUnit.SECONDS)
 
             response = client.newCall(request).execute()
+            Log.d(TAG, response.body().string())
             isSuccessfulResponse = response.isSuccessful
 
         } catch (e: Exception) {

@@ -25,14 +25,4 @@ class GsonParser {
             )
         }
     }
-
-    //TODO doesn't work
-//    fun parseDogEntity(responseBody: String?) : HashMap<Int, T>? {
-//        val gson = Gson()
-//
-//        return gson.fromJson(
-//            responseBody,
-//            object : TypeToken<Map<Int, T>>() {}.type
-//        )
-//    }
 }

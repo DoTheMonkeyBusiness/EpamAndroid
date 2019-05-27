@@ -19,6 +19,7 @@ import android.hardware.camera2.*
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.util.Log
+import com.example.epamandroid.constants.PermissionsConstants.REQUEST_CAMERA_PERMISSION_EXTRA_KEY
 import com.example.epamandroid.mvp.contracts.ICameraContract
 import com.example.epamandroid.mvp.presenters.CameraPresenter
 import com.example.neuralnetwork.ImageClassifier
@@ -28,7 +29,7 @@ class CameraFragment : Fragment(), ICameraContract.View {
 
     companion object {
         private const val TAG: String = "CameraFragment"
-        private const val REQUEST_CAMERA_PERMISSION: Int = 200
+        private const val ZERO_FLOAT_KEY: Float = 0F
         private const val EMPTY_STRING_KEY: String = ""
     }
 
@@ -107,16 +108,6 @@ class CameraFragment : Fragment(), ICameraContract.View {
 
         cameraFragmentDogBreed.setOnClickListener {
             if (cameraFragmentDogBreed.text != getString(R.string.uninitialized_classifier)) {
-                val breedDescriptionFragment = MainBottomSheetFragment()
-
-//                changeFragmentCallback?.onItemChangedToMain()
-//                breedDescriptionFragment.arguments = cameraPresenter
-//                        ?.putDogInfoInBundle(cameraFragmentDogBreed.text.toString())
-//
-//                mainActivity
-//                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
-//                                breedDescriptionFragment,
-//                                FragmentConstants.DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY)
                 showBottomSheetCallback
                         ?.onShowBottomSheetFromCamera(
                                 cameraFragmentDogBreed
@@ -251,7 +242,7 @@ class CameraFragment : Fragment(), ICameraContract.View {
                                             .permission
                                             .WRITE_EXTERNAL_STORAGE
                             ),
-                                    REQUEST_CAMERA_PERMISSION
+                                    REQUEST_CAMERA_PERMISSION_EXTRA_KEY
                             )
                 }
                 return
@@ -268,19 +259,20 @@ class CameraFragment : Fragment(), ICameraContract.View {
         if (cameraFragmentTextureView == null || imageDimension == null) {
             return
         }
+        val dimension = imageDimension
         val matrix = Matrix()
         val rotation = activity?.windowManager?.defaultDisplay?.rotation
-        val textureRectF = RectF(0F, 0F, width, height)
-        val previewRectF = imageDimension
+        val textureRectF = RectF(ZERO_FLOAT_KEY, ZERO_FLOAT_KEY, width, height)
+        val previewRectF = dimension
                 ?.width
                 ?.toFloat()
                 ?.let {
-                    imageDimension
-                            ?.height
-                            ?.toFloat()?.let { it1 ->
+                    dimension
+                            .height
+                            .toFloat().let { it1 ->
                                 RectF(
-                                        0F,
-                                        0F,
+                                    ZERO_FLOAT_KEY,
+                                    ZERO_FLOAT_KEY,
                                         it,
                                         it1
                                 )
@@ -296,10 +288,9 @@ class CameraFragment : Fragment(), ICameraContract.View {
             )
             matrix.setRectToRect(textureRectF, previewRectF, Matrix.ScaleToFit.FILL)
 
-            //TODO: fix it
             val scale: Float = Math.max(
-                    width / imageDimension!!.width,
-                    height / imageDimension!!.height
+                    width / (dimension?.width ?: 0),
+                    height / (dimension?.height ?: 0)
             )
 
             matrix.postScale(scale, scale, centerX, centerY)
@@ -316,7 +307,7 @@ class CameraFragment : Fragment(), ICameraContract.View {
                                             grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == REQUEST_CAMERA_PERMISSION
+        if (requestCode == REQUEST_CAMERA_PERMISSION_EXTRA_KEY
                 && grantResults[0] != PackageManager.PERMISSION_GRANTED
         ) {
             Toast.makeText(

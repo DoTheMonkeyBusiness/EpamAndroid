@@ -10,6 +10,7 @@
     <color name="colorAccentNight">#ECEFF1</color>
     <color name="colorAccentGreyNight">#E2E5E7</color>
     <color name="colorBackgroundNight">#35505D</color>
+    <color name="colorTransparentBackgroundNight">#CC35505D</color>
     <color name="colorBottomSheetHeaderNight">#2B4653</color>
     <color name="colorPhoneNumberNight">#9E9E9E</color>
 
@@ -19,6 +20,7 @@
     <color name="colorAccentDay">#442C2E</color>
     <color name="colorAccentGreyDay">#6C4649</color>
     <color name="colorBackgroundDay">#FFFBFA</color>
+    <color name="colorTransparentBackgroundDay">#CCFFFBFA</color>
     <color name="colorBottomSheetHeaderDay">#F8F4F3</color>
     <color name="colorPhoneNumberDay">#B71C1C</color>
 

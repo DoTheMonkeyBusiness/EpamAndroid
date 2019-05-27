@@ -29,8 +29,6 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
     companion object {
         private const val TAG: String = "HomeFragment"
-        private const val RECYCLER_STATE_KEY: String = "recyclerViewKey"
-        private const val LINEAR_LAYOUT_MANAGER_KEY: String = "linearLayoutKey"
         private const val DOGS_LIST_KEY: String = "dogsListKey"
     }
 
@@ -113,7 +111,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     val totalItemCount = linearLayoutManager.itemCount
-                    val startPosition = viewAdapter.getSize()?.plus(1)
+                    val startPosition = viewAdapter.getMaxId().plus(1)
                     val visibleItemCount = linearLayoutManager.childCount
                     val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
                     val lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition()
@@ -134,7 +132,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
                                     && totalItemCount >= PAGE_SIZE
                                     && !isEndOfList)
                     ) {
-                        startPosition?.let { loadMoreItems(it, startPosition + PAGE_SIZE) }
+                        loadMoreItems(startPosition, startPosition + PAGE_SIZE)
                     }
                 }
 

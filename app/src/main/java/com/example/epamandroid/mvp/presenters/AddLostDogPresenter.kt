@@ -16,8 +16,6 @@ class AddLostDogPresenter(private val view: IAddLostDogContract.View) : IAddLost
     private val handler = Handler(Looper.getMainLooper())
     private val imageId: UUID = UUID.randomUUID()
 
-    private var imageFile: File? = null
-
     override fun onCreate() = Unit
 
     override fun uploadLostDog(breed: String,
@@ -27,8 +25,7 @@ class AddLostDogPresenter(private val view: IAddLostDogContract.View) : IAddLost
                                longitude: Double,
                                imageFile: File?) {
         Thread {
-            if (imageFile !== null) {
-                repository.uploadImage(imageFile, imageId)
+            if (imageFile != null &&  repository.uploadImage(imageFile, imageId)) {
 
                 val isPostSuccess: Boolean = repository.putLostBreed(
                     GsonLostDogEntity(
@@ -46,10 +43,16 @@ class AddLostDogPresenter(private val view: IAddLostDogContract.View) : IAddLost
                 handler.post {
                     Runnable {
                         if (isPostSuccess) {
-                            view.onPostSuccess()
+                            view.postSuccess()
                         } else {
-                            view.onPostError()
+                            view.postError()
                         }
+                    }.run()
+                }
+            } else {
+                handler.post {
+                    Runnable {
+                       view.imageUploadError()
                     }.run()
                 }
             }

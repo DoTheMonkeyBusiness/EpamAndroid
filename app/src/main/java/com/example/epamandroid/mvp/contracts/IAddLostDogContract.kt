@@ -9,8 +9,9 @@ import java.util.*
 interface IAddLostDogContract {
 
     interface View : IBaseView {
-        fun onPostSuccess()
-        fun onPostError()
+        fun imageUploadError()
+        fun postSuccess()
+        fun postError()
     }
 
     interface Presenter : IBasePresenter {
