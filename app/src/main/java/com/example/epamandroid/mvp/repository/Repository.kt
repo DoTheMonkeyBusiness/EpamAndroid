@@ -1,10 +1,24 @@
 package com.example.epamandroid.mvp.repository
 
 import android.util.Log
+import com.example.epamandroid.constants.DogEntityConstants.BREED_EXTRA_KEY
+import com.example.epamandroid.constants.DogEntityConstants.ID_EXTRA_KEY
+import com.example.epamandroid.constants.LostDogEntityConstants.LATITUDE_EXTRA_KEY
 import com.example.epamandroid.constants.MapConstants
 import com.example.epamandroid.constants.ParseConstants
+import com.example.epamandroid.constants.ParseConstants.IMAGE_FILE_TYPE_EXTRA_KEY
 import com.example.epamandroid.constants.SymbolConstants
+import com.example.epamandroid.constants.SymbolConstants.DOUBLE_QUOTES_EXTRA_KEY
+import com.example.epamandroid.constants.SymbolConstants.ZERO_EXTRA_KEY
 import com.example.epamandroid.constants.URLConstants
+import com.example.epamandroid.constants.URLConstants.DOG_BREEDS_URL_STRING_EXTRA_KEY
+import com.example.epamandroid.constants.URLConstants.END_AT_EXTRA_KEY
+import com.example.epamandroid.constants.URLConstants.EQUAL_TO_EXTRA_KEY
+import com.example.epamandroid.constants.URLConstants.NOT_MODERATED_LOST_DOGS_URL_STRING_EXTRA_KEY
+import com.example.epamandroid.constants.URLConstants.ORDER_BY_EXTRA_KEY
+import com.example.epamandroid.constants.URLConstants.RESPONSE_TIME_EXTRA_KEY
+import com.example.epamandroid.constants.URLConstants.START_AT_EXTRA_KEY
+import com.example.epamandroid.constants.URLConstants.STORAGE_LOST_DOGS_URL_STRING_EXTRA_KEY
 import com.example.epamandroid.gson.GsonParser
 import com.example.epamandroid.gsonmodels.GsonDogEntity
 import com.example.epamandroid.gsonmodels.GsonLostDogEntity
@@ -23,7 +37,7 @@ object Repository :
     IMapContract.Model,
     IBreedDescriptionContract.Model,
     ICameraContract.Model,
-    ILostBreedDescriptionContract.Model{
+    ILostBreedDescriptionContract.Model {
 
     private const val TAG = "Repository"
     private val JSON = MediaType.parse(ParseConstants.JSON_FILE_TYPE_EXTRA_KEY)
@@ -40,7 +54,7 @@ object Repository :
             val request =
                 Request
                     .Builder()
-                    .url(URLConstants.NOT_MODERATED_LOST_DOGS_URL_STRING_EXTRA_KEY)
+                    .url(NOT_MODERATED_LOST_DOGS_URL_STRING_EXTRA_KEY)
                     .post(body)
                     .build()
 
@@ -66,18 +80,24 @@ object Repository :
                     id.toString(),
                     imageFile.name,
                     RequestBody.create(
-                        MediaType.parse(ParseConstants.IMAGE_FILE_TYPE_EXTRA_KEY + imageFile.extension),
+                        MediaType.parse(IMAGE_FILE_TYPE_EXTRA_KEY + imageFile.extension),
                         imageFile
                     )
                 )
                 .build()
 
             val request = Request.Builder()
-                .url("${URLConstants.STORAGE_LOST_DOGS_URL_STRING_EXTRA_KEY}$id${SymbolConstants.DOT_EXTRA_KEY}${imageFile.extension}${URLConstants.ALT_MEDIA_STRING_EXTRA_KEY}")
+                .url(
+                    STORAGE_LOST_DOGS_URL_STRING_EXTRA_KEY +
+                            id +
+                            SymbolConstants.DOT_EXTRA_KEY +
+                            imageFile.extension +
+                            URLConstants.ALT_MEDIA_EXTRA_KEY
+                )
                 .post(req)
                 .build()
 
-            client.setConnectTimeout(URLConstants.RESPONSE_TIME_EXTRA_KEY, TimeUnit.SECONDS)
+            client.setConnectTimeout(RESPONSE_TIME_EXTRA_KEY, TimeUnit.SECONDS)
 
             response = client.newCall(request).execute()
             Log.d(TAG, response.body().string())
@@ -101,7 +121,15 @@ object Repository :
             val request =
                 Request
                     .Builder()
-                    .url("${URLConstants.DOG_BREEDS_URL_STRING_EXTRA_KEY}?orderBy=\"id\"&startAt=0")
+                    .url(
+                        DOG_BREEDS_URL_STRING_EXTRA_KEY +
+                                ORDER_BY_EXTRA_KEY +
+                                DOUBLE_QUOTES_EXTRA_KEY +
+                                ID_EXTRA_KEY +
+                                DOUBLE_QUOTES_EXTRA_KEY +
+                                START_AT_EXTRA_KEY +
+                                ZERO_EXTRA_KEY
+                    )
                     .build()
 
             response = client.newCall(request).execute()
@@ -131,7 +159,17 @@ object Repository :
             val request =
                 Request
                     .Builder()
-                    .url("${URLConstants.DOG_BREEDS_URL_STRING_EXTRA_KEY}?orderBy=\"id\"&startAt=$startPosition&endAt=$endPosition")
+                    .url(
+                        DOG_BREEDS_URL_STRING_EXTRA_KEY +
+                                ORDER_BY_EXTRA_KEY +
+                                DOUBLE_QUOTES_EXTRA_KEY +
+                                ID_EXTRA_KEY +
+                                DOUBLE_QUOTES_EXTRA_KEY +
+                                START_AT_EXTRA_KEY +
+                                startPosition +
+                                END_AT_EXTRA_KEY +
+                                endPosition
+                    )
                     .build()
 
             response = client
@@ -164,7 +202,17 @@ object Repository :
             val request =
                 Request
                     .Builder()
-                    .url("${URLConstants.NOT_MODERATED_LOST_DOGS_URL_STRING_EXTRA_KEY}?orderBy=\"latitude\"&startAt=$minLatitude&endAt=$maxLatitude")
+                    .url(
+                        NOT_MODERATED_LOST_DOGS_URL_STRING_EXTRA_KEY +
+                                ORDER_BY_EXTRA_KEY +
+                                DOUBLE_QUOTES_EXTRA_KEY +
+                                LATITUDE_EXTRA_KEY +
+                                DOUBLE_QUOTES_EXTRA_KEY +
+                                START_AT_EXTRA_KEY +
+                                minLatitude +
+                                END_AT_EXTRA_KEY +
+                                maxLatitude
+                    )
                     .build()
 
             response = client.newCall(request).execute()
@@ -191,7 +239,17 @@ object Repository :
             val request =
                 Request
                     .Builder()
-                    .url("${URLConstants.DOG_BREEDS_URL_STRING_EXTRA_KEY}?orderBy=\"breed\"&equalTo=\"$breed\"")
+                    .url(
+                        DOG_BREEDS_URL_STRING_EXTRA_KEY +
+                                ORDER_BY_EXTRA_KEY +
+                                DOUBLE_QUOTES_EXTRA_KEY +
+                                BREED_EXTRA_KEY +
+                                DOUBLE_QUOTES_EXTRA_KEY +
+                                EQUAL_TO_EXTRA_KEY +
+                                DOUBLE_QUOTES_EXTRA_KEY +
+                                breed +
+                                DOUBLE_QUOTES_EXTRA_KEY
+                    )
                     .build()
             response = client.newCall(request).execute()
 

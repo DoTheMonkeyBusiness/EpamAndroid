@@ -10,6 +10,8 @@ object SymbolConstants {
     const val OPENING_BRACKET_EXTRA_KEY: String = "("
     const val CLOSING_BRACKET_EXTRA_KEY: String = ")"
     const val SINGLE_QUOTE_EXTRA_KEY: String = "\'"
+    const val DOUBLE_QUOTES_EXTRA_KEY: String = "\""
     const val EQUAL_SIGN_EXTRA_KEY: String = "="
     const val QUESTION_SIGN_EXTRA_KEY: String = "?"
+    const val ZERO_EXTRA_KEY: Int = 0
 }

@@ -4,7 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import com.example.epamandroid.constants.SymbolConstants.DOT_EXTRA_KEY
 import com.example.epamandroid.constants.URLConstants.STORAGE_LOST_DOGS_URL_STRING_EXTRA_KEY
-import com.example.epamandroid.constants.URLConstants.ALT_MEDIA_STRING_EXTRA_KEY
+import com.example.epamandroid.constants.URLConstants.ALT_MEDIA_EXTRA_KEY
 import com.example.epamandroid.gsonmodels.GsonLostDogEntity
 import com.example.epamandroid.mvp.contracts.IAddLostDogContract
 import com.example.epamandroid.mvp.repository.Repository
@@ -36,7 +36,7 @@ class AddLostDogPresenter(private val view: IAddLostDogContract.View) : IAddLost
                         latitude,
                         longitude,
                         Calendar.getInstance().time.toString(),
-                        "$STORAGE_LOST_DOGS_URL_STRING_EXTRA_KEY$imageId$DOT_EXTRA_KEY${imageFile.extension}$ALT_MEDIA_STRING_EXTRA_KEY"
+                        "$STORAGE_LOST_DOGS_URL_STRING_EXTRA_KEY$imageId$DOT_EXTRA_KEY${imageFile.extension}$ALT_MEDIA_EXTRA_KEY"
                     )
                 )
 
