@@ -29,8 +29,6 @@ import com.example.epamandroid.mvp.contracts.IHomeContract
 import com.example.epamandroid.mvp.repository.HomeModel
 import java.text.SimpleDateFormat
 import java.util.*
-import android.content.Context.CONNECTIVITY_SERVICE
-import android.support.v4.content.ContextCompat.getSystemService
 import android.net.ConnectivityManager
 
 
@@ -59,54 +57,54 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
         startPosition: Int,
         endPosition: Int
     ) {
-        getItemsFromModel(startPosition, endPosition)
+        Thread {
+            getItemsFromModel(startPosition, endPosition)
+        }.start()
     }
 
     private fun getItemsFromModel(
         startPosition: Int,
         endPosition: Int
     ) {
-        Thread {
-            val dogList: ArrayList<DogEntity>? = arrayListOf()
-            val gsonDogMap: HashMap<Int, GsonDogEntity>? = HomeModel
-                .getEntities(startPosition, endPosition)
+        val dogList: ArrayList<DogEntity>? = arrayListOf()
+        val gsonDogMap: HashMap<Int, GsonDogEntity>? = HomeModel
+            .getEntities(startPosition, endPosition)
 
-            gsonDogMap?.forEach {
-                dogList?.add(
-                    DogEntity(
-                        it.value.id,
-                        it.value.breed,
-                        it.value.weight,
-                        it.value.height,
-                        it.value.description,
-                        it.value.isCanLiveAtHome,
-                        it.value.isAffectionate,
-                        it.value.breedPopularity,
-                        it.value.cost,
-                        it.value.lifeExpectancy,
-                        it.value.photo
-                    )
+        gsonDogMap?.forEach {
+            dogList?.add(
+                DogEntity(
+                    it.value.id,
+                    it.value.breed,
+                    it.value.weight,
+                    it.value.height,
+                    it.value.description,
+                    it.value.isCanLiveAtHome,
+                    it.value.isAffectionate,
+                    it.value.breedPopularity,
+                    it.value.cost,
+                    it.value.lifeExpectancy,
+                    it.value.photo
                 )
-                databaseHelper.insert(
-                    TABLE_NAME_DOG_BREEDS_TABLE_EXTRA_KEY,
-                    DogEntity(
-                        it.value.id,
-                        it.value.breed,
-                        it.value.weight,
-                        it.value.height,
-                        it.value.description,
-                        it.value.isCanLiveAtHome,
-                        it.value.isAffectionate,
-                        it.value.breedPopularity,
-                        it.value.cost,
-                        it.value.lifeExpectancy,
-                        it.value.photo
-                    )
+            )
+            databaseHelper.insert(
+                TABLE_NAME_DOG_BREEDS_TABLE_EXTRA_KEY,
+                DogEntity(
+                    it.value.id,
+                    it.value.breed,
+                    it.value.weight,
+                    it.value.height,
+                    it.value.description,
+                    it.value.isCanLiveAtHome,
+                    it.value.isAffectionate,
+                    it.value.breedPopularity,
+                    it.value.cost,
+                    it.value.lifeExpectancy,
+                    it.value.photo
                 )
-            }
+            )
+        }
 
-            giveElementsToView(dogList?.sortedBy { it.id }, endPosition)
-        }.start()
+        giveElementsToView(dogList?.sortedBy { it.id }, endPosition)
     }
 
     private fun isFoolList(dogList: List<DogEntity>?, endPosition: Int): Boolean {
@@ -125,43 +123,45 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
     }
 
     private fun getItemsFromDatabase() {
-            val dogList: ArrayList<DogEntity>? = arrayListOf()
+        val dogList: ArrayList<DogEntity>? = arrayListOf()
 
-            databaseHelper.query(SELECT_ALL_DOGS_SQL_STRING_EXTRA_KEY)?.use {
-                while (it.moveToNext()) {
-                    dogList?.add(
-                        DogEntity(
-                            it.getInt(COLUMN_INDEX_DOG_ID_EXTRA_KEY),
-                            it.getString(COLUMN_INDEX_BREED_EXTRA_KEY),
-                            it.getString(COLUMN_INDEX_WEIGHT_EXTRA_KEY),
-                            it.getString(COLUMN_INDEX_HEIGHT_EXTRA_KEY),
-                            it.getString(COLUMN_INDEX_DESCRIPTION_EXTRA_KEY),
-                            it.getInt(COLUMN_INDEX_IS_CAN_LIVE_AT_HOME_EXTRA_KEY) == 1,
-                            it.getInt(COLUMN_INDEX_IS_AFFECTIONATE_EXTRA_KEY) == 1,
-                            it.getFloat(COLUMN_INDEX_BREED_POPULARITY_EXTRA_KEY),
-                            it.getInt(COLUMN_INDEX_COST_EXTRA_KEY),
-                            it.getString(COLUMN_INDEX_LIFE_EXPECTANCY_EXTRA_KEY),
-                            it.getString(COLUMN_INDEX_PHOTO_EXTRA_KEY)
-                        )
+        databaseHelper.query(SELECT_ALL_DOGS_SQL_STRING_EXTRA_KEY)?.use {
+            while (it.moveToNext()) {
+                dogList?.add(
+                    DogEntity(
+                        it.getInt(COLUMN_INDEX_DOG_ID_EXTRA_KEY),
+                        it.getString(COLUMN_INDEX_BREED_EXTRA_KEY),
+                        it.getString(COLUMN_INDEX_WEIGHT_EXTRA_KEY),
+                        it.getString(COLUMN_INDEX_HEIGHT_EXTRA_KEY),
+                        it.getString(COLUMN_INDEX_DESCRIPTION_EXTRA_KEY),
+                        it.getInt(COLUMN_INDEX_IS_CAN_LIVE_AT_HOME_EXTRA_KEY) == 1,
+                        it.getInt(COLUMN_INDEX_IS_AFFECTIONATE_EXTRA_KEY) == 1,
+                        it.getFloat(COLUMN_INDEX_BREED_POPULARITY_EXTRA_KEY),
+                        it.getInt(COLUMN_INDEX_COST_EXTRA_KEY),
+                        it.getString(COLUMN_INDEX_LIFE_EXPECTANCY_EXTRA_KEY),
+                        it.getString(COLUMN_INDEX_PHOTO_EXTRA_KEY)
                     )
-                }
+                )
             }
+        }
 
-            if (dogList != null && dogList.isNotEmpty()) {
-                giveElementsToView(dogList.sortedBy { it.id }, 0)
-            } else {
-                getItemsFromModel(START_OF_RANGE_KEY, END_OF_RANGE_KEY)
-            }
+        if (dogList != null && dogList.isNotEmpty()) {
+            giveElementsToView(dogList.sortedBy { it.id }, 0)
+        } else {
+            getItemsFromModel(START_OF_RANGE_KEY, END_OF_RANGE_KEY)
+        }
     }
 
     private fun checkDatabaseRelevance() {
         var lastInsertTimeString: String? = null
         val format = SimpleDateFormat(DATE_FORMAT_EXTRA_KEY, Locale.ROOT)
+
         databaseHelper.query(SELECT_LAST_INSERT_TIME_SQL_STRING_EXTRA_KEY)?.use { cursor ->
             while (cursor.moveToNext()) {
                 lastInsertTimeString = cursor.getString(COLUMN_INDEX_CHANGED_AT_EXTRA_KEY)
             }
         }
+
         if (lastInsertTimeString != null) {
             val lastInsertTimeLong = format.parse(lastInsertTimeString).time
             val timeNowLong = Calendar.getInstance().time.time

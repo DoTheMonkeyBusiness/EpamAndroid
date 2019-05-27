@@ -41,7 +41,7 @@ object DatabaseConstants {
         const val COLUMN_NAME_ACTION_EXTRA_KEY: String = "action"
         const val COLUMN_NAME_CHANGED_AT_EXTRA_KEY: String = "changedAt"
         const val COLUMN_INDEX_CHANGED_AT_EXTRA_KEY: Int = 2
-        const val SECONDS_TO_DROP_TABLES_EXTRA_KEY: Int = 259200
+        const val SECONDS_TO_DROP_TABLES_EXTRA_KEY: Long = 259200000
     }
 
     object DogBreedsTrigger {
