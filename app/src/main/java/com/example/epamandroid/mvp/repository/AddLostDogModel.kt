@@ -3,6 +3,7 @@ package com.example.epamandroid.mvp.repository
 import android.provider.MediaStore.Images.Media.getBitmap
 import android.util.Log
 import com.example.epamandroid.constants.ParseConstants.IMAGE_FILE_TYPE_EXTRA_KEY
+import com.example.epamandroid.constants.ParseConstants.JSON_FILE_TYPE_EXTRA_KEY
 import com.example.epamandroid.constants.SymbolConstants.DOT_EXTRA_KEY
 import com.example.epamandroid.constants.URLConstants
 import com.example.epamandroid.constants.URLConstants.ALT_MEDIA_STRING_EXTRA_KEY
@@ -17,11 +18,11 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-object AddLostDogModel : IAddLostDogContract.Model<GsonLostDogEntity> {
+object AddLostDogModel : IAddLostDogContract.Model {
 
     private val client = OkHttpClient()
 
-    private val JSON = MediaType.parse("application/json; charset=utf-8")
+    private val JSON = MediaType.parse(JSON_FILE_TYPE_EXTRA_KEY)
     override fun putLostBreed(gsonLostDogEntity: GsonLostDogEntity): Boolean {
         var response: Response? = null
 

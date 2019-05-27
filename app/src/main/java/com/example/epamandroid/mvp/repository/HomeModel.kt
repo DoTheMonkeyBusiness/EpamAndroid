@@ -11,7 +11,7 @@ import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 import kotlin.collections.HashMap
 
-object HomeModel : IHomeContract.Model<GsonDogEntity> {
+object HomeModel : IHomeContract.Model {
 
     private const val TAG: String = "HomeModel"
     private val client = OkHttpClient()

@@ -1,6 +1,7 @@
 package com.example.epamandroid.mvp.contracts
 
 import android.content.Context
+import com.example.epamandroid.gsonmodels.GsonDogEntity
 import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.core.IBasePresenter
 import com.example.epamandroid.mvp.core.IBaseView
@@ -20,11 +21,11 @@ interface IHomeContract {
         )
     }
 
-    interface Model<T> {
+    interface Model {
         fun getEntities(
                 startPosition: Int,
                 endPosition: Int
-        ): HashMap<Int, T>?
+        ): HashMap<Int, GsonDogEntity>?
 
     }
 }

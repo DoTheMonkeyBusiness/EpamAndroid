@@ -173,8 +173,9 @@ class HomePresenter(private val view: IHomeContract.View) : IHomeContract.Presen
     }
 
     private fun isNetworkConnected(): Boolean {
-        val connectivityManager =
-            view.getContext()?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val connectivityManager = view
+            .getContext()
+            ?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
 
         return connectivityManager?.activeNetworkInfo != null
     }

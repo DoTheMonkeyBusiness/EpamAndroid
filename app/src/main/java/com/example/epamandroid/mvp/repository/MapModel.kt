@@ -9,7 +9,7 @@ import com.squareup.okhttp.OkHttpClient
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 
-object MapModel : IMapContract.Model<GsonLostDogEntity> {
+object MapModel : IMapContract.Model {
 
     private val client = OkHttpClient()
 

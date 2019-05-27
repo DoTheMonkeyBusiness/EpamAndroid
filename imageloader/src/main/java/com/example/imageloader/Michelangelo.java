@@ -149,7 +149,9 @@ public class Michelangelo implements IMichelangelo {
 
     private void putInMemoryCache(final String uri, final Bitmap result) {
         synchronized (lruCache) {
-            lruCache.put(uri, result);
+            if (uri != null && result != null) {
+                lruCache.put(uri, result);
+            }
         }
     }
 
