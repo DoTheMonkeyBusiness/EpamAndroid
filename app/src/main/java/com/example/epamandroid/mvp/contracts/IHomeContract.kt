@@ -9,7 +9,7 @@ import com.example.epamandroid.mvp.core.IBaseView
 interface IHomeContract {
 
     interface View : IBaseView {
-        fun addElements(dogList: List<DogEntity>?, ifFullList: Boolean)
+        fun addElements(dogList: List<DogEntity>?, isFullList: Boolean)
         fun isEmptyRecyclerView() : Boolean
         fun getContext(): Context?
     }

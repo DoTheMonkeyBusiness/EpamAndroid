@@ -41,14 +41,10 @@ class ClusterManagerRenderer(
     }
 
     override fun onClusterItemRendered(clusterItem: ClusterMarker?, marker: Marker?) {
-//        super.onClusterItemRendered(clusterItem, marker)
         michelangelo.load(imageView, clusterItem?.iconPicture)
     }
 
     override fun onBeforeClusterItemRendered(item: ClusterMarker?, markerOptions: MarkerOptions?) {
-//        super.onBeforeClusterItemRendered(item, markerOptions)
-//        michelangelo.load(imageView, item?.iconPicture)
-//        item?.iconPicture?.let { imageView.setImageResource(it) }
         val icon: Bitmap = iconGenerator.makeIcon()
         markerOptions?.icon(BitmapDescriptorFactory.fromBitmap(icon))?.title(item?.title)
 

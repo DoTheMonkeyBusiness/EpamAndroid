@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import com.example.epamandroid.mvp.contracts.IHomeContract
 import com.example.epamandroid.mvp.presenters.HomePresenter
 import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
-import com.example.epamandroid.util.ItemTouchCallback
 import com.example.kotlinextensions.collapseBottomSheet
 import com.example.kotlinextensions.expandBottomSheet
 import kotlinx.android.synthetic.main.bottom_progressbar.*
@@ -79,12 +77,6 @@ class HomeFragment : Fragment(), IHomeContract.View {
         bottomProgress = BottomSheetBehavior.from(bottomProgressbar)
 
         setRecycler()
-
-        ItemTouchCallback(homeFragmentRecyclerView, viewAdapter).let {
-            ItemTouchHelper(it).attachToRecyclerView(
-                    homeFragmentRecyclerView
-            )
-        }
 
         if (savedInstanceState != null && savedInstanceState.containsKey(DOGS_LIST_KEY)) {
             viewAdapter.updateDogsList(savedInstanceState.getParcelableArrayList(DOGS_LIST_KEY))
@@ -171,7 +163,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
     private fun loadMoreItems(startPosition: Int, endPosition: Int) {
         isLoading = true
         bottomProgress.expandBottomSheet()
-//        viewAdapter.setShowLastViewAsLoading(isLoading)
+
         homePresenter.getMoreItems(startPosition, endPosition)
     }
 
@@ -179,7 +171,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
         viewAdapter.addItems(dogList)
         isLoading = false
         bottomProgress.collapseBottomSheet()
-//        viewAdapter.setShowLastViewAsLoading(isLoading)
+
         isEndOfList = isFullList
     }
 
