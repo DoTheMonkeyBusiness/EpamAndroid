@@ -9,6 +9,7 @@ import com.example.epamandroid.models.ClusterMarker
 import com.example.epamandroid.models.LostDogEntity
 import com.example.epamandroid.mvp.contracts.IMapContract
 import com.example.epamandroid.mvp.repository.Repository
+import com.example.imageloader.Michelangelo
 import com.google.android.gms.maps.model.LatLng
 
 
@@ -16,6 +17,7 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
 
     private val repository: IMapContract.Model = Repository
     private val handler = Handler(Looper.getMainLooper())
+    private val michelangelo = Michelangelo.getInstance(view.getContext())
 
     override fun onCreate() = Unit
 
@@ -61,29 +63,33 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
                     lostDogsNearbyList.add(it)
                 }
             }
-            handler.post {
-                Runnable {
-                    view.addMapMarkers(createClusterMarkers(lostDogsNearbyList))
-                }.run()
-            }
+
+            createClusterMarkers(lostDogsNearbyList)
+
 
         }.start()
     }
 
-    private fun createClusterMarkers(lostDogsNearbyList: ArrayList<LostDogEntity>) : HashSet<ClusterMarker>? {
-        val clusterMarkerSet: HashSet<ClusterMarker>? = hashSetOf()
+    private fun createClusterMarkers(lostDogsNearbyList: ArrayList<LostDogEntity>) {
+        val clusterMarkersSet: HashSet<ClusterMarker> = hashSetOf()
         lostDogsNearbyList.forEach {
-            clusterMarkerSet?.add(
+            clusterMarkersSet.add(
                 ClusterMarker(
                     it.position,
                     it.id.toString(),
                     it.breed,
-                    it.photo,
+                    michelangelo.loadSync(it.photo),
                     it
                 )
             )
         }
-        return clusterMarkerSet
+        if(clusterMarkersSet.isNotEmpty()) {
+            handler.post {
+                Runnable {
+                    view.addMapMarkers(clusterMarkersSet)
+                }.run()
+            }
+        }
     }
 
     override fun onDestroy() = Unit

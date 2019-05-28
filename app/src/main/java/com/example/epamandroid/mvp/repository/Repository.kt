@@ -40,10 +40,11 @@ object Repository :
     ILostBreedDescriptionContract.Model {
 
     private const val TAG = "Repository"
+
     private val JSON = MediaType.parse(ParseConstants.JSON_FILE_TYPE_EXTRA_KEY)
+    private val client = OkHttpClient()
 
     override fun putLostBreed(gsonLostDogEntity: GsonLostDogEntity): Boolean {
-        val client = OkHttpClient()
         var response: Response? = null
         val gson = Gson()
         val lostDogEntityToJson = gson.toJson(gsonLostDogEntity)
@@ -70,7 +71,6 @@ object Repository :
     }
 
     override fun uploadImage(imageFile: File, id: UUID): Boolean {
-        val client = OkHttpClient()
         var response: Response? = null
         var isSuccessfulResponse: Boolean? = null
 
@@ -113,7 +113,6 @@ object Repository :
     }
 
     override fun getBreeds(): MutableList<String?>? {
-        val client = OkHttpClient()
         var response: Response? = null
         var dogs: HashMap<Int, GsonDogEntity>? = null
 
@@ -151,7 +150,6 @@ object Repository :
         startPosition: Int,
         endPosition: Int
     ): HashMap<Int, GsonDogEntity>? {
-        val client = OkHttpClient()
         var response: Response? = null
         var dogs: HashMap<Int, GsonDogEntity>? = null
 
@@ -191,7 +189,6 @@ object Repository :
     }
 
     override fun getEntitiesNearby(latitude: Double, radius: Float): HashMap<String, GsonLostDogEntity>? {
-        val client = OkHttpClient()
         var response: Response? = null
         val rangeLatitude = radius / MapConstants.KILOMETERS_IN_ONE_DEG_EXTRA_KEY
         val minLatitude = latitude - rangeLatitude
@@ -231,7 +228,6 @@ object Repository :
     }
 
     override fun getEntity(breed: String): GsonDogEntity? {
-        val client = OkHttpClient()
         var response: Response? = null
         var gsonDogEntity: HashMap<Int, GsonDogEntity>? = null
 

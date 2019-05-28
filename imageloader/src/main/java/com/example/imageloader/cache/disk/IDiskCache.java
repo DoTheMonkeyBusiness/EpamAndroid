@@ -1,4 +1,4 @@
-package com.example.imageloader.wrappers;
+package com.example.imageloader.cache.disk;
 
 import android.support.annotation.WorkerThread;
 

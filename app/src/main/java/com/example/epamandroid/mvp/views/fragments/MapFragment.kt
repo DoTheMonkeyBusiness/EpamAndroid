@@ -50,7 +50,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
     private var lostDogMarker: Marker? = null
     private var clusterManager: ClusterManager<ClusterMarker>? = null
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
-    private var clusterMarkers: HashSet<ClusterMarker>? = null
+    private var clusterMarkersSet: HashSet<ClusterMarker> = hashSetOf()
     private var showBottomSheetCallback: IShowBottomSheetCallback? = null
 
     private lateinit var mapPresenter: IMapContract.Presenter
@@ -175,9 +175,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
                     putExtra(LATITUDE_EXTRA_KEY, marker.position.latitude)
                     putExtra(LONGITUDE_EXTRA_KEY, marker.position.longitude)
                 })
-//                AddLostDogActivity.startActivity(context,  AddLostDogActivity::class.java)
             } else {
-                val lostDogEntity = clusterMarkers?.find {
+                val lostDogEntity = clusterMarkersSet.find {
                     it.title == marker.title
                 }?.lostDogEntity
 
@@ -187,7 +186,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
         }
     }
 
-    override fun addMapMarkers(clusterMarkerSet: HashSet<ClusterMarker>?) {
+    override fun addMapMarkers(clusterMarkers: HashSet<ClusterMarker>) {
         if (lostDogsMap != null) {
             if (clusterManager == null) {
                 clusterManager = ClusterManager(activity?.applicationContext, lostDogsMap)
@@ -201,9 +200,9 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
                 clusterManagerRenderer = ClusterManagerRenderer(appContext, googleMap, manager)
                 manager?.renderer = clusterManagerRenderer
             }
-            manager?.addItems(clusterMarkerSet)
-            clusterMarkers = clusterMarkerSet
-//            clusterMarkerSet?.toList()?.let { clusterMarkers?.addAll(it) }
+            clusterMarkersSet = clusterMarkers
+            manager?.addItems(clusterMarkers)
+
             manager?.cluster()
         }
     }

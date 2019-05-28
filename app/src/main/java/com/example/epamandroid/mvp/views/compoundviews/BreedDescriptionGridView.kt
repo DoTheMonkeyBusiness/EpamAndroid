@@ -13,8 +13,9 @@ class BreedDescriptionGridView @JvmOverloads constructor(
 ) : GridLayout(context, attrs, defStyleAttr) {
 
     init {
+
         orientation = HORIZONTAL
-        columnCount = 4
+        columnCount = 2
         inflate(getContext(), R.layout.breed_description_grid_view, this)
     }
 
