@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="custom_marker_image" format="integer">48dp</dimen>
+    <dimen name="custom_marker_padding" format="integer">1dp</dimen>
+</resources>

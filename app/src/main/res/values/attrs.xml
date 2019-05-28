@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="dayStyle">
+        <attr name="colorBackground" format="color"/>
+        <attr name="colorAccentGrey" format="color"/>
+        <attr name="colorBottomSheetHeader" format="color"/>
+        <attr name="colorPhoneNumber" format="color"/>
+        <attr name="colorTransparentBackground" format="color"/>
+    </declare-styleable>
+</resources>

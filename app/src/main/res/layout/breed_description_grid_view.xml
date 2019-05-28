@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:columnCount="2"
+    tools:parentTag="android.widget.GridLayout">
+
+    <TextView
+        android:id="@+id/dogViewCanLiveAtHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/can_live_at_home"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/breedDescriptionAffectionate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/affectionate"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/dogViewCanLiveAtHomeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:contentDescription="@string/is_can_live_at_home_icon_description"
+        android:tint="?attr/colorAccent"
+        app:srcCompat="@drawable/ic_check" />
+
+
+    <ImageView
+        android:id="@+id/breedDescriptionAffectionateIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:contentDescription="@string/is_can_live_at_home_icon_description"
+        android:tint="?attr/colorAccent"
+        app:srcCompat="@drawable/ic_check" />
+
+    <TextView
+        android:id="@+id/breedDescriptionHeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/height_kg"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/breedDescriptionWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/weight_kg"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/breedDescriptionHeightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/dash"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/breedDescriptionWeightText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/dash"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/breedDescriptionLifeExpectancy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/life_expectancy"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/breedDescriptionCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/cost_dollars"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/breedDescriptionLifeExpectancyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/dash"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/breedDescriptionCostText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dp"
+        android:text="@string/dash"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp" />
+
+</merge>

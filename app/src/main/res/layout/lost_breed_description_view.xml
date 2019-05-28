@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@null"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <TextView
+        android:id="@+id/lostBreedDescriptionHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:padding="8dp"
+        android:text="@string/dog_breed"
+        android:textAlignment="center"
+        android:textColor="?attr/colorAccent"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/lostBreedDescriptionDogPhoto"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/dog_photo_description"
+        android:src="@drawable/ic_help_outline" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/lostBreedDescriptionPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/phone_number"
+        android:textColor="?attr/colorPhoneNumber"
+        android:layout_marginStart="16dp"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="?attr/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/lostBreedDescriptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/breedDescriptionRatingBar"
+        android:layout_centerHorizontal="true"
+        android:padding="16dp"
+        android:text="@string/no_description"
+        android:textColor="?attr/colorAccent"
+        android:textSize="18sp"
+        android:textStyle="italic" />
+
+
+</merge>

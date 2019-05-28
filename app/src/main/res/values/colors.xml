@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <!--<color name="colorPrimaryNight">#344955</color>-->
+    <!--<color name="colorPrimaryDarkNight">#232F34</color>-->
+    <!--<color name="colorAccentNight">#F9AA33</color>-->
+    <!--<color name="colorBackgroundNight">#4A6572</color>-->
+    <color name="colorPrimaryNight">#1F3440</color>
+    <color name="colorPrimaryDarkNight">#0E1A1F</color>
+    <!--<color name="colorAccentNight">#E4951E</color>-->
+    <color name="colorAccentNight">#ECEFF1</color>
+    <color name="colorAccentGreyNight">#E2E5E7</color>
+    <color name="colorBackgroundNight">#35505D</color>
+    <color name="colorTransparentBackgroundNight">#CC35505D</color>
+    <color name="colorBottomSheetHeaderNight">#2B4653</color>
+    <color name="colorPhoneNumberNight">#9E9E9E</color>
+
+    <color name="colorPrimaryDay">#FEEAE6</color>
+    <!--<color name="colorPrimaryDarkDay">#FEDBD0</color>-->
+    <color name="colorPrimaryDarkDay">#C5A297</color>
+    <color name="colorAccentDay">#442C2E</color>
+    <color name="colorAccentGreyDay">#6C4649</color>
+    <color name="colorBackgroundDay">#FFFBFA</color>
+    <color name="colorTransparentBackgroundDay">#CCFFFBFA</color>
+    <color name="colorBottomSheetHeaderDay">#F8F4F3</color>
+    <color name="colorPhoneNumberDay">#B71C1C</color>
+
+
+    <color name="colorRed">#B71C1C</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>

@@ -9,7 +9,11 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/imagefilepath" />
+            <option value="$PROJECT_DIR$/imageloader" />
+            <option value="$PROJECT_DIR$/kotlinextensions" />
             <option value="$PROJECT_DIR$/mysubmodule" />
+            <option value="$PROJECT_DIR$/neuralNetwork" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
