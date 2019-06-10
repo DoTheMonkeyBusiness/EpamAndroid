@@ -117,11 +117,17 @@ class MainActivity : AppCompatActivity(),
     }
 
     override fun onBackPressed() {
-        if (currentPage == MAIN_ITEM_KEY) {
-            super.onBackPressed()
-        } else {
-            activityMainViewPager
+        when {
+            bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED -> {
+                bottomSheetBehavior.collapseBottomSheet()
+            }
+            currentPage == MAIN_ITEM_KEY -> {
+                super.onBackPressed()
+            }
+            else -> {
+                activityMainViewPager
                     .setCurrentItem(MAIN_ITEM_KEY, true)
+            }
         }
     }
 

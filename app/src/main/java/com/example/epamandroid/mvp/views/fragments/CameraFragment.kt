@@ -141,13 +141,14 @@ class CameraFragment : Fragment(), ICameraContract.View {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser) {
-            cameraPresenter.startBackgroundThread()
             if (cameraFragmentTextureView.isAvailable) {
                 openCamera()
             } else {
                 cameraFragmentTextureView.surfaceTextureListener = textureListener
             }
 
+
+            cameraPresenter.startBackgroundThread()
             isFragmentVisible = true
         } else {
             cameraPresenter.stopBackgroundThread()
