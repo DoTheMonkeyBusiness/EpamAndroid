@@ -23,6 +23,7 @@ import com.example.epamandroid.gson.GsonParser
 import com.example.epamandroid.gsonmodels.GsonDogEntity
 import com.example.epamandroid.gsonmodels.GsonLostDogEntity
 import com.example.epamandroid.mvp.contracts.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.squareup.okhttp.*
 import java.io.File
@@ -220,11 +221,35 @@ object Repository :
             response?.body()?.close()
         }
 
+        lostDogsMap?.forEach {
+            if (it.value.latitude != null
+                && it.value.longitude != null
+                && calculationByDistance(userPosition, it.position) <= MapConstants.RADIUS_EXTRA_KEY
+            ) {
+                lostDogsNearbyList.add(it)
+            }
+        }
+
         return if (lostDogsMap != null
             && lostDogsMap.isNotEmpty()
         ) {
             lostDogsMap
         } else null
+    }
+
+    private fun calculationByDistance(startPosition: LatLng, endPosition: LatLng): Double {
+        val lat1 = startPosition.latitude
+        val lat2 = endPosition.latitude
+        val lon1 = startPosition.longitude
+        val lon2 = endPosition.longitude
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + (Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2))
+        val c: Double = 2 * Math.asin(Math.sqrt(a))
+
+        return MapConstants.EARTH_RADIUS_EXTRA_KEY * c
     }
 
     override fun getEntity(breed: String): GsonDogEntity? {
