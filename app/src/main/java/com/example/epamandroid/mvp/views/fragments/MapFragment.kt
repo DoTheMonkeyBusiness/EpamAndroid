@@ -186,7 +186,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
         }
     }
 
-    override fun addMapMarkers(clusterMarkers: HashSet<ClusterMarker>) {
+    override fun addMapMarker(clusterMarker: ClusterMarker) {
         if (lostDogsMap != null) {
             if (clusterManager == null) {
                 clusterManager = ClusterManager(activity?.applicationContext, lostDogsMap)
@@ -200,8 +200,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
                 clusterManagerRenderer = ClusterManagerRenderer(appContext, googleMap, manager)
                 manager?.renderer = clusterManagerRenderer
             }
-            clusterMarkersSet = clusterMarkers
-            manager?.addItems(clusterMarkers)
+            clusterMarkersSet.add(clusterMarker)
+            manager?.addItem(clusterMarker)
 
             manager?.cluster()
         }

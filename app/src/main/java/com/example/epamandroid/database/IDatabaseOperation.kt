@@ -1,9 +1,7 @@
 package com.example.epamandroid.database
 
-import android.content.ContentValues
 import android.database.Cursor
 import com.example.epamandroid.models.DogEntity
-
 
 interface IDatabaseOperation {
     fun query(sqlString: String, vararg params: String): Cursor?

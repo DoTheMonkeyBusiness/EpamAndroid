@@ -71,23 +71,16 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
     }
 
     private fun createClusterMarkers(lostDogsNearbyList: ArrayList<LostDogEntity>) {
-        val clusterMarkersSet: HashSet<ClusterMarker> = hashSetOf()
         lostDogsNearbyList.forEach {
-            clusterMarkersSet.add(
-                ClusterMarker(
-                    it.position,
-                    it.id.toString(),
-                    it.breed,
-                    michelangelo.loadSync(it.photo),
-                    it
-                )
+            val marker = ClusterMarker(
+                it.position,
+                it.id.toString(),
+                it.breed,
+                michelangelo.loadSync(it.photo),
+                it
             )
-        }
-        if(clusterMarkersSet.isNotEmpty()) {
             handler.post {
-                Runnable {
-                    view.addMapMarkers(clusterMarkersSet)
-                }.run()
+                view.addMapMarker(marker)
             }
         }
     }

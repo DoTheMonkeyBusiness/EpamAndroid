@@ -9,7 +9,7 @@ import com.google.android.gms.maps.model.LatLng
 
 interface IMapContract {
     interface View : IBaseView {
-        fun addMapMarkers(clusterMarkers: HashSet<ClusterMarker>)
+        fun addMapMarker(clusterMarker: ClusterMarker)
         fun getContext(): Context?
     }
 
