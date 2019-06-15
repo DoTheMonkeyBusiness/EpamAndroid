@@ -30,7 +30,6 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        if (getItemViewType(position) == ViewType.DOG) {
             val holder = (viewHolder.itemView as DogView)
             dogEntity = dogsList[position]
 
@@ -38,7 +37,6 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
                     .setDogBreed(dogEntity?.breed)
                     .isCanLiveAtHome(dogEntity?.isCanLiveAtHome)
             michelangelo.load(holder.getDogIcon(), dogEntity?.photo)
-        }
     }
 
     override fun getItemCount(): Int {

@@ -189,12 +189,13 @@ object Repository :
         } else null
     }
 
-    override fun getEntitiesNearby(latitude: Double, radius: Float): HashMap<String, GsonLostDogEntity>? {
+    override fun getEntitiesNearby(userPosition: LatLng, radius: Float): HashMap<String, GsonLostDogEntity>? {
         var response: Response? = null
         val rangeLatitude = radius / MapConstants.KILOMETERS_IN_ONE_DEG_EXTRA_KEY
-        val minLatitude = latitude - rangeLatitude
-        val maxLatitude = latitude + rangeLatitude
+        val minLatitude = userPosition.latitude - rangeLatitude
+        val maxLatitude = userPosition.latitude + rangeLatitude
         var lostDogsMap: HashMap<String, GsonLostDogEntity>? = null
+        val lostDogsNearbyMap: HashMap<String, GsonLostDogEntity>? = hashMapOf()
 
         try {
             val request =
@@ -222,30 +223,29 @@ object Repository :
         }
 
         lostDogsMap?.forEach {
-            if (it.value.latitude != null
-                && it.value.longitude != null
-                && calculationByDistance(userPosition, it.position) <= MapConstants.RADIUS_EXTRA_KEY
+            val latitude =it.value.latitude
+            val longitude  =it.value.longitude
+
+            if (latitude != null
+                && longitude != null
+                && calculationByDistance(userPosition, latitude, longitude) <= MapConstants.RADIUS_EXTRA_KEY
             ) {
-                lostDogsNearbyList.add(it)
+                lostDogsNearbyMap?.put(it.key, it.value)
             }
         }
 
-        return if (lostDogsMap != null
-            && lostDogsMap.isNotEmpty()
+        return if (lostDogsNearbyMap != null
+            && lostDogsNearbyMap.isNotEmpty()
         ) {
-            lostDogsMap
+            lostDogsNearbyMap
         } else null
     }
 
-    private fun calculationByDistance(startPosition: LatLng, endPosition: LatLng): Double {
-        val lat1 = startPosition.latitude
-        val lat2 = endPosition.latitude
-        val lon1 = startPosition.longitude
-        val lon2 = endPosition.longitude
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + (Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+    private fun calculationByDistance(startPosition: LatLng, endLatitude:Double, endLongitude: Double): Double {
+        val dLat = Math.toRadians(endLatitude -  startPosition.latitude)
+        val dLon = Math.toRadians(endLongitude - startPosition.longitude)
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + (Math.cos(Math.toRadians( startPosition.latitude))
+                * Math.cos(Math.toRadians(endLatitude)) * Math.sin(dLon / 2)
                 * Math.sin(dLon / 2))
         val c: Double = 2 * Math.asin(Math.sqrt(a))
 

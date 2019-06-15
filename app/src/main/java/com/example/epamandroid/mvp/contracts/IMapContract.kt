@@ -18,6 +18,6 @@ interface IMapContract {
     }
 
     interface Model {
-        fun getEntitiesNearby(latitude: Double, radius: Float): HashMap<String, GsonLostDogEntity>?
+        fun getEntitiesNearby(userPosition: LatLng, radius: Float): HashMap<String, GsonLostDogEntity>?
     }
 }

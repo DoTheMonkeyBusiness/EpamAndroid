@@ -24,9 +24,8 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
     override fun findLostDogsNearby(userPosition: LatLng) {
         Thread {
             val lostDogsList: ArrayList<LostDogEntity>? = arrayListOf()
-            val lostDogsNearbyList: ArrayList<LostDogEntity> = arrayListOf()
             val gsonLostDogsMap: HashMap<String, GsonLostDogEntity>? = repository
-                .getEntitiesNearby(userPosition.latitude, RADIUS_EXTRA_KEY)
+                .getEntitiesNearby(userPosition, RADIUS_EXTRA_KEY)
 
             gsonLostDogsMap?.forEach {
                 lostDogsList?.add(
@@ -39,14 +38,6 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
                         it.value.photo
                     )
                 )
-            }
-
-            lostDogsList?.forEach {
-                if (it.position != null
-                    && calculationByDistance(userPosition, it.position) <= RADIUS_EXTRA_KEY
-                ) {
-                    lostDogsNearbyList.add(it)
-                }
             }
 
             if (lostDogsList != null) {
