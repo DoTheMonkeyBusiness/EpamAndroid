@@ -30,8 +30,8 @@ import java.io.IOException
 
 
 class AddLostDogActivity : AppCompatActivity(),
-        IAddLostDogContract.View,
-        ChooseLostBreedFragment.ISetLostBreedCallback {
+    IAddLostDogContract.View,
+    ChooseLostBreedFragment.ISetLostBreedCallback {
     companion object {
 
         private const val TAG: String = "AddLostDogActivity"
@@ -54,8 +54,8 @@ class AddLostDogActivity : AppCompatActivity(),
         val isDarkModeEnabled = PreferenceManager.getDefaultSharedPreferences(this)
 
         if (isDarkModeEnabled.getBoolean(
-                        getString(R.string.switch_day_night_mode_key), false
-                )
+                getString(R.string.switch_day_night_mode_key), false
+            )
         ) {
             setTheme(R.style.AppThemeNight)
         } else {
@@ -92,12 +92,12 @@ class AddLostDogActivity : AppCompatActivity(),
         val permissions: Array<String> = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
         if (this@AddLostDogActivity.let {
-                    ContextCompat.checkSelfPermission(
-                            it,
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                    )
-                } == PackageManager.PERMISSION_DENIED
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                ContextCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            } == PackageManager.PERMISSION_DENIED
+            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permissions, READ_EXTERNAL_STORAGE_PERMISSION_EXTRA_KEY)
         } else {
             readExternalStoragePermissionsGranted = true
@@ -110,7 +110,7 @@ class AddLostDogActivity : AppCompatActivity(),
         when (requestCode) {
             LOCATION_PERMISSION_EXTRA_KEY -> {
                 readExternalStoragePermissionsGranted =
-                        grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }
+                    grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }
             }
         }
     }
@@ -130,18 +130,21 @@ class AddLostDogActivity : AppCompatActivity(),
 
     private fun onConfirm() {
         if (!imageSeted
-                || addLostDogSelectADogTextView.text.isEmpty()
-                || addLostEnterPhoneNumberEditText.text.isEmpty()
-                || addLostDogAddBreedDescriptionEditText.text.isEmpty()) {
+            || addLostDogSelectADogTextView.text.isEmpty()
+            || addLostEnterPhoneNumberEditText.text.isEmpty()
+            || addLostDogAddBreedDescriptionEditText.text.isEmpty()
+        ) {
             Toast.makeText(applicationContext, getString(R.string.all_fields_must_be_filled), Toast.LENGTH_LONG).show()
         } else {
             isDownload = true
-            addLostDogActivityPresenter.uploadLostDog(addLostDogSelectADogTextView.text.toString(),
-                    addLostEnterPhoneNumberEditText.text.toString(),
-                    addLostDogAddBreedDescriptionEditText.text.toString(),
-                    intent.getDoubleExtra(LATITUDE_EXTRA_KEY, DEFAULT_DOUBLE_VALUE_KEY),
-                    intent.getDoubleExtra(LONGITUDE_EXTRA_KEY, DEFAULT_DOUBLE_VALUE_KEY),
-                    imageFile)
+            addLostDogActivityPresenter.uploadLostDog(
+                addLostDogSelectADogTextView.text.toString(),
+                addLostEnterPhoneNumberEditText.text.toString(),
+                addLostDogAddBreedDescriptionEditText.text.toString(),
+                intent.getDoubleExtra(LATITUDE_EXTRA_KEY, DEFAULT_DOUBLE_VALUE_KEY),
+                intent.getDoubleExtra(LONGITUDE_EXTRA_KEY, DEFAULT_DOUBLE_VALUE_KEY),
+                imageFile
+            )
         }
     }
 
@@ -158,11 +161,13 @@ class AddLostDogActivity : AppCompatActivity(),
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_IMAGE_REQUEST_KEY
-                && resultCode == Activity.RESULT_OK) {
-            imageFile = File(ImageFilePath.getPath(this@AddLostDogActivity, data?.data))
-
+            && resultCode == Activity.RESULT_OK
+            && data != null
+            && data.data != null
+        ) {
             try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, data?.data)
+                imageFile = File(ImageFilePath.getPath(this@AddLostDogActivity, data.data))
+                imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, data.data)
                 addLostDogAddPhotoImageView.setImageBitmap(imageBitmap)
                 imageSeted = true
             } catch (e: IOException) {

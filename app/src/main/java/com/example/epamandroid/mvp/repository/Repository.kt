@@ -23,6 +23,7 @@ import com.example.epamandroid.gson.GsonParser
 import com.example.epamandroid.gsonmodels.GsonDogEntity
 import com.example.epamandroid.gsonmodels.GsonLostDogEntity
 import com.example.epamandroid.mvp.contracts.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.squareup.okhttp.*
 import java.io.File
@@ -30,14 +31,15 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 object Repository :
-    IAddLostDogContract.Model,
-    IChooseLostBreedContract.Model,
-    IHomeContract.Model,
-    IMainActivityContract.Model,
-    IMapContract.Model,
-    IBreedDescriptionContract.Model,
-    ICameraContract.Model,
-    ILostBreedDescriptionContract.Model {
+        IAddLostDogContract.Model,
+        IChooseLostBreedContract.Model,
+        IHomeContract.Model,
+        IMainActivityContract.Model,
+        IMapContract.Model,
+        IBreedDescriptionContract.Model,
+        ICameraContract.Model,
+        ILostBreedDescriptionContract.Model,
+        ILocationServiceContract.Model {
 
     private const val TAG = "Repository"
 
@@ -53,11 +55,11 @@ object Repository :
 
         try {
             val request =
-                Request
-                    .Builder()
-                    .url(NOT_MODERATED_LOST_DOGS_URL_STRING_EXTRA_KEY)
-                    .post(body)
-                    .build()
+                    Request
+                            .Builder()
+                            .url(NOT_MODERATED_LOST_DOGS_URL_STRING_EXTRA_KEY)
+                            .post(body)
+                            .build()
 
             response = client.newCall(request).execute()
             isSuccessfulResponse = response.isSuccessful
@@ -76,26 +78,26 @@ object Repository :
 
         try {
             val req = MultipartBuilder().type(MultipartBuilder.FORM)
-                .addFormDataPart(
-                    id.toString(),
-                    imageFile.name,
-                    RequestBody.create(
-                        MediaType.parse(IMAGE_FILE_TYPE_EXTRA_KEY + imageFile.extension),
-                        imageFile
+                    .addFormDataPart(
+                            id.toString(),
+                            imageFile.name,
+                            RequestBody.create(
+                                    MediaType.parse(IMAGE_FILE_TYPE_EXTRA_KEY + imageFile.extension),
+                                    imageFile
+                            )
                     )
-                )
-                .build()
+                    .build()
 
             val request = Request.Builder()
-                .url(
-                    STORAGE_LOST_DOGS_URL_STRING_EXTRA_KEY +
-                            id +
-                            SymbolConstants.DOT_EXTRA_KEY +
-                            imageFile.extension +
-                            URLConstants.ALT_MEDIA_EXTRA_KEY
-                )
-                .post(req)
-                .build()
+                    .url(
+                            STORAGE_LOST_DOGS_URL_STRING_EXTRA_KEY +
+                                    id +
+                                    SymbolConstants.DOT_EXTRA_KEY +
+                                    imageFile.extension +
+                                    URLConstants.ALT_MEDIA_EXTRA_KEY
+                    )
+                    .post(req)
+                    .build()
 
             client.setConnectTimeout(RESPONSE_TIME_EXTRA_KEY, TimeUnit.SECONDS)
 
@@ -118,18 +120,18 @@ object Repository :
 
         try {
             val request =
-                Request
-                    .Builder()
-                    .url(
-                        DOG_BREEDS_URL_STRING_EXTRA_KEY +
-                                ORDER_BY_EXTRA_KEY +
-                                DOUBLE_QUOTES_EXTRA_KEY +
-                                ID_EXTRA_KEY +
-                                DOUBLE_QUOTES_EXTRA_KEY +
-                                START_AT_EXTRA_KEY +
-                                ZERO_EXTRA_KEY
-                    )
-                    .build()
+                    Request
+                            .Builder()
+                            .url(
+                                    DOG_BREEDS_URL_STRING_EXTRA_KEY +
+                                            ORDER_BY_EXTRA_KEY +
+                                            DOUBLE_QUOTES_EXTRA_KEY +
+                                            ID_EXTRA_KEY +
+                                            DOUBLE_QUOTES_EXTRA_KEY +
+                                            START_AT_EXTRA_KEY +
+                                            ZERO_EXTRA_KEY
+                            )
+                            .build()
 
             response = client.newCall(request).execute()
             dogs = GsonParser.parseDogEntity(response.body().string())
@@ -140,41 +142,41 @@ object Repository :
         }
 
         return if (dogs != null
-            && dogs.isNotEmpty()
+                && dogs.isNotEmpty()
         ) {
             dogs.values.map { it.breed }.toMutableList()
         } else null
     }
 
     override fun getEntities(
-        startPosition: Int,
-        endPosition: Int
+            startPosition: Int,
+            endPosition: Int
     ): HashMap<Int, GsonDogEntity>? {
         var response: Response? = null
         var dogs: HashMap<Int, GsonDogEntity>? = null
 
         try {
             val request =
-                Request
-                    .Builder()
-                    .url(
-                        DOG_BREEDS_URL_STRING_EXTRA_KEY +
-                                ORDER_BY_EXTRA_KEY +
-                                DOUBLE_QUOTES_EXTRA_KEY +
-                                ID_EXTRA_KEY +
-                                DOUBLE_QUOTES_EXTRA_KEY +
-                                START_AT_EXTRA_KEY +
-                                startPosition +
-                                END_AT_EXTRA_KEY +
-                                endPosition
-                    )
-                    .build()
+                    Request
+                            .Builder()
+                            .url(
+                                    DOG_BREEDS_URL_STRING_EXTRA_KEY +
+                                            ORDER_BY_EXTRA_KEY +
+                                            DOUBLE_QUOTES_EXTRA_KEY +
+                                            ID_EXTRA_KEY +
+                                            DOUBLE_QUOTES_EXTRA_KEY +
+                                            START_AT_EXTRA_KEY +
+                                            startPosition +
+                                            END_AT_EXTRA_KEY +
+                                            endPosition
+                            )
+                            .build()
 
             response = client
-                .newCall(request)
-                .execute()
+                    .newCall(request)
+                    .execute()
             dogs = GsonParser
-                .parseDogEntity(response.body().string())
+                    .parseDogEntity(response.body().string())
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
@@ -182,35 +184,36 @@ object Repository :
         }
 
         return if (dogs != null
-            && dogs.isNotEmpty()
+                && dogs.isNotEmpty()
         ) {
             dogs
         } else null
     }
 
-    override fun getEntitiesNearby(latitude: Double, radius: Float): HashMap<String, GsonLostDogEntity>? {
+    override fun getEntitiesNearby(userPosition: LatLng, radius: Float): HashMap<String, GsonLostDogEntity>? {
         var response: Response? = null
         val rangeLatitude = radius / MapConstants.KILOMETERS_IN_ONE_DEG_EXTRA_KEY
-        val minLatitude = latitude - rangeLatitude
-        val maxLatitude = latitude + rangeLatitude
+        val minLatitude = userPosition.latitude - rangeLatitude
+        val maxLatitude = userPosition.latitude + rangeLatitude
         var lostDogsMap: HashMap<String, GsonLostDogEntity>? = null
+        val lostDogsNearbyMap: HashMap<String, GsonLostDogEntity>? = hashMapOf()
 
         try {
             val request =
-                Request
-                    .Builder()
-                    .url(
-                        NOT_MODERATED_LOST_DOGS_URL_STRING_EXTRA_KEY +
-                                ORDER_BY_EXTRA_KEY +
-                                DOUBLE_QUOTES_EXTRA_KEY +
-                                LATITUDE_EXTRA_KEY +
-                                DOUBLE_QUOTES_EXTRA_KEY +
-                                START_AT_EXTRA_KEY +
-                                minLatitude +
-                                END_AT_EXTRA_KEY +
-                                maxLatitude
-                    )
-                    .build()
+                    Request
+                            .Builder()
+                            .url(
+                                    NOT_MODERATED_LOST_DOGS_URL_STRING_EXTRA_KEY +
+                                            ORDER_BY_EXTRA_KEY +
+                                            DOUBLE_QUOTES_EXTRA_KEY +
+                                            LATITUDE_EXTRA_KEY +
+                                            DOUBLE_QUOTES_EXTRA_KEY +
+                                            START_AT_EXTRA_KEY +
+                                            minLatitude +
+                                            END_AT_EXTRA_KEY +
+                                            maxLatitude
+                            )
+                            .build()
 
             response = client.newCall(request).execute()
             lostDogsMap = GsonParser.parseLostDogEntity(response.body().string())
@@ -220,11 +223,34 @@ object Repository :
             response?.body()?.close()
         }
 
-        return if (lostDogsMap != null
-            && lostDogsMap.isNotEmpty()
+        lostDogsMap?.forEach {
+            val latitude = it.value.latitude
+            val longitude = it.value.longitude
+
+            if (latitude != null
+                    && longitude != null
+                    && calculationByDistance(userPosition, latitude, longitude) <= MapConstants.MAP_RADIUS_EXTRA_KEY
+            ) {
+                lostDogsNearbyMap?.put(it.key, it.value)
+            }
+        }
+
+        return if (lostDogsNearbyMap != null
+                && lostDogsNearbyMap.isNotEmpty()
         ) {
-            lostDogsMap
+            lostDogsNearbyMap
         } else null
+    }
+
+    private fun calculationByDistance(startPosition: LatLng, endLatitude: Double, endLongitude: Double): Double {
+        val dLat = Math.toRadians(endLatitude - startPosition.latitude)
+        val dLon = Math.toRadians(endLongitude - startPosition.longitude)
+        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + (Math.cos(Math.toRadians(startPosition.latitude))
+                * Math.cos(Math.toRadians(endLatitude)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2))
+        val c: Double = 2 * Math.asin(Math.sqrt(a))
+
+        return MapConstants.EARTH_RADIUS_EXTRA_KEY * c
     }
 
     override fun getEntity(breed: String): GsonDogEntity? {
@@ -233,20 +259,20 @@ object Repository :
 
         try {
             val request =
-                Request
-                    .Builder()
-                    .url(
-                        DOG_BREEDS_URL_STRING_EXTRA_KEY +
-                                ORDER_BY_EXTRA_KEY +
-                                DOUBLE_QUOTES_EXTRA_KEY +
-                                BREED_EXTRA_KEY +
-                                DOUBLE_QUOTES_EXTRA_KEY +
-                                EQUAL_TO_EXTRA_KEY +
-                                DOUBLE_QUOTES_EXTRA_KEY +
-                                breed +
-                                DOUBLE_QUOTES_EXTRA_KEY
-                    )
-                    .build()
+                    Request
+                            .Builder()
+                            .url(
+                                    DOG_BREEDS_URL_STRING_EXTRA_KEY +
+                                            ORDER_BY_EXTRA_KEY +
+                                            DOUBLE_QUOTES_EXTRA_KEY +
+                                            BREED_EXTRA_KEY +
+                                            DOUBLE_QUOTES_EXTRA_KEY +
+                                            EQUAL_TO_EXTRA_KEY +
+                                            DOUBLE_QUOTES_EXTRA_KEY +
+                                            breed +
+                                            DOUBLE_QUOTES_EXTRA_KEY
+                            )
+                            .build()
             response = client.newCall(request).execute()
 
             gsonDogEntity = GsonParser.parseDogEntity(response.body().string())
@@ -257,7 +283,7 @@ object Repository :
         }
 
         return if (gsonDogEntity != null
-            && gsonDogEntity.isNotEmpty()
+                && gsonDogEntity.isNotEmpty()
         ) {
             gsonDogEntity.values.first()
         } else null

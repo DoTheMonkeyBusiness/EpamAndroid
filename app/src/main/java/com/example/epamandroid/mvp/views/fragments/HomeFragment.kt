@@ -96,8 +96,12 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
             adapter = viewAdapter
 
-            addItemDecoration(DividerItemDecoration(this@HomeFragment.context,
-                    DividerItemDecoration.VERTICAL))
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@HomeFragment.context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -106,23 +110,16 @@ class HomeFragment : Fragment(), IHomeContract.View {
                     val startPosition = viewAdapter.getMaxId().plus(1)
                     val visibleItemCount = linearLayoutManager.childCount
                     val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
-                    val lastVisibleItemPosition = linearLayoutManager.findLastVisibleItemPosition()
 
                     if (firstVisibleItemPosition + (PAGE_SIZE * 3) <= totalItemCount) {
                         isEndOfList = false
                     }
 
-                    if (lastVisibleItemPosition + 1 == totalItemCount && !isEndOfList) {
-                        bottomProgress.expandBottomSheet()
-                    } else {
-                        bottomProgress.collapseBottomSheet()
-                    }
-
                     if (!isLoading
-                            && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
-                                    && firstVisibleItemPosition >= 0
-                                    && totalItemCount >= PAGE_SIZE
-                                    && !isEndOfList)
+                        && (visibleItemCount + firstVisibleItemPosition >= totalItemCount
+                                && firstVisibleItemPosition >= 0
+                                && totalItemCount >= PAGE_SIZE
+                                && !isEndOfList)
                     ) {
                         loadMoreItems(startPosition, startPosition + PAGE_SIZE)
                     }

@@ -46,4 +46,6 @@
     <string name="your_announcement_has_been_moderated">your announcement has been moderated</string>
     <string name="announcement_posting_error">error while posting your announcement</string>
     <string name="custom_marker">custom marker</string>
+    <string name="important">important</string>
+    <string name="lost_dogs_near">There are lost dogs near you</string>
 </resources>

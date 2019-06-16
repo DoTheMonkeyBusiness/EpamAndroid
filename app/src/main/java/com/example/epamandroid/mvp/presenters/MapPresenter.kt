@@ -2,8 +2,7 @@ package com.example.epamandroid.mvp.presenters
 
 import android.os.Handler
 import android.os.Looper
-import com.example.epamandroid.constants.MapConstants.EARTH_RADIUS_EXTRA_KEY
-import com.example.epamandroid.constants.MapConstants.RADIUS_EXTRA_KEY
+import com.example.epamandroid.constants.MapConstants.MAP_RADIUS_EXTRA_KEY
 import com.example.epamandroid.gsonmodels.GsonLostDogEntity
 import com.example.epamandroid.models.ClusterMarker
 import com.example.epamandroid.models.LostDogEntity
@@ -21,27 +20,11 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
 
     override fun onCreate() = Unit
 
-    private fun calculationByDistance(startPosition: LatLng, endPosition: LatLng): Double {
-        val lat1 = startPosition.latitude
-        val lat2 = endPosition.latitude
-        val lon1 = startPosition.longitude
-        val lon2 = endPosition.longitude
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-        val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + (Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
-                * Math.sin(dLon / 2))
-        val c: Double = 2 * Math.asin(Math.sqrt(a))
-
-        return EARTH_RADIUS_EXTRA_KEY * c
-    }
-
     override fun findLostDogsNearby(userPosition: LatLng) {
         Thread {
             val lostDogsList: ArrayList<LostDogEntity>? = arrayListOf()
-            val lostDogsNearbyList: ArrayList<LostDogEntity> = arrayListOf()
             val gsonLostDogsMap: HashMap<String, GsonLostDogEntity>? = repository
-                .getEntitiesNearby(userPosition.latitude, RADIUS_EXTRA_KEY)
+                .getEntitiesNearby(userPosition, MAP_RADIUS_EXTRA_KEY)
 
             gsonLostDogsMap?.forEach {
                 lostDogsList?.add(
@@ -56,38 +39,23 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
                 )
             }
 
-            lostDogsList?.forEach {
-                if (it.position != null
-                    && calculationByDistance(userPosition, it.position) <= RADIUS_EXTRA_KEY
-                ) {
-                    lostDogsNearbyList.add(it)
-                }
+            if (lostDogsList != null) {
+                createClusterMarkers(lostDogsList)
             }
-
-            createClusterMarkers(lostDogsNearbyList)
-
-
         }.start()
     }
 
     private fun createClusterMarkers(lostDogsNearbyList: ArrayList<LostDogEntity>) {
-        val clusterMarkersSet: HashSet<ClusterMarker> = hashSetOf()
         lostDogsNearbyList.forEach {
-            clusterMarkersSet.add(
-                ClusterMarker(
-                    it.position,
-                    it.id.toString(),
-                    it.breed,
-                    michelangelo.loadSync(it.photo),
-                    it
-                )
+            val marker = ClusterMarker(
+                it.position,
+                it.id.toString(),
+                it.breed,
+                michelangelo.loadSync(it.photo),
+                it
             )
-        }
-        if(clusterMarkersSet.isNotEmpty()) {
             handler.post {
-                Runnable {
-                    view.addMapMarkers(clusterMarkersSet)
-                }.run()
+                view.addMapMarker(marker)
             }
         }
     }

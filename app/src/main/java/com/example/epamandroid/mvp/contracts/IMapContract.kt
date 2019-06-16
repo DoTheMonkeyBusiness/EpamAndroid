@@ -9,7 +9,7 @@ import com.google.android.gms.maps.model.LatLng
 
 interface IMapContract {
     interface View : IBaseView {
-        fun addMapMarkers(clusterMarkers: HashSet<ClusterMarker>)
+        fun addMapMarker(clusterMarker: ClusterMarker)
         fun getContext(): Context?
     }
 
@@ -18,6 +18,6 @@ interface IMapContract {
     }
 
     interface Model {
-        fun getEntitiesNearby(latitude: Double, radius: Float): HashMap<String, GsonLostDogEntity>?
+        fun getEntitiesNearby(userPosition: LatLng, radius: Float): HashMap<String, GsonLostDogEntity>?
     }
 }
