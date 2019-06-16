@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.support.v4.app.ActivityCompat
@@ -34,6 +35,8 @@ class LocationService : Service(), ILocationServiceContract.Service {
 
     private val repository: ILocationServiceContract.Model = Repository
     private val lostDogsList: ArrayList<LostDogEntity> = arrayListOf()
+    private val handler = Handler(Looper.getMainLooper())
+
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
@@ -68,32 +71,32 @@ class LocationService : Service(), ILocationServiceContract.Service {
     }
 
     private fun getLocation() {
-            val locationRequestHighAccuracy = LocationRequest().apply {
-                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-                interval = UPDATE_INTERVAL
-                fastestInterval = FASTEST_INTERVAL
-            }
+        val locationRequestHighAccuracy = LocationRequest().apply {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = UPDATE_INTERVAL
+            fastestInterval = FASTEST_INTERVAL
+        }
 
-            if (ActivityCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                stopSelf()
+        if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            stopSelf()
 
-                return
-            }
+            return
+        }
 
-            fusedLocationProviderClient.requestLocationUpdates(locationRequestHighAccuracy, object : LocationCallback() {
-                override fun onLocationResult(locationResult: LocationResult?) {
-                    val deviceLocation = locationResult?.lastLocation
+        fusedLocationProviderClient.requestLocationUpdates(locationRequestHighAccuracy, object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                val deviceLocation = locationResult?.lastLocation
 
-                    if (deviceLocation != null) {
-                        findDogsNearby(LatLng(deviceLocation.latitude, deviceLocation.longitude))
-                    }
+                if (deviceLocation != null) {
+                    findDogsNearby(LatLng(deviceLocation.latitude, deviceLocation.longitude))
                 }
-            }, Looper.myLooper())
+            }
+        }, Looper.myLooper())
     }
 
-    private fun findDogsNearby(deviceLocation: LatLng){
+    private fun findDogsNearby(deviceLocation: LatLng) {
         Thread {
             val newDogsList: ArrayList<LostDogEntity> = arrayListOf()
             val gsonLostDogsMap: HashMap<String, GsonLostDogEntity>? = repository
@@ -112,11 +115,13 @@ class LocationService : Service(), ILocationServiceContract.Service {
                 )
             }
 
-            newDogsList.forEach {
-                if (lostDogsList.indexOf(it) == -1) {
-                    showNotification()
+            kotlin.run loop@{
+                newDogsList.forEach {
+                    if (lostDogsList.indexOf(it) == -1) {
+                        showNotification()
 
-                    return@Thread
+                        return@loop
+                    }
                 }
             }
 
@@ -126,15 +131,18 @@ class LocationService : Service(), ILocationServiceContract.Service {
     }
 
     private fun showNotification() {
+        handler.post {
+            Runnable {
+                val builder = NotificationCompat.Builder(this, MAP_SERVICE_CHANNEL_ID)
+                        .setSmallIcon(R.drawable.ic_search)
+                        .setContentTitle(getString(R.string.important))
+                        .setContentText(getString(R.string.lost_dogs_near))
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-        val builder = NotificationCompat.Builder(this, MAP_SERVICE_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_search)
-                .setContentTitle(getString(R.string.important))
-                .setContentText(getString(R.string.lost_dogs_near))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-        with(NotificationManagerCompat.from(this)) {
-            notify(LOST_DOG_NOTIFICATION_ID, builder.build())
+                with(NotificationManagerCompat.from(this)) {
+                    notify(LOST_DOG_NOTIFICATION_ID, builder.build())
+                }
+            }.run()
         }
     }
 }
