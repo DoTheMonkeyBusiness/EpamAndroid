@@ -10,11 +10,13 @@ import com.google.android.gms.maps.model.LatLng
 interface IMapContract {
     interface View : IBaseView {
         fun addMapMarker(clusterMarker: ClusterMarker)
+        fun removeMapMarkers(clusterMarkers: HashSet<ClusterMarker>)
         fun getContext(): Context?
+        fun getMarkersSet(): HashSet<ClusterMarker>
     }
 
     interface Presenter : IBasePresenter {
-        fun findLostDogsNearby(userPosition: LatLng)
+        fun findLostDogsNearby()
     }
 
     interface Model {

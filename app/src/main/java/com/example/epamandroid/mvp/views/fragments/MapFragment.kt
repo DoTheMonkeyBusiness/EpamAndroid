@@ -134,22 +134,19 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
 
     }
 
-    private fun getDeviceLocation() {
+    private fun getUserLocation() {
         fusedLocationProviderClient = context?.let { LocationServices.getFusedLocationProviderClient(it) }
 
         try {
-            if (locationPermissionsGranted) {
-                val location = fusedLocationProviderClient?.lastLocation
-                location?.addOnCompleteListener {
-                    val currentLocation = it.result
+            val location = fusedLocationProviderClient?.lastLocation
+            location?.addOnCompleteListener {
+                val currentLocation = it.result
 
-                    if (currentLocation != null) {
-                        mapPresenter.findLostDogsNearby(LatLng(currentLocation.latitude, currentLocation.longitude))
-                        moveCamera(LatLng(currentLocation.latitude, currentLocation.longitude), DEFAULT_ZOOM_KEY)
-                    } else {
-                        Log.d(TAG, "current location is null")
-                        Toast.makeText(context, getString(R.string.unable_location), Toast.LENGTH_LONG).show()
-                    }
+                if (currentLocation != null) {
+                    moveCamera(LatLng(currentLocation.latitude, currentLocation.longitude), DEFAULT_ZOOM_KEY)
+                } else {
+                    Log.d(TAG, "current location is null")
+                    Toast.makeText(context, getString(R.string.unable_location), Toast.LENGTH_LONG).show()
                 }
             }
         } catch (e: SecurityException) {
@@ -202,6 +199,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
                 clusterManagerRenderer = ClusterManagerRenderer(appContext, googleMap, manager)
                 manager?.renderer = clusterManagerRenderer
             }
+
             clusterMarkersSet.add(clusterMarker)
             manager?.addItem(clusterMarker)
 
@@ -209,12 +207,28 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
         }
     }
 
+    override fun removeMapMarkers(clusterMarkers: HashSet<ClusterMarker>) {
+        if (lostDogsMap != null) {
+            val manager = clusterManager
+
+            clusterMarkers.forEach{
+                clusterMarkersSet.remove(it)
+                manager?.removeItem(it)
+            }
+
+            manager?.cluster()
+        }
+    }
+
+    override fun getMarkersSet(): HashSet<ClusterMarker> = clusterMarkersSet
+
     override fun onMapReady(map: GoogleMap?) {
 
         lostDogsMap = map
 
         if (locationPermissionsGranted) {
-            getDeviceLocation()
+            getUserLocation()
+            mapPresenter.findLostDogsNearby()
 
             startLocationService()
 
@@ -240,11 +254,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
         }
     }
 
-    private fun startLocationService(){
-        if (!isLocationServiceRunning(LocationService::class.java)){
+    private fun startLocationService() {
+        if (!isLocationServiceRunning(LocationService::class.java)) {
             val serviceIntent = Intent(context, LocationService::class.java)
 
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 context?.startForegroundService(serviceIntent)
             } else {
                 context?.startService(serviceIntent)
@@ -257,13 +271,19 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
         val activityManager: ActivityManager? = context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
 
         if (activityManager != null) {
-            for (service: ActivityManager.RunningServiceInfo in activityManager.getRunningServices(Int.MAX_VALUE)){
-                if (serviceClass.name == service.service.className){
+            for (service: ActivityManager.RunningServiceInfo in activityManager.getRunningServices(Int.MAX_VALUE)) {
+                if (serviceClass.name == service.service.className) {
                     return true
                 }
             }
         }
         return false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        mapPresenter.onDestroy()
     }
 
     interface IShowBottomSheetCallback {
