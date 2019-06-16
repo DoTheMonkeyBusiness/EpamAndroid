@@ -9,38 +9,71 @@
 
     <ImageView
         android:id="@+id/dogIcon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:contentDescription="@string/dog_photo_description"
         app:srcCompat="@drawable/ic_help_outline" />
 
-    <TextView
-        android:id="@+id/dogBreedTextView"
+    <RelativeLayout
+        android:id="@+id/dogViewRelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/dogIcon"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
         android:layout_toEndOf="@id/dogIcon"
-        android:text="@string/dog_breed"
-        android:textColor="?attr/colorAccent"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dogBreedTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/dogViewCanLiveAtHomeIcon"
+            android:layout_alignParentTop="true"
+            android:text="@string/dog_breed"
+            android:textColor="?attr/colorAccent"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dogViewCanLiveAtHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dogBreedTextView"
+            android:layout_marginTop="8dp"
+            android:text="@string/can_live_at_home"
+            android:textColor="?attr/colorAccentGrey"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/dogViewCanLiveAtHomeIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/dogViewCanLiveAtHome"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/dogViewCanLiveAtHome"
+            android:contentDescription="@string/is_can_live_at_home_icon_description"
+            android:tint="?attr/colorAccentGrey"
+            app:srcCompat="@drawable/ic_check" />
+
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/dogIsLikes"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:contentDescription="@string/is_likes"
-        android:tint="?attr/colorAccent"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@id/dogBreedTextView"
-        android:layout_marginStart="96dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toEndOf="@id/dogViewRelativeLayout"
+        android:contentDescription="@string/is_likes"
+        android:scaleType="fitEnd"
+        android:tint="?attr/colorAccent"
         app:srcCompat="@drawable/ic_star_border" />
 
     <!--<TextView-->

@@ -1,17 +1,12 @@
 package com.example.epamandroid.mvp.contracts
 
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.mvp.core.IBasePresenter
+import com.example.epamandroid.mvp.core.IBaseView
 
 interface IMainActivityContract {
-    interface View {
-        fun updateBreedDescription(dogEntity: DogEntity?)
-    }
+    interface View : IBaseView
 
-    interface Presenter {
-        fun loadDogByBreed(breed: String)
-    }
+    interface Presenter : IBasePresenter
 
-    interface Model<T> {
-        fun getEntity(breed: String) : DogEntity?
-    }
+    interface Model
 }

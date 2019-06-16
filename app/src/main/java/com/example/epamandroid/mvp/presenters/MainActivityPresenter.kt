@@ -1,35 +1,18 @@
 package com.example.epamandroid.mvp.presenters
 
-import android.os.Handler
-import android.os.Looper
-import com.example.epamandroid.entities.DogEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
-import com.example.epamandroid.mvp.core.IBasePresenter
-import com.example.epamandroid.mvp.models.MainActivityModel
+import com.example.epamandroid.mvp.repository.Repository
 
-class MainActivityPresenter(
-    private var mainActivityView: IMainActivityContract.View
-) : IBasePresenter, IMainActivityContract.Presenter {
+class MainActivityPresenter(private var mainActivityView: IMainActivityContract.View)
+    : IMainActivityContract.Presenter {
 
     companion object {
         private const val TAG = "MainActivityPresenter"
     }
 
-    private val handler = Handler(Looper.getMainLooper())
+    private val repository: IMainActivityContract.Model = Repository
 
     override fun onCreate() = Unit
 
     override fun onDestroy() = Unit
-
-    override fun loadDogByBreed(breed:String){
-        Thread {
-            val dogEntity: DogEntity? = MainActivityModel.getEntity(breed)
-
-            handler.post {
-                Runnable {
-                    mainActivityView.updateBreedDescription(dogEntity)
-                }.run()
-            }
-        }.start()
-    }
 }

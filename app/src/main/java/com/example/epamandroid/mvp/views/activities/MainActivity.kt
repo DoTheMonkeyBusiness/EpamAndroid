@@ -3,31 +3,32 @@ package com.example.epamandroid.mvp.views.activities
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.example.epamandroid.constants.FragmentConstants.HOME_FRAGMENT_TAG_EXTRA_KEY
-import com.example.epamandroid.constants.FragmentConstants.SETTINGS_FRAGMENT_TAG_EXTRA_KEY
 import com.example.epamandroid.R
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.constants.DogEntityConstants.DOG_BREED_STRING_EXTRA_KEY
+import com.example.epamandroid.constants.DogEntityConstants.DOG_ENTITY_EXTRA_KEY
+import com.example.epamandroid.constants.FragmentConstants.DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY
+import com.example.epamandroid.constants.FragmentConstants.LOST_DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY
+import com.example.epamandroid.constants.LostDogEntityConstants.LOST_DOG_ENTITY_EXTRA_KEY
+import com.example.epamandroid.constants.PermissionsConstants.WRITE_EXTERNAL_STORAGE_PERMISSION_EXTRA_KEY
+import com.example.epamandroid.models.DogEntity
+import com.example.epamandroid.models.LostDogEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
 import com.example.epamandroid.mvp.core.IBaseView
 import com.example.epamandroid.mvp.presenters.MainActivityPresenter
-import com.example.epamandroid.mvp.views.fragments.CameraFragment
-import com.example.epamandroid.mvp.views.fragments.MainFragment
 import com.example.epamandroid.mvp.views.adapters.ViewPagerAdapter
-import com.example.epamandroid.mvp.views.fragments.HomeFragment
+import com.example.epamandroid.mvp.views.fragments.*
 import com.example.imageloader.IMichelangelo
 import com.example.imageloader.Michelangelo
+import com.example.kotlinextensions.*
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.breed_description.*
-import kotlinx.android.synthetic.main.main_fragment.*
-import java.util.*
+import kotlinx.android.synthetic.main.main_bottom_sheet.*
 
 class MainActivity : AppCompatActivity(),
         MainFragment.IChangeFragmentMainItemCallback,
@@ -35,19 +36,18 @@ class MainActivity : AppCompatActivity(),
         HomeFragment.IShowBottomSheetCallback,
         CameraFragment.IShowBottomSheetCallback,
         IBaseView,
-        IMainActivityContract.View {
+        IMainActivityContract.View,
+        BreedDescriptionFragment.IBreedDescriptionResultCallback,
+        LostBreedDescriptionFragment.ILostBreedDescriptionResultCallback,
+        MapFragment.IShowBottomSheetCallback {
 
     companion object {
+        private const val TAG: String = "MainActivity"
         private const val CAMERA_ITEM_KEY: Int = 0
         private const val MAIN_ITEM_KEY: Int = 1
-        private const val VIEW_PAGER_EXTRA_KEY: Int = 0
-        private const val INTERNAL_FRAGMENTS_EXTRA_KEY: Int = 1
+        private const val BOTTOM_SHEET_STATE_KEY: String = "bottomSheetStateKey"
     }
 
-    private val viewPagerHistory: Stack<Int> = Stack()
-    private val mainOrInternalHistory: Stack<Int> = Stack()
-
-    private var isSaveToHistory: Boolean = false
     private var currentPage: Int = 1
     private var bottomSheetBehavior: BottomSheetBehavior<View>? = null
     private var mainActivityPresenter: IMainActivityContract.Presenter? = null
@@ -61,7 +61,6 @@ class MainActivity : AppCompatActivity(),
                         getString(R.string.switch_day_night_mode_key), false
                 )
         ) {
-
             setTheme(R.style.AppThemeNight)
         } else {
             setTheme(R.style.AppThemeDay)
@@ -74,8 +73,12 @@ class MainActivity : AppCompatActivity(),
 
         checkExternalStoragePermission()
 
+        bottomSheetBehavior = BottomSheetBehavior.from(mainBottomSheet)
+
         if (savedInstanceState == null) {
             activityMainViewPager.setCurrentItem(MAIN_ITEM_KEY, true)
+        } else if (savedInstanceState.containsKey(BOTTOM_SHEET_STATE_KEY)){
+            bottomSheetBehavior?.state =  savedInstanceState.getInt(BOTTOM_SHEET_STATE_KEY)
         }
 
         activityMainViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -84,20 +87,16 @@ class MainActivity : AppCompatActivity(),
             override fun onPageScrolled(p0: Int, p1: Float, p2: Int) = Unit
 
             override fun onPageSelected(position: Int) {
-                if (isSaveToHistory) {
-                    viewPagerHistory.push(currentPage)
-                    mainOrInternalHistory.push((VIEW_PAGER_EXTRA_KEY))
+                when (position) {
+                    CAMERA_ITEM_KEY -> currentPage = CAMERA_ITEM_KEY
+                    MAIN_ITEM_KEY -> currentPage = MAIN_ITEM_KEY
                 }
             }
 
         })
 
-        bottomSheetBehavior = BottomSheetBehavior.from(breedDescriptionBottomSheet)
-
-        isSaveToHistory = true
-
-        breedDescriptionCloseButton.setOnClickListener {
-            collapseBottomSheet()
+        mainBottomSheetCloseButton.setOnClickListener {
+            bottomSheetBehavior.collapseBottomSheet()
         }
 
         bottomSheetBehavior?.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
@@ -106,74 +105,43 @@ class MainActivity : AppCompatActivity(),
             override fun onStateChanged(p0: View, p1: Int) {
                 when (bottomSheetBehavior?.state) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        hideError()
-                        hideProgress()
-                        hideDescription()
+                        mainBottomSheetError.goneView()
+                        mainBottomSheetProgressBar.goneView()
                     }
                 }
             }
         })
 
         mainActivityPresenter = MainActivityPresenter(this)
-        michelangelo = Michelangelo(applicationContext)
+        michelangelo = Michelangelo.getInstance(applicationContext)
     }
 
     override fun onBackPressed() {
-        val homeFragment = supportFragmentManager
-                .findFragmentByTag(HOME_FRAGMENT_TAG_EXTRA_KEY)
-        val settingsFragment = supportFragmentManager
-                .findFragmentByTag(SETTINGS_FRAGMENT_TAG_EXTRA_KEY)
-
         when {
-            (viewPagerHistory.empty()
-                    || (mainOrInternalHistory.pop() == INTERNAL_FRAGMENTS_EXTRA_KEY)) -> {
+            bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED -> {
+                bottomSheetBehavior.collapseBottomSheet()
+            }
+            currentPage == MAIN_ITEM_KEY -> {
                 super.onBackPressed()
-
-                when {
-                    (homeFragment !== null && homeFragment.isVisible) -> {
-                        (mainFragmentBottomNavigationView as BottomNavigationView)
-                                .selectedItemId = R.id.bottomNavigationHome
-                    }
-                    (settingsFragment !== null && settingsFragment.isVisible) -> {
-                        (mainFragmentBottomNavigationView as BottomNavigationView)
-                                .selectedItemId = R.id.bottomNavigationSettings
-                    }
-                }
             }
             else -> {
-                isSaveToHistory = false
-                activityMainViewPager.setCurrentItem(viewPagerHistory.pop(), true)
-                isSaveToHistory = true
+                activityMainViewPager
+                    .setCurrentItem(MAIN_ITEM_KEY, true)
             }
         }
     }
 
     private fun checkExternalStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this@MainActivity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 135)
-        }
-    }
-
-    private fun expandBottomSheet() {
-        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-    }
-
-    private fun collapseBottomSheet() {
-        bottomSheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
-    }
-
-    override fun updateBreedDescription(dogEntity: DogEntity?) {
-        if (dogEntity != null) {
-            breedDescription.updateDogInfo(dogEntity)
-            michelangelo.load(breedDescription.getDogPhoto(), dogEntity.photo)
-            hideProgress()
-            hideError()
-            showDescription()
-        } else {
-            hideProgress()
-            hideDescription()
-            showError()
+        if (ContextCompat.checkSelfPermission(
+                        this@MainActivity,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_DENIED
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+        ) {
+            requestPermissions(
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    WRITE_EXTERNAL_STORAGE_PERMISSION_EXTRA_KEY
+            )
         }
     }
 
@@ -189,40 +157,42 @@ class MainActivity : AppCompatActivity(),
         activityMainViewPager.adapter = adapter
     }
 
-    private fun hideProgress() {
-        if (breedDescriptionProgressBar.visibility != View.GONE) {
-            breedDescriptionProgressBar.visibility = View.GONE
+    private fun replaceBottomSheetContainer(fragmentKey: String, dogEntity: DogEntity? = null, lostDogEntity: LostDogEntity? = null, dogBreed: String? = null) {
+        val bundle = Bundle()
+
+        when (fragmentKey) {
+            DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY -> {
+                val breedDescriptionFragment = BreedDescriptionFragment()
+
+                if (dogEntity != null) {
+                    bundle.putParcelable(DOG_ENTITY_EXTRA_KEY, dogEntity)
+                }
+
+                if (dogBreed != null) {
+                    bundle.putString(DOG_BREED_STRING_EXTRA_KEY, dogBreed)
+                }
+                breedDescriptionFragment.arguments = bundle
+
+                changeFragment(R.id.mainBottomSheetFragmentContainer, breedDescriptionFragment, fragmentKey)
+            }
+            LOST_DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY -> {
+                val lostBreedDescriptionFragment = LostBreedDescriptionFragment()
+
+                if (lostDogEntity != null) {
+                    bundle.putParcelable(LOST_DOG_ENTITY_EXTRA_KEY, lostDogEntity)
+                }
+                lostBreedDescriptionFragment.arguments = bundle
+
+                changeFragment(R.id.mainBottomSheetFragmentContainer, lostBreedDescriptionFragment, fragmentKey)
+            }
         }
+
     }
 
-    private fun showProgress() {
-        if (breedDescriptionProgressBar.visibility != View.VISIBLE) {
-            breedDescriptionProgressBar.visibility = View.VISIBLE
-        }
-    }
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
 
-    private fun hideError() {
-        if (breedDescriptionError.visibility != View.GONE) {
-            breedDescriptionError.visibility = View.GONE
-        }
-    }
-
-    private fun showError() {
-        if (breedDescriptionError.visibility != View.VISIBLE) {
-            breedDescriptionError.visibility = View.VISIBLE
-        }
-    }
-
-    private fun hideDescription() {
-        if (breedDescription.visibility != View.GONE) {
-            breedDescription.visibility = View.GONE
-        }
-    }
-
-    private fun showDescription() {
-        if (breedDescription.visibility != View.VISIBLE) {
-            breedDescription.visibility = View.VISIBLE
-        }
+        bottomSheetBehavior?.state?.let { outState?.putInt(BOTTOM_SHEET_STATE_KEY, it) }
     }
 
     override fun onItemChangedToCamera() {
@@ -235,31 +205,37 @@ class MainActivity : AppCompatActivity(),
                 .setCurrentItem(MAIN_ITEM_KEY, true)
     }
 
-    override fun onItemChangedToInternalFragment() {
-        mainOrInternalHistory.push(INTERNAL_FRAGMENTS_EXTRA_KEY)
-    }
-
     override fun onViewPagerSwipePagingEnabled(changeSwipePagingEnabled: Boolean) {
         activityMainViewPager
                 .setSwipePagingEnabled(changeSwipePagingEnabled)
     }
 
     override fun onShowBottomSheetFromHome(dogEntity: DogEntity?) {
-        expandBottomSheet()
-        if (dogEntity !== null) {
-            breedDescription.updateDogInfo(dogEntity)
-            michelangelo.load(breedDescription.getDogPhoto(), dogEntity.photo)
-            hideError()
-            hideProgress()
-            showDescription()
-        } else {
-            showError()
-        }
+        replaceBottomSheetContainer(DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY, dogEntity = dogEntity)
+        bottomSheetBehavior.expandBottomSheet()
     }
 
     override fun onShowBottomSheetFromCamera(dogBreed: String) {
-        expandBottomSheet()
-        showProgress()
-        mainActivityPresenter?.loadDogByBreed(dogBreed)
+        replaceBottomSheetContainer(DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY, dogBreed = dogBreed)
+        bottomSheetBehavior.expandBottomSheet()
+    }
+
+    override fun onShowBottomSheetFromMap(lostDogEntity: LostDogEntity?) {
+        replaceBottomSheetContainer(LOST_DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY, lostDogEntity = lostDogEntity)
+        bottomSheetBehavior.expandBottomSheet()
+    }
+
+    override fun onDescriptionConfirm() {
+        mainBottomSheetError.goneView()
+        mainBottomSheetProgressBar.goneView()
+    }
+
+    override fun onDescriptionLoading() {
+        mainBottomSheetProgressBar.visibleView()
+    }
+
+    override fun onDescriptionError() {
+        mainBottomSheetProgressBar.goneView()
+        mainBottomSheetError.visibleView()
     }
 }

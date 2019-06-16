@@ -31,4 +31,21 @@
     <string name="cost_dollars">cost ($):</string>
     <string name="no_description">No description</string>
     <string name="close_button">close button</string>
+    <string name="lost_dogs">lost dogs</string>
+    <string name="add_lost_dog">Add lost dog</string>
+    <string name="add_dog_photo">Add dog photo</string>
+    <string name="photo_processing_error">photo processing error</string>
+    <string name="unable_location">unable to get current location</string>
+    <string name="select_a_dog">Select a dog:</string>
+    <string name="add_breed_description">add breed description</string>
+    <string name="ok">OK</string>
+    <string name="enter_phone_number">Enter phone number:</string>
+    <string name="phone_number">Phone number</string>
+    <string name="all_fields_must_be_filled">all fields must be filled</string>
+    <string name="image_upload_error">Error while posting image</string>
+    <string name="your_announcement_has_been_moderated">your announcement has been moderated</string>
+    <string name="announcement_posting_error">error while posting your announcement</string>
+    <string name="custom_marker">custom marker</string>
+    <string name="important">important</string>
+    <string name="lost_dogs_near">There are lost dogs near you</string>
 </resources>

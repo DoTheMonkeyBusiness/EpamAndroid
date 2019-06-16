@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorBackground"
+    tools:context=".mvp.views.activities.AddLostDogActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/addLostDogCustomActionBarLayout"
+            layout="@layout/main_action_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/addLostDogAddPhotoImageView"
+                android:layout_width="match_parent"
+                android:layout_height="160dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/addLostDogAddPhotoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/colorPrimary"
+                android:text="@string/add_dog_photo"
+                android:textAllCaps="false"
+                android:textColor="?attr/colorAccent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddPhotoImageView" />
+
+            <TextView
+                android:id="@+id/addLostDogSelectADogView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/select_a_dog"
+                android:textColor="?attr/colorAccentGrey"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddPhotoButton" />
+
+            <TextView
+                android:id="@+id/addLostDogSelectADogTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="?attr/colorAccentGrey"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/addLostDogSelectADogView"
+                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddPhotoButton" />
+
+
+            <fragment
+                android:id="@+id/addLostDogChooseLostDogFragment"
+                android:name="com.example.epamandroid.mvp.views.fragments.ChooseLostBreedFragment"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addLostDogSelectADogTextView"
+                tools:layout="@layout/choose_lost_breed_fragment" />
+
+            <TextView
+                android:id="@+id/addLostEnterPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/enter_phone_number"
+                android:textColor="?attr/colorAccentGrey"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/addLostEnterPhoneNumberEditText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/addLostEnterPhoneNumberEditText" />
+
+            <EditText
+                android:id="@+id/addLostEnterPhoneNumberEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:inputType="phone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/addLostEnterPhoneNumber"
+                app:layout_constraintTop_toBottomOf="@+id/addLostDogChooseLostDogFragment"
+                tools:ignore="Autofill,LabelFor" />
+
+            <TextView
+                android:id="@+id/addLostDogAddBreedDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/add_breed_description"
+                android:textAlignment="center"
+                android:textColor="?attr/colorAccentGrey"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@+id/addLostEnterPhoneNumberEditText"
+                tools:layout_editor_absoluteX="16dp" />
+
+            <EditText
+                android:id="@+id/addLostDogAddBreedDescriptionEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:textColor="?attr/colorAccentGrey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddBreedDescription"
+                tools:ignore="Autofill,LabelFor" />
+
+            <Button
+                android:id="@+id/addLostDogConfirmButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="?attr/colorPrimary"
+                android:text="@string/ok"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddBreedDescriptionEditText" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+
+</ScrollView>

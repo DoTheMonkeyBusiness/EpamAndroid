@@ -9,6 +9,12 @@
         android:icon="@drawable/ic_home"
         android:title="@string/home"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/bottomNavigationMap"
+        android:checked="false"
+        android:icon="@drawable/ic_map"
+        android:title="@string/lost_dogs"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/bottomNavigationSettings"

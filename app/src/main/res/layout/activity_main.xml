@@ -33,7 +33,7 @@
         android:layout_height="match_parent" />
 
 
-    <include layout="@layout/breed_description" />
+    <include layout="@layout/main_bottom_sheet" />
 
 
 </android.support.design.widget.CoordinatorLayout>

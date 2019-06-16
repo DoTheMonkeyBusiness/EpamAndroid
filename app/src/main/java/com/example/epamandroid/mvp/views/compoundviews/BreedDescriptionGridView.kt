@@ -13,18 +13,10 @@ class BreedDescriptionGridView @JvmOverloads constructor(
 ) : GridLayout(context, attrs, defStyleAttr) {
 
     init {
-        orientation = HORIZONTAL
-        columnCount = 4
-        inflate(getContext(), R.layout.breed_description_grid_view, this)
-//        breedDescriptionCanLiveAtHome.visibility = View.GONE
-//        breedDescriptionCanLiveAtHomeIcon.visibility = View.GONE
-//        breedDescriptionAffectionate.visibility = View.GONE
-//        breedDescriptionAffectionateIcon.visibility = View.GONE
-//        breedDescriptionHeight.visibility = View.GONE
-//        breedDescriptionHeightText.visibility = View.GONE
-//        breedDescriptionWeight.visibility = View.GONE
-//        breedDescriptionWeightText.visibility = View.GONE
 
+        orientation = HORIZONTAL
+        columnCount = 2
+        inflate(getContext(), R.layout.breed_description_grid_view, this)
     }
 
     fun updateDogGridInfo(
@@ -36,9 +28,9 @@ class BreedDescriptionGridView @JvmOverloads constructor(
             isAffectionate: Boolean?
     ) {
         when (isCanLiveAtHome) {
-            true -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
-            false -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
-            null -> breedDescriptionCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
+            true -> dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
+            false -> dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
+            null -> dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
         }
         when (isAffectionate) {
             true -> breedDescriptionAffectionateIcon.setImageResource(R.drawable.ic_check)

@@ -19,16 +19,17 @@ import android.hardware.camera2.*
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.util.Log
+import com.example.epamandroid.constants.PermissionsConstants.REQUEST_CAMERA_PERMISSION_EXTRA_KEY
 import com.example.epamandroid.mvp.contracts.ICameraContract
 import com.example.epamandroid.mvp.presenters.CameraPresenter
 import com.example.neuralnetwork.ImageClassifier
 import java.io.IOException
 
-class CameraFragment : Fragment(), ICameraContract.IView {
+class CameraFragment : Fragment(), ICameraContract.View {
 
     companion object {
         private const val TAG: String = "CameraFragment"
-        private const val REQUEST_CAMERA_PERMISSION: Int = 200
+        private const val ZERO_FLOAT_KEY: Float = 0F
         private const val EMPTY_STRING_KEY: String = ""
     }
 
@@ -45,7 +46,7 @@ class CameraFragment : Fragment(), ICameraContract.IView {
     private lateinit var mainActivity: AppCompatActivity
     private lateinit var imageClassifier: ImageClassifier
 
-    private val cameraPresenter: ICameraContract.IPresenter? = CameraPresenter(this)
+    private val cameraPresenter: ICameraContract.Presenter = CameraPresenter(this)
 
     private val stateCallback: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
         override fun onOpened(camera: CameraDevice) {
@@ -78,7 +79,9 @@ class CameraFragment : Fragment(), ICameraContract.IView {
     }
 
     private val textureListener: TextureView.SurfaceTextureListener = object : TextureView.SurfaceTextureListener {
-        override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) = Unit
+        override fun onSurfaceTextureSizeChanged(surface: SurfaceTexture?, width: Int, height: Int) {
+            transformImage(width.toFloat(), height.toFloat())
+        }
 
         override fun onSurfaceTextureUpdated(surface: SurfaceTexture?) = Unit
 
@@ -88,7 +91,6 @@ class CameraFragment : Fragment(), ICameraContract.IView {
 
         override fun onSurfaceTextureAvailable(surface: SurfaceTexture?, width: Int, height: Int) {
             openCamera()
-            transformImage(width.toFloat(), height.toFloat())
         }
     }
 
@@ -107,16 +109,6 @@ class CameraFragment : Fragment(), ICameraContract.IView {
 
         cameraFragmentDogBreed.setOnClickListener {
             if (cameraFragmentDogBreed.text != getString(R.string.uninitialized_classifier)) {
-                val breedDescriptionFragment = BreedDescriptionFragment()
-
-//                changeFragmentCallback?.onItemChangedToMain()
-//                breedDescriptionFragment.arguments = cameraPresenter
-//                        ?.putDogInfoInBundle(cameraFragmentDogBreed.text.toString())
-//
-//                mainActivity
-//                        .changeFragmentWithBackStack(R.id.mainFragmentFrameLayout,
-//                                breedDescriptionFragment,
-//                                FragmentConstants.DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY)
                 showBottomSheetCallback
                         ?.onShowBottomSheetFromCamera(
                                 cameraFragmentDogBreed
@@ -149,17 +141,17 @@ class CameraFragment : Fragment(), ICameraContract.IView {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser) {
-            cameraPresenter?.startBackgroundThread()
             if (cameraFragmentTextureView.isAvailable) {
                 openCamera()
-                transformImage(cameraFragmentTextureView.width.toFloat(), cameraFragmentTextureView.height.toFloat())
             } else {
                 cameraFragmentTextureView.surfaceTextureListener = textureListener
             }
 
+
+            cameraPresenter.startBackgroundThread()
             isFragmentVisible = true
         } else {
-            cameraPresenter?.stopBackgroundThread()
+            cameraPresenter.stopBackgroundThread()
             closeCamera()
             isFragmentVisible = false
         }
@@ -188,6 +180,9 @@ class CameraFragment : Fragment(), ICameraContract.IView {
 
                         override fun onConfigured(session: CameraCaptureSession) {
                             cameraCaptureSessions = session
+
+                            captureRequestBuilder?.set(CaptureRequest.CONTROL_AF_MODE,
+                                    CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE)
                             updatePreview()
                         }
 
@@ -200,25 +195,25 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         }
     }
 
-    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     private fun updatePreview() {
         if (cameraDevice == null) {
             Toast.makeText(
                     context, getString(R.string.error), Toast.LENGTH_SHORT
-            )
-                    .show()
+            ).show()
         }
 
-        captureRequestBuilder
-                ?.set(CaptureRequest.CONTROL_MODE, CaptureRequest.CONTROL_MODE_AUTO)
+        val requestBuilder = captureRequestBuilder
 
-        try {
-            cameraCaptureSessions
-                    ?.setRepeatingRequest(
-                            captureRequestBuilder?.build(), captureCallback, backgroundHandler
-                    )
-        } catch (e: CameraAccessException) {
-            Log.e(TAG, "error while updatePreview")
+        if (requestBuilder != null) {
+            try {
+                cameraCaptureSessions
+                        ?.setRepeatingRequest(
+                                requestBuilder.build(), captureCallback, backgroundHandler
+
+                        )
+            } catch (e: CameraAccessException) {
+                Log.e(TAG, "error while updatePreview")
+            }
         }
     }
 
@@ -232,6 +227,8 @@ class CameraFragment : Fragment(), ICameraContract.IView {
             val map = characteristics
                     .get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
             imageDimension = map?.getOutputSizes(SurfaceTexture::class.java)?.get(0)
+
+            transformImage(cameraFragmentTextureView.width.toFloat(), cameraFragmentTextureView.height.toFloat())
 
             if (context?.let {
                         ActivityCompat
@@ -251,7 +248,7 @@ class CameraFragment : Fragment(), ICameraContract.IView {
                                             .permission
                                             .WRITE_EXTERNAL_STORAGE
                             ),
-                                    REQUEST_CAMERA_PERMISSION
+                                    REQUEST_CAMERA_PERMISSION_EXTRA_KEY
                             )
                 }
                 return
@@ -268,19 +265,20 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         if (cameraFragmentTextureView == null || imageDimension == null) {
             return
         }
+        val dimension = imageDimension
         val matrix = Matrix()
         val rotation = activity?.windowManager?.defaultDisplay?.rotation
-        val textureRectF = RectF(0F, 0F, width, height)
-        val previewRectF = imageDimension
+        val textureRectF = RectF(ZERO_FLOAT_KEY, ZERO_FLOAT_KEY, width, height)
+        val previewRectF = dimension
                 ?.width
                 ?.toFloat()
                 ?.let {
-                    imageDimension
-                            ?.height
-                            ?.toFloat()?.let { it1 ->
+                    dimension
+                            .height
+                            .toFloat().let { it1 ->
                                 RectF(
-                                        0F,
-                                        0F,
+                                        ZERO_FLOAT_KEY,
+                                        ZERO_FLOAT_KEY,
                                         it,
                                         it1
                                 )
@@ -296,10 +294,9 @@ class CameraFragment : Fragment(), ICameraContract.IView {
             )
             matrix.setRectToRect(textureRectF, previewRectF, Matrix.ScaleToFit.FILL)
 
-            //TODO: fix it
             val scale: Float = Math.max(
-                    width / imageDimension!!.width,
-                    height / imageDimension!!.height
+                    width / (dimension?.width ?: 0),
+                    height / (dimension?.height ?: 0)
             )
 
             matrix.postScale(scale, scale, centerX, centerY)
@@ -316,7 +313,7 @@ class CameraFragment : Fragment(), ICameraContract.IView {
                                             grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == REQUEST_CAMERA_PERMISSION
+        if (requestCode == REQUEST_CAMERA_PERMISSION_EXTRA_KEY
                 && grantResults[0] != PackageManager.PERMISSION_GRANTED
         ) {
             Toast.makeText(
@@ -329,11 +326,10 @@ class CameraFragment : Fragment(), ICameraContract.IView {
         super.onResume()
 
         if (isFragmentVisible) {
-            cameraPresenter?.startBackgroundThread()
+            cameraPresenter.startBackgroundThread()
 
             if (cameraFragmentTextureView.isAvailable) {
                 openCamera()
-                transformImage(cameraFragmentTextureView.width.toFloat(), cameraFragmentTextureView.height.toFloat())
             } else {
                 cameraFragmentTextureView.surfaceTextureListener = textureListener
             }
@@ -343,7 +339,7 @@ class CameraFragment : Fragment(), ICameraContract.IView {
     override fun onPause() {
         super.onPause()
 
-        cameraPresenter?.stopBackgroundThread()
+        cameraPresenter.stopBackgroundThread()
     }
 
     private fun closeCamera() {

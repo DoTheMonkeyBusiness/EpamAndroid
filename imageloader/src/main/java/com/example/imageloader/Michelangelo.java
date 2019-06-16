@@ -6,11 +6,12 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.util.LruCache;
 import android.widget.ImageView;
+
+import com.example.imageloader.cache.memory.MemoryCache;
 import com.example.imageloader.util.IMichelangeloCallback;
-import com.example.imageloader.wrappers.BitmapDiskCache;
-import com.example.imageloader.wrappers.IDiskCache;
+import com.example.imageloader.cache.disk.BitmapDiskCache;
+import com.example.imageloader.cache.disk.IDiskCache;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -21,22 +22,25 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class Michelangelo implements IMichelangelo {
-    private final String TAG = "Michelangelo";
+    private static final String TAG = "Michelangelo";
 
     private final OkHttpClient client = new OkHttpClient();
     private final Executor executor = Executors.newCachedThreadPool();
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final IDiskCache<String, Bitmap> diskCache;
-    private final LruCache<String, Bitmap> lruCache = new LruCache<String, Bitmap>((int) (Runtime.getRuntime().maxMemory() / 1024 / 8)) {
+    private final MemoryCache memoryCache = new MemoryCache();
 
-        @Override
-        protected int sizeOf(final String key, final Bitmap value) {
-            return value.getByteCount() / 1024;
-        }
-    };
-
-    public Michelangelo(final Context context) {
+    private Michelangelo(final Context context) {
         diskCache = new BitmapDiskCache(context);
+    }
+
+    private static Michelangelo singleInstance = null;
+
+    public static Michelangelo getInstance(final Context context) {
+        if (singleInstance == null)
+            singleInstance = new Michelangelo(context);
+
+        return singleInstance;
     }
 
     @Override
@@ -47,13 +51,13 @@ public class Michelangelo implements IMichelangelo {
         }
 
         imageView.setTag(uri);
-        imageView.setImageResource(R.drawable.preview);
 
         loadFromMemoryCache(uri, new IMichelangeloCallback<Bitmap>() {
 
             @Override
             public void onResult(final Bitmap result) {
                 if (result == null) {
+                    imageView.setImageResource(R.drawable.preview);
                     executor.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -66,11 +70,11 @@ public class Michelangelo implements IMichelangelo {
                                             loadFromNetwork(uri, new IMichelangeloCallback<Bitmap>() {
 
                                                 @Override
-                                                public void onResult(final Bitmap pResult) {
-                                                    if (pResult == null) {
+                                                public void onResult(final Bitmap result) {
+                                                    if (result == null) {
                                                         showErrorImage(uri, imageView);
                                                     } else {
-                                                        showImage(uri, imageView, pResult); // From network
+                                                        showImage(uri, imageView, result); // From network
                                                     }
                                                 }
 
@@ -79,7 +83,7 @@ public class Michelangelo implements IMichelangelo {
                                                     showErrorImage(uri, imageView);
                                                 }
                                             });
-                                        } catch (IOException|IllegalArgumentException e) {
+                                        } catch (IOException | IllegalArgumentException e) {
                                             showErrorImage(uri, imageView);
                                         }
                                     } else {
@@ -106,18 +110,71 @@ public class Michelangelo implements IMichelangelo {
         });
     }
 
-    private void loadFromMemoryCache(final String uri, final IMichelangeloCallback<Bitmap> result) {
-        synchronized (lruCache) {
-            result.onResult(lruCache.get(uri));
+    @Override
+    public Bitmap loadSync(final String uri) {
+        if (TextUtils.isEmpty(uri)) {
+            return null;
+        }
+        final Bitmap memoryCacheBitmap = loadSyncFromMemoryCache(uri);
+
+        if (memoryCacheBitmap != null) {
+            return memoryCacheBitmap;
+        } else {
+            final Bitmap diskCacheBitmap = loadSyncFromDiskCache(uri);
+
+            if (diskCacheBitmap != null) {
+                putInMemoryCache(uri, diskCacheBitmap);
+                return diskCacheBitmap;
+            } else {
+                try {
+                    final Bitmap networkCacheBitmap = loadSyncFromNetwork(uri);
+
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            putInMemoryCache(uri, networkCacheBitmap);
+                            putInDiskCache(uri, networkCacheBitmap);
+                        }
+                    });
+
+                    return networkCacheBitmap;
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+        }
+
+    }
+
+    private Bitmap loadSyncFromMemoryCache(final String uri) {
+        synchronized (memoryCache) {
+            return memoryCache.get(uri);
         }
     }
 
+    private void loadFromMemoryCache(final String uri, final IMichelangeloCallback<Bitmap> result) {
+        synchronized (memoryCache) {
+            result.onResult(memoryCache.get(uri));
+        }
+    }
+
+    private Bitmap loadSyncFromDiskCache(final String uri) {
+        synchronized (diskCache) {
+           return diskCache.load(uri);
+        }
+    }
     private void loadFromDiskCache(final String uri, final IMichelangeloCallback<Bitmap> bitmapCallback) {
         synchronized (diskCache) {
             bitmapCallback.onResult(diskCache.load(uri));
         }
     }
 
+    private Bitmap loadSyncFromNetwork(final String uri) throws IOException, IllegalArgumentException {
+        final Request request = new Request.Builder().url(uri).build();
+        final Response response = client.newCall(request).execute();
+
+        return decodeImage(response);
+    }
     private void loadFromNetwork(final String uri, final IMichelangeloCallback<Bitmap> callback) throws IOException, IllegalArgumentException {
         final Request request = new Request.Builder().url(uri).build();
         client.newCall(request).enqueue(new Callback() {
@@ -138,8 +195,10 @@ public class Michelangelo implements IMichelangelo {
     }
 
     private void putInMemoryCache(final String uri, final Bitmap result) {
-        synchronized (lruCache) {
-            lruCache.put(uri, result);
+        synchronized (memoryCache) {
+            if (uri != null && result != null) {
+                memoryCache.put(uri, result);
+            }
         }
     }
 

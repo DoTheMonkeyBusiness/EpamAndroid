@@ -6,9 +6,10 @@ import android.os.HandlerThread
 import android.util.Log
 import com.example.epamandroid.constants.DogEntityConstants
 import com.example.epamandroid.mvp.contracts.ICameraContract
+import com.example.epamandroid.mvp.repository.Repository
 
-class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter {
-
+class CameraPresenter(view: ICameraContract.View)
+    : ICameraContract.Presenter {
 
     companion object {
         private const val TAG: String = "CameraPresenter"
@@ -19,6 +20,7 @@ class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter 
     private var backgroundThread: HandlerThread? = null
     private var runClassifier: Boolean = false
 
+    private val repository: ICameraContract.Model = Repository
     private val lock: Any = Any()
 
     private val periodicClassify = object : Runnable {
@@ -31,6 +33,8 @@ class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter 
             backgroundHandler?.post(this)
         }
     }
+
+    override fun onCreate() = Unit
 
     override fun startBackgroundThread() {
         backgroundThread = HandlerThread(THREAD_NAME_KEY)
@@ -62,8 +66,9 @@ class CameraPresenter(view: ICameraContract.IView) : ICameraContract.IPresenter 
         val bundle: Bundle? = Bundle()
 
         return bundle?.apply {
-            putString(DogEntityConstants.breedFromCamera, dogBreed)
+            putString(DogEntityConstants.BREED_FROM_CAMERA_EXTRA_KEY, dogBreed)
         }
-
     }
+
+    override fun onDestroy() = Unit
 }

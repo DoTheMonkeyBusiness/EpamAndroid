@@ -1,4 +1,4 @@
-package com.example.epamandroid.mvp.views.adapters
+package com.example.epamandroid. mvp.views.adapters
 
 import android.content.Context
 import android.support.v7.util.DiffUtil
@@ -6,77 +6,41 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import com.example.epamandroid.R
-import com.example.epamandroid.entities.DogEntity
+import com.example.epamandroid.models.DogEntity
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
-import com.example.epamandroid.mvp.views.annotationclasses.ViewType.Companion.DOG
-import com.example.epamandroid.mvp.views.annotationclasses.ViewType.Companion.LOADING
 import com.example.epamandroid.mvp.views.compoundviews.DogView
 import com.example.imageloader.IMichelangelo
 import com.example.imageloader.Michelangelo
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.properties.Delegates
 
-class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>(),
-    IAutoUpdatableHomeAdapter {
+class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>() {
 
-    private val michelangelo: IMichelangelo = Michelangelo(context)
-    private val dogsList = ArrayList<DogEntity>()
+    private val michelangelo: IMichelangelo = Michelangelo.getInstance(context)
+    private val dogsList:  ArrayList<DogEntity> = arrayListOf()
 
-    //    var dogsList: ArrayList<DogEntity> by Delegates.observable(arrayListOf()) {
-//            prop, old, new ->
-//        autoNotify(old, new) { o, n -> o.id == n.id }
-//    }
-    private val layoutInflater = context?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
-    private var isShowLastViewAsLoading = false
-
-    private lateinit var dogEntity: DogEntity
+    private var dogEntity: DogEntity? = null
 
     var onItemClick: ((DogEntity) -> Unit)? = null
 
     override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
+            parent: ViewGroup,
+            viewType: Int
     ): ViewHolder {
-        return when (viewType) {
-            DOG -> {
-                ViewHolder(layoutInflater.inflate(R.layout.dog_view_item, parent, false))
-            }
-            LOADING -> {
-                ViewHolder(
-                    layoutInflater.inflate(R.layout.layout_progress, parent, false)
-                            as FrameLayout
-                )
-            }
-            else -> {
-                ViewHolder(
-                    layoutInflater.inflate(R.layout.error_view, parent, false)
-                            as FrameLayout
-                )
-            }
-        }
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dog_view_item, parent, false))
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        if (getItemViewType(position) == ViewType.DOG) {
             val holder = (viewHolder.itemView as DogView)
             dogEntity = dogsList[position]
 
             holder
-                .setDogBreed(dogEntity.breed)
-            michelangelo.load(holder.getDogIcon(), dogEntity.photo)
-        }
+                    .setDogBreed(dogEntity?.breed)
+                    .isCanLiveAtHome(dogEntity?.isCanLiveAtHome)
+            michelangelo.load(holder.getDogIcon(), dogEntity?.photo)
     }
 
     override fun getItemCount(): Int {
-        return if (isShowLastViewAsLoading) {
-            dogsList.size + 1
-        } else {
-            dogsList.size
-        }
+            return dogsList.size
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -87,82 +51,49 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         }
     }
 
-
-    //TODO: DoffUtil doesn't work in this method
-    fun setShowLastViewAsLoading(isShow: Boolean) {
-        if (isShow != isShowLastViewAsLoading) {
-//            val oldItems: Any = dogsList.clone()
-            isShowLastViewAsLoading = isShow
-            notifyDataSetChanged()
-//            notifyChanges(oldItems as List<DogEntity>, dogsList)
-        }
-    }
-
     fun addItems(result: List<DogEntity>?) {
-        val oldItems: ArrayList<DogEntity> = dogsList.clone() as ArrayList<DogEntity>
+        val oldItems: ArrayList<DogEntity> = arrayListOf()
 
+        oldItems.addAll(dogsList)
         result?.let { dogsList.addAll(it) }
         notifyChanges(oldItems, dogsList)
-//        notifyDataSetChanged()
     }
 
     fun updateDogsList(list: ArrayList<DogEntity>?) {
         if (list !== null) {
-            val oldItems: ArrayList<DogEntity> = dogsList.clone() as ArrayList<DogEntity>
+            val oldItems: ArrayList<DogEntity> = arrayListOf()
+
+            oldItems.addAll(dogsList)
             dogsList.clear()
             dogsList.addAll(list)
-//            notifyDataSetChanged()
             notifyChanges(oldItems, dogsList)
         }
     }
 
-    fun getDogList(): ArrayList<DogEntity> {
+    fun getDogList(): ArrayList<DogEntity>? {
         return dogsList
     }
 
-    private fun deleteByIndex(i: Int) {
-        dogsList.removeAt(i)
-        notifyItemRemoved(i)
-        notifyItemRangeChanged(i, dogsList.size - 1)
-    }
-
-    fun getMaxId(): Int? {
+    fun getMaxId(): Int {
 
         return when {
-            dogsList.isEmpty() -> {
+            dogsList.isNullOrEmpty() -> {
                 0
             }
-            (dogsList.size < dogsList.maxBy { it.id }?.id ?: dogsList.size) -> {
-                dogsList.size - 1
-            }
             else -> {
-                dogsList.maxBy { it.id }?.id
-            }
+                var maxElement = 0
+                dogsList.forEach {
+                    if (it.id != null && it.id > maxElement){
+                        maxElement = it.id
+                    }
+                }
 
+                maxElement
+            }
         }
     }
 
-    fun getEntityById(id: Int): DogEntity = dogsList[id]
-
-    fun onItemMove(fromPosition: Int, toPosition: Int) {
-        if (fromPosition < toPosition) {
-            for (i in fromPosition until toPosition) {
-                Collections.swap(dogsList, i, i + 1)
-            }
-        } else {
-            for (i in fromPosition downTo toPosition + 1) {
-                Collections.swap(dogsList, i, i - 1)
-            }
-        }
-
-        notifyItemMoved(fromPosition, toPosition)
-    }
-
-    fun onItemDismiss(adapterPosition: Int) {
-        if (getItemViewType(adapterPosition) == ViewType.DOG) {
-            deleteByIndex(adapterPosition)
-        }
-    }
+    fun getEntityById(id: Int): DogEntity? = dogsList[id]
 
     fun isEmptyDogsList(): Boolean {
         return dogsList.isEmpty()
@@ -173,17 +104,14 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
 
             override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-//                return getItemViewType(oldItemPosition) == getItemViewType(newItemPosition)
                 return oldList[oldItemPosition] == newList[newItemPosition]
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                    val oldDogEntity: DogEntity = oldList[oldItemPosition]
-                    val newDogEntity: DogEntity = newList[newItemPosition]
+                val oldDogEntity: DogEntity? = oldList[oldItemPosition]
+                val newDogEntity: DogEntity? = newList[newItemPosition]
 
-                    return oldDogEntity == newDogEntity
-//                return oldList[oldItemPosition] == newList[newItemPosition]
-
+                return oldDogEntity == newDogEntity
             }
 
             override fun getOldListSize() = oldList.size
@@ -198,7 +126,7 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         init {
             view.setOnClickListener {
                 if (itemViewType == ViewType.DOG) {
-                    onItemClick?.invoke(dogsList[adapterPosition])
+                    dogsList[adapterPosition].let { it1 -> it1.let { it2 -> onItemClick?.invoke(it2) } }
                 }
             }
         }
