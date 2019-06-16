@@ -2,8 +2,7 @@ package com.example.epamandroid.mvp.presenters
 
 import android.os.Handler
 import android.os.Looper
-import com.example.epamandroid.constants.MapConstants.EARTH_RADIUS_EXTRA_KEY
-import com.example.epamandroid.constants.MapConstants.RADIUS_EXTRA_KEY
+import com.example.epamandroid.constants.MapConstants.MAP_RADIUS_EXTRA_KEY
 import com.example.epamandroid.gsonmodels.GsonLostDogEntity
 import com.example.epamandroid.models.ClusterMarker
 import com.example.epamandroid.models.LostDogEntity
@@ -25,7 +24,7 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
         Thread {
             val lostDogsList: ArrayList<LostDogEntity>? = arrayListOf()
             val gsonLostDogsMap: HashMap<String, GsonLostDogEntity>? = repository
-                .getEntitiesNearby(userPosition, RADIUS_EXTRA_KEY)
+                .getEntitiesNearby(userPosition, MAP_RADIUS_EXTRA_KEY)
 
             gsonLostDogsMap?.forEach {
                 lostDogsList?.add(

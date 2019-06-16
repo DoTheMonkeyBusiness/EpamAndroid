@@ -1,6 +1,7 @@
 package com.example.epamandroid.mvp.views.fragments
 
 import android.Manifest
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -23,6 +24,7 @@ import com.example.epamandroid.models.LostDogEntity
 import com.example.epamandroid.mvp.contracts.IMapContract
 import com.example.epamandroid.mvp.presenters.MapPresenter
 import com.example.epamandroid.mvp.views.activities.AddLostDogActivity
+import com.example.epamandroid.mvp.services.LocationService
 import com.example.epamandroid.util.ClusterManagerRenderer
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -214,6 +216,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
         if (locationPermissionsGranted) {
             getDeviceLocation()
 
+            startLocationService()
+
             if (context?.let {
                         ActivityCompat.checkSelfPermission(
                                 it,
@@ -234,6 +238,32 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
             setOnMapClickListener()
             setOnMarkerClickListener()
         }
+    }
+
+    private fun startLocationService(){
+        if (!isLocationServiceRunning(LocationService::class.java)){
+            val serviceIntent = Intent(context, LocationService::class.java)
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
+                context?.startForegroundService(serviceIntent)
+            } else {
+                context?.startService(serviceIntent)
+            }
+        }
+
+    }
+
+    private fun isLocationServiceRunning(serviceClass: Class<LocationService>): Boolean {
+        val activityManager: ActivityManager? = context?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
+
+        if (activityManager != null) {
+            for (service: ActivityManager.RunningServiceInfo in activityManager.getRunningServices(Int.MAX_VALUE)){
+                if (serviceClass.name == service.service.className){
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     interface IShowBottomSheetCallback {
