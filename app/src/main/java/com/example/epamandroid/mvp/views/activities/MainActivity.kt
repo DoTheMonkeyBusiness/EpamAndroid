@@ -189,6 +189,10 @@ class MainActivity : AppCompatActivity(),
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
 

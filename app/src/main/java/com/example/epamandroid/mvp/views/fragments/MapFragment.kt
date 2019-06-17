@@ -72,6 +72,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        mapPresenter.onCreate()
+
         return inflater.inflate(R.layout.map_fragment, container, false)
     }
 
@@ -280,8 +282,8 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
         return false
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
 
         mapPresenter.onDestroy()
     }

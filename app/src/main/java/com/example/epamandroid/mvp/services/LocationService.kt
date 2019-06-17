@@ -16,12 +16,12 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import com.example.epamandroid.R
 import com.example.epamandroid.constants.MapConstants
-import com.example.epamandroid.constants.ServiceConstants.FASTEST_INTERVAL
+import com.example.epamandroid.constants.ServiceConstants.SERVICE_FASTEST_INTERVAL
 import com.example.epamandroid.constants.ServiceConstants.LOST_DOG_NOTIFICATION_ID
 import com.example.epamandroid.constants.ServiceConstants.MAP_NOTIFICATION_ID
 import com.example.epamandroid.constants.ServiceConstants.MAP_SERVICE_CHANNEL_ID
 import com.example.epamandroid.constants.ServiceConstants.MAP_SERVICE_NAME
-import com.example.epamandroid.constants.ServiceConstants.UPDATE_INTERVAL
+import com.example.epamandroid.constants.ServiceConstants.SERVICE_UPDATE_INTERVAL
 import com.example.epamandroid.constants.SymbolConstants.EMPTY_EXTRA_KEY
 import com.example.epamandroid.gsonmodels.GsonLostDogEntity
 import com.example.epamandroid.models.LostDogEntity
@@ -73,8 +73,8 @@ class LocationService : Service(), ILocationServiceContract.Service {
     private fun getLocation() {
         val locationRequestHighAccuracy = LocationRequest().apply {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            interval = UPDATE_INTERVAL
-            fastestInterval = FASTEST_INTERVAL
+            interval = SERVICE_UPDATE_INTERVAL
+            fastestInterval = SERVICE_FASTEST_INTERVAL
         }
 
         if (ActivityCompat.checkSelfPermission(
@@ -115,7 +115,7 @@ class LocationService : Service(), ILocationServiceContract.Service {
                 )
             }
 
-            kotlin.run loop@{
+            run loop@{
                 newDogsList.forEach {
                     if (lostDogsList.indexOf(it) == -1) {
                         showNotification()
