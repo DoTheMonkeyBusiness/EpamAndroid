@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.epamandroid.R
-import com.example.epamandroid.constants.DogEntityConstants
-import kotlinx.android.synthetic.main.breed_description_fragment.*
+import com.example.epamandroid.constants.RestaurantEntityConstants
+import kotlinx.android.synthetic.main.type_description_fragment.*
 
 class MainBottomSheetFragment : Fragment() {
 
@@ -21,7 +21,7 @@ class MainBottomSheetFragment : Fragment() {
 //        val bundle = arguments
 //
 //
-//        if (bundle != null && bundle.containsKey(DogEntityConstants.BREED_POPULARITY_EXTRA_KEY))
-//        breedDescription.updateDogInfo(bundle)
+//        if (bundle != null && bundle.containsKey(RestaurantEntityConstants.TYPE_POPULARITY_EXTRA_KEY))
+//        typeDescription.updateRestaurantInfo(bundle)
     }
 }

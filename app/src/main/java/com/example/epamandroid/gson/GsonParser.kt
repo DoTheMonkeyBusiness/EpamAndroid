@@ -1,27 +1,27 @@
 package com.example.epamandroid.gson
 
-import com.example.epamandroid.gsonmodels.GsonDogEntity
-import com.example.epamandroid.gsonmodels.GsonLostDogEntity
+import com.example.epamandroid.gsonmodels.GsonRestaurantEntity
+import com.example.epamandroid.gsonmodels.GsonMapRestaurantEntity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class GsonParser {
     companion object {
-        fun parseDogEntity(responseBody: String?) : HashMap<Int, GsonDogEntity>? {
+        fun parseRestaurantEntity(responseBody: String?) : HashMap<Int, GsonRestaurantEntity>? {
             val gson = Gson()
 
            return gson.fromJson(
                     responseBody,
-                    object : TypeToken<Map<Int, GsonDogEntity>>() {}.type
+                    object : TypeToken<Map<Int, GsonRestaurantEntity>>() {}.type
             )
         }
 
-        fun parseLostDogEntity(responseBody: String?) : HashMap<String, GsonLostDogEntity>? {
+        fun parseMapRestaurantEntity(responseBody: String?) : HashMap<String, GsonMapRestaurantEntity>? {
             val gson = Gson()
 
            return gson.fromJson(
                     responseBody,
-                    object : TypeToken<HashMap<String, GsonLostDogEntity>>() {}.type
+                    object : TypeToken<HashMap<String, GsonMapRestaurantEntity>>() {}.type
             )
         }
     }

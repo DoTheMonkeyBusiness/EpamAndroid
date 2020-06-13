@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.epamandroid.mvp.views.activities.AddLostDogActivity"
+            android:name="com.example.epamandroid.mvp.views.activities.AddMapRestaurantActivity"
             android:parentActivityName=".mvp.views.activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -2,30 +2,30 @@ package com.example.epamandroid.mvp.presenters
 
 import android.os.Handler
 import android.os.Looper
-import com.example.epamandroid.mvp.contracts.IChooseLostBreedContract
+import com.example.epamandroid.mvp.contracts.IChooseMapTypeContract
 import com.example.epamandroid.mvp.repository.Repository
 
-class ChooseLostBreedPresenter(private val view: IChooseLostBreedContract.View) : IChooseLostBreedContract.Presenter {
+class ChooseMapTypePresenter(private val view: IChooseMapTypeContract.View) : IChooseMapTypeContract.Presenter {
 
     companion object {
-        private const val TAG: String = "ChooseLostBreedPresenter"
+        private const val TAG: String = "ChooseMapTypePresenter"
     }
 
-    private val repository: IChooseLostBreedContract.Model = Repository
+    private val repository: IChooseMapTypeContract.Model = Repository
     private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate() {
         Thread {
-            val dogList: MutableList<String>? = repository
-                .getBreeds()
+            val restaurantList: MutableList<String>? = repository
+                .getTypes()
                 ?.filterNotNull()
                 ?.toMutableList()
 
-            dogList?.sort()
+            restaurantList?.sort()
 
             handler.post {
                 Runnable {
-                    view.addElementsToRecyclerView(dogList)
+                    view.addElementsToRecyclerView(restaurantList)
                 }.run()
             }
         }.start()

@@ -17,14 +17,14 @@ import android.support.v4.app.NotificationManagerCompat
 import com.example.epamandroid.R
 import com.example.epamandroid.constants.MapConstants
 import com.example.epamandroid.constants.ServiceConstants.SERVICE_FASTEST_INTERVAL
-import com.example.epamandroid.constants.ServiceConstants.LOST_DOG_NOTIFICATION_ID
+import com.example.epamandroid.constants.ServiceConstants.LOST_RESTAURANT_NOTIFICATION_ID
 import com.example.epamandroid.constants.ServiceConstants.MAP_NOTIFICATION_ID
 import com.example.epamandroid.constants.ServiceConstants.MAP_SERVICE_CHANNEL_ID
 import com.example.epamandroid.constants.ServiceConstants.MAP_SERVICE_NAME
 import com.example.epamandroid.constants.ServiceConstants.SERVICE_UPDATE_INTERVAL
 import com.example.epamandroid.constants.SymbolConstants.EMPTY_EXTRA_KEY
-import com.example.epamandroid.gsonmodels.GsonLostDogEntity
-import com.example.epamandroid.models.LostDogEntity
+import com.example.epamandroid.gsonmodels.GsonMapRestaurantEntity
+import com.example.epamandroid.models.MapRestaurantEntity
 import com.example.epamandroid.mvp.contracts.ILocationServiceContract
 import com.example.epamandroid.mvp.repository.Repository
 import com.google.android.gms.location.*
@@ -34,7 +34,7 @@ import com.google.android.gms.maps.model.LatLng
 class LocationService : Service(), ILocationServiceContract.Service {
 
     private val repository: ILocationServiceContract.Model = Repository
-    private val lostDogsList: ArrayList<LostDogEntity> = arrayListOf()
+    private val mapRestaurantsList: ArrayList<MapRestaurantEntity> = arrayListOf()
     private val handler = Handler(Looper.getMainLooper())
 
 
@@ -90,23 +90,23 @@ class LocationService : Service(), ILocationServiceContract.Service {
                 val deviceLocation = locationResult?.lastLocation
 
                 if (deviceLocation != null) {
-                    findDogsNearby(LatLng(deviceLocation.latitude, deviceLocation.longitude))
+                    findRestaurantsNearby(LatLng(deviceLocation.latitude, deviceLocation.longitude))
                 }
             }
         }, Looper.myLooper())
     }
 
-    private fun findDogsNearby(deviceLocation: LatLng) {
+    private fun findRestaurantsNearby(deviceLocation: LatLng) {
         Thread {
-            val newDogsList: ArrayList<LostDogEntity> = arrayListOf()
-            val gsonLostDogsMap: HashMap<String, GsonLostDogEntity>? = repository
+            val newRestaurantsList: ArrayList<MapRestaurantEntity> = arrayListOf()
+            val gsonMapRestaurantsMap: HashMap<String, GsonMapRestaurantEntity>? = repository
                     .getEntitiesNearby(deviceLocation, MapConstants.SERVICE_RADIUS_EXTRA_KEY)
 
-            gsonLostDogsMap?.forEach {
-                newDogsList.add(
-                        LostDogEntity(
+            gsonMapRestaurantsMap?.forEach {
+                newRestaurantsList.add(
+                        MapRestaurantEntity(
                                 it.value.id,
-                                it.value.breed,
+                                it.value.type,
                                 it.value.phoneNumber,
                                 it.value.description,
                                 it.value.latitude?.let { it1 -> it.value.longitude?.let { it2 -> LatLng(it1, it2) } },
@@ -116,8 +116,8 @@ class LocationService : Service(), ILocationServiceContract.Service {
             }
 
             run loop@{
-                newDogsList.forEach {
-                    if (lostDogsList.indexOf(it) == -1) {
+                newRestaurantsList.forEach {
+                    if (mapRestaurantsList.indexOf(it) == -1) {
                         showNotification()
 
                         return@loop
@@ -125,8 +125,8 @@ class LocationService : Service(), ILocationServiceContract.Service {
                 }
             }
 
-            lostDogsList.clear()
-            lostDogsList.addAll(newDogsList)
+            mapRestaurantsList.clear()
+            mapRestaurantsList.addAll(newRestaurantsList)
         }.start()
     }
 
@@ -136,11 +136,11 @@ class LocationService : Service(), ILocationServiceContract.Service {
                 val builder = NotificationCompat.Builder(this, MAP_SERVICE_CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_search)
                         .setContentTitle(getString(R.string.important))
-                        .setContentText(getString(R.string.lost_dogs_near))
+                        .setContentText(getString(R.string.map_restaurants_near))
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
                 with(NotificationManagerCompat.from(this)) {
-                    notify(LOST_DOG_NOTIFICATION_ID, builder.build())
+                    notify(LOST_RESTAURANT_NOTIFICATION_ID, builder.build())
                 }
             }.run()
         }

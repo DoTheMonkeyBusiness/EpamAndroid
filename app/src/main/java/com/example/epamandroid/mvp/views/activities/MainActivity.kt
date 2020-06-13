@@ -11,14 +11,14 @@ import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.example.epamandroid.R
-import com.example.epamandroid.constants.DogEntityConstants.DOG_BREED_STRING_EXTRA_KEY
-import com.example.epamandroid.constants.DogEntityConstants.DOG_ENTITY_EXTRA_KEY
-import com.example.epamandroid.constants.FragmentConstants.DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY
-import com.example.epamandroid.constants.FragmentConstants.LOST_DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY
-import com.example.epamandroid.constants.LostDogEntityConstants.LOST_DOG_ENTITY_EXTRA_KEY
+import com.example.epamandroid.constants.RestaurantEntityConstants.RESTAURANT_TYPE_STRING_EXTRA_KEY
+import com.example.epamandroid.constants.RestaurantEntityConstants.RESTAURANT_ENTITY_EXTRA_KEY
+import com.example.epamandroid.constants.FragmentConstants.RESTAURANT_TYPE_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY
+import com.example.epamandroid.constants.FragmentConstants.LOST_RESTAURANT_TYPE_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY
+import com.example.epamandroid.constants.MapRestaurantEntityConstants.LOST_RESTAURANT_ENTITY_EXTRA_KEY
 import com.example.epamandroid.constants.PermissionsConstants.WRITE_EXTERNAL_STORAGE_PERMISSION_EXTRA_KEY
-import com.example.epamandroid.models.DogEntity
-import com.example.epamandroid.models.LostDogEntity
+import com.example.epamandroid.models.RestaurantEntity
+import com.example.epamandroid.models.MapRestaurantEntity
 import com.example.epamandroid.mvp.contracts.IMainActivityContract
 import com.example.epamandroid.mvp.core.IBaseView
 import com.example.epamandroid.mvp.presenters.MainActivityPresenter
@@ -37,8 +37,8 @@ class MainActivity : AppCompatActivity(),
         CameraFragment.IShowBottomSheetCallback,
         IBaseView,
         IMainActivityContract.View,
-        BreedDescriptionFragment.IBreedDescriptionResultCallback,
-        LostBreedDescriptionFragment.ILostBreedDescriptionResultCallback,
+        TypeDescriptionFragment.ITypeDescriptionResultCallback,
+        MapTypeDescriptionFragment.IMapTypeDescriptionResultCallback,
         MapFragment.IShowBottomSheetCallback {
 
     companion object {
@@ -157,33 +157,33 @@ class MainActivity : AppCompatActivity(),
         activityMainViewPager.adapter = adapter
     }
 
-    private fun replaceBottomSheetContainer(fragmentKey: String, dogEntity: DogEntity? = null, lostDogEntity: LostDogEntity? = null, dogBreed: String? = null) {
+    private fun replaceBottomSheetContainer(fragmentKey: String, restaurantEntity: RestaurantEntity? = null, mapRestaurantEntity: MapRestaurantEntity? = null, restaurantType: String? = null) {
         val bundle = Bundle()
 
         when (fragmentKey) {
-            DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY -> {
-                val breedDescriptionFragment = BreedDescriptionFragment()
+            RESTAURANT_TYPE_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY -> {
+                val typeDescriptionFragment = TypeDescriptionFragment()
 
-                if (dogEntity != null) {
-                    bundle.putParcelable(DOG_ENTITY_EXTRA_KEY, dogEntity)
+                if (restaurantEntity != null) {
+                    bundle.putParcelable(RESTAURANT_ENTITY_EXTRA_KEY, restaurantEntity)
                 }
 
-                if (dogBreed != null) {
-                    bundle.putString(DOG_BREED_STRING_EXTRA_KEY, dogBreed)
+                if (restaurantType != null) {
+                    bundle.putString(RESTAURANT_TYPE_STRING_EXTRA_KEY, restaurantType)
                 }
-                breedDescriptionFragment.arguments = bundle
+                typeDescriptionFragment.arguments = bundle
 
-                changeFragment(R.id.mainBottomSheetFragmentContainer, breedDescriptionFragment, fragmentKey)
+                changeFragment(R.id.mainBottomSheetFragmentContainer, typeDescriptionFragment, fragmentKey)
             }
-            LOST_DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY -> {
-                val lostBreedDescriptionFragment = LostBreedDescriptionFragment()
+            LOST_RESTAURANT_TYPE_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY -> {
+                val mapTypeDescriptionFragment = MapTypeDescriptionFragment()
 
-                if (lostDogEntity != null) {
-                    bundle.putParcelable(LOST_DOG_ENTITY_EXTRA_KEY, lostDogEntity)
+                if (mapRestaurantEntity != null) {
+                    bundle.putParcelable(LOST_RESTAURANT_ENTITY_EXTRA_KEY, mapRestaurantEntity)
                 }
-                lostBreedDescriptionFragment.arguments = bundle
+                mapTypeDescriptionFragment.arguments = bundle
 
-                changeFragment(R.id.mainBottomSheetFragmentContainer, lostBreedDescriptionFragment, fragmentKey)
+                changeFragment(R.id.mainBottomSheetFragmentContainer, mapTypeDescriptionFragment, fragmentKey)
             }
         }
 
@@ -214,18 +214,18 @@ class MainActivity : AppCompatActivity(),
                 .setSwipePagingEnabled(changeSwipePagingEnabled)
     }
 
-    override fun onShowBottomSheetFromHome(dogEntity: DogEntity?) {
-        replaceBottomSheetContainer(DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY, dogEntity = dogEntity)
+    override fun onShowBottomSheetFromHome(restaurantEntity: RestaurantEntity?) {
+        replaceBottomSheetContainer(RESTAURANT_TYPE_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY, restaurantEntity = restaurantEntity)
         bottomSheetBehavior.expandBottomSheet()
     }
 
-    override fun onShowBottomSheetFromCamera(dogBreed: String) {
-        replaceBottomSheetContainer(DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY, dogBreed = dogBreed)
+    override fun onShowBottomSheetFromCamera(restaurantType: String) {
+        replaceBottomSheetContainer(RESTAURANT_TYPE_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY, restaurantType = restaurantType)
         bottomSheetBehavior.expandBottomSheet()
     }
 
-    override fun onShowBottomSheetFromMap(lostDogEntity: LostDogEntity?) {
-        replaceBottomSheetContainer(LOST_DOG_BREED_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY, lostDogEntity = lostDogEntity)
+    override fun onShowBottomSheetFromMap(mapRestaurantEntity: MapRestaurantEntity?) {
+        replaceBottomSheetContainer(LOST_RESTAURANT_TYPE_DESCRIPTION_FRAGMENT_TAG_EXTRA_KEY, mapRestaurantEntity = mapRestaurantEntity)
         bottomSheetBehavior.expandBottomSheet()
     }
 

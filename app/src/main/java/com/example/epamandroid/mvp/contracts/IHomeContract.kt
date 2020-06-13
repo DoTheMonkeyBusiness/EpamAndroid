@@ -1,15 +1,15 @@
 package com.example.epamandroid.mvp.contracts
 
 import android.content.Context
-import com.example.epamandroid.gsonmodels.GsonDogEntity
-import com.example.epamandroid.models.DogEntity
+import com.example.epamandroid.gsonmodels.GsonRestaurantEntity
+import com.example.epamandroid.models.RestaurantEntity
 import com.example.epamandroid.mvp.core.IBasePresenter
 import com.example.epamandroid.mvp.core.IBaseView
 
 interface IHomeContract {
 
     interface View : IBaseView {
-        fun addElements(dogList: List<DogEntity>?, isFullList: Boolean)
+        fun addElements(restaurantList: List<RestaurantEntity>?, isFullList: Boolean)
         fun isEmptyRecyclerView() : Boolean
         fun getContext(): Context?
     }
@@ -25,7 +25,7 @@ interface IHomeContract {
         fun getEntities(
                 startPosition: Int,
                 endPosition: Int
-        ): HashMap<Int, GsonDogEntity>?
+        ): HashMap<Int, GsonRestaurantEntity>?
 
     }
 }

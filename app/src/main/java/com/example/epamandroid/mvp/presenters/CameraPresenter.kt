@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
-import com.example.epamandroid.constants.DogEntityConstants
+import com.example.epamandroid.constants.RestaurantEntityConstants
 import com.example.epamandroid.mvp.contracts.ICameraContract
 import com.example.epamandroid.mvp.repository.Repository
 
@@ -62,11 +62,11 @@ class CameraPresenter(view: ICameraContract.View)
         }
     }
 
-    override fun putDogInfoInBundle(dogBreed: String): Bundle? {
+    override fun putRestaurantInfoInBundle(restaurantType: String): Bundle? {
         val bundle: Bundle? = Bundle()
 
         return bundle?.apply {
-            putString(DogEntityConstants.BREED_FROM_CAMERA_EXTRA_KEY, dogBreed)
+            putString(RestaurantEntityConstants.TYPE_FROM_CAMERA_EXTRA_KEY, restaurantType)
         }
     }
 

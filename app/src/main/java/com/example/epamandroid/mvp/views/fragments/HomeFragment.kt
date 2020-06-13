@@ -13,7 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.epamandroid.R
-import com.example.epamandroid.models.DogEntity
+import com.example.epamandroid.models.RestaurantEntity
 import com.example.epamandroid.mvp.contracts.IHomeContract
 import com.example.epamandroid.mvp.presenters.HomePresenter
 import com.example.epamandroid.mvp.views.adapters.HomeRecyclerViewAdapter
@@ -27,7 +27,7 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
     companion object {
         private const val TAG: String = "HomeFragment"
-        private const val DOGS_LIST_KEY: String = "dogsListKey"
+        private const val RESTAURANTS_LIST_KEY: String = "restaurantsListKey"
     }
 
     private var isLoading: Boolean = false
@@ -78,8 +78,8 @@ class HomeFragment : Fragment(), IHomeContract.View {
 
         setRecycler()
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(DOGS_LIST_KEY)) {
-            viewAdapter.updateDogsList(savedInstanceState.getParcelableArrayList(DOGS_LIST_KEY))
+        if (savedInstanceState != null && savedInstanceState.containsKey(RESTAURANTS_LIST_KEY)) {
+            viewAdapter.updateRestaurantsList(savedInstanceState.getParcelableArrayList(RESTAURANTS_LIST_KEY))
 
         } else {
             isLoading = true
@@ -133,8 +133,8 @@ class HomeFragment : Fragment(), IHomeContract.View {
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(DOGS_LIST_KEY)) {
-            viewAdapter.updateDogsList(savedInstanceState.getParcelableArrayList(DOGS_LIST_KEY))
+        if (savedInstanceState != null && savedInstanceState.containsKey(RESTAURANTS_LIST_KEY)) {
+            viewAdapter.updateRestaurantsList(savedInstanceState.getParcelableArrayList(RESTAURANTS_LIST_KEY))
         }
     }
 
@@ -150,9 +150,9 @@ class HomeFragment : Fragment(), IHomeContract.View {
     private fun setViewAdapter() {
         viewAdapter = HomeRecyclerViewAdapter(context)
 
-        viewAdapter.onItemClick = { dog ->
-            if (dog.id?.let { viewAdapter.getItemViewType(it) } == ViewType.DOG) {
-                showBottomSheetCallback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(dog.id))
+        viewAdapter.onItemClick = { restaurant ->
+            if (restaurant.id?.let { viewAdapter.getItemViewType(it) } == ViewType.RESTAURANT) {
+                showBottomSheetCallback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(restaurant.id))
             }
         }
     }
@@ -164,8 +164,8 @@ class HomeFragment : Fragment(), IHomeContract.View {
         homePresenter.getMoreItems(startPosition, endPosition)
     }
 
-    override fun addElements(dogList: List<DogEntity>?, isFullList: Boolean) {
-        viewAdapter.addItems(dogList)
+    override fun addElements(restaurantList: List<RestaurantEntity>?, isFullList: Boolean) {
+        viewAdapter.addItems(restaurantList)
         isLoading = false
         bottomProgress.collapseBottomSheet()
 
@@ -173,17 +173,17 @@ class HomeFragment : Fragment(), IHomeContract.View {
     }
 
     override fun isEmptyRecyclerView(): Boolean {
-        return viewAdapter.isEmptyDogsList()
+        return viewAdapter.isEmptyRestaurantsList()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putParcelableArrayList(DOGS_LIST_KEY, viewAdapter.getDogList())
+        outState.putParcelableArrayList(RESTAURANTS_LIST_KEY, viewAdapter.getRestaurantList())
     }
 
     interface IShowBottomSheetCallback {
-        fun onShowBottomSheetFromHome(dogEntity: DogEntity?)
+        fun onShowBottomSheetFromHome(restaurantEntity: RestaurantEntity?)
     }
 
     interface ISaveHomeFragmentStateCallback {

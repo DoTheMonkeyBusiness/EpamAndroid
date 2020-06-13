@@ -1,12 +1,12 @@
 package com.example.epamandroid.mvp.contracts
 
-import com.example.epamandroid.gsonmodels.GsonLostDogEntity
+import com.example.epamandroid.gsonmodels.GsonMapRestaurantEntity
 import com.example.epamandroid.mvp.core.IBasePresenter
 import com.example.epamandroid.mvp.core.IBaseView
 import java.io.File
 import java.util.*
 
-interface IAddLostDogContract {
+interface IAddMapRestaurantContract {
 
     interface View : IBaseView {
         fun imageUploadError()
@@ -15,7 +15,7 @@ interface IAddLostDogContract {
     }
 
     interface Presenter : IBasePresenter {
-        fun uploadLostDog(breed: String,
+        fun uploadMapRestaurant(type: String,
                           phoneNumber: String,
                           description: String,
                           latitude: Double,
@@ -24,7 +24,7 @@ interface IAddLostDogContract {
     }
 
     interface Model {
-        fun putLostBreed(gsonLostDogEntity: GsonLostDogEntity): Boolean
+        fun putMapType(gsonMapRestaurantEntity: GsonMapRestaurantEntity): Boolean
         fun uploadImage(imageFile: File, id: UUID): Boolean
     }
 }

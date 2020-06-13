@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <include
-        android:id="@+id/addLostDogCustomActionBarLayout"
+        android:id="@+id/addMapRestaurantCustomActionBarLayout"
         layout="@layout/main_action_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,14 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?attr/colorBackground"
-        tools:context=".mvp.views.activities.AddLostDogActivity">
+        tools:context=".mvp.views.activities.AddMapRestaurantActivity">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/addLostDogAddPhotoImageView"
+                android:id="@+id/addMapRestaurantAddPhotoImageView"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:layout_marginStart="8dp"
@@ -38,47 +38,47 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/addLostDogAddPhotoButton"
+                android:id="@+id/addMapRestaurantAddPhotoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="?attr/colorPrimary"
-                android:text="@string/add_dog_photo"
+                android:text="@string/add_restaurant_photo"
                 android:textAllCaps="false"
                 android:textColor="?attr/colorAccent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddPhotoImageView" />
+                app:layout_constraintTop_toBottomOf="@+id/addMapRestaurantAddPhotoImageView" />
 
             <TextView
-                android:id="@+id/addLostDogSelectADogView"
+                android:id="@+id/addMapRestaurantSelectARestaurantView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/select_a_dog"
+                android:text="@string/select_a_restaurant"
                 android:textColor="?attr/colorAccentGrey"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddPhotoButton" />
+                app:layout_constraintTop_toBottomOf="@+id/addMapRestaurantAddPhotoButton" />
 
             <TextView
-                android:id="@+id/addLostDogSelectADogTextView"
+                android:id="@+id/addMapRestaurantSelectARestaurantTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:textColor="?attr/colorAccentGrey"
                 android:textSize="18sp"
-                app:layout_constraintStart_toEndOf="@+id/addLostDogSelectADogView"
-                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddPhotoButton" />
+                app:layout_constraintStart_toEndOf="@+id/addMapRestaurantSelectARestaurantView"
+                app:layout_constraintTop_toBottomOf="@+id/addMapRestaurantAddPhotoButton" />
 
 
             <fragment
-                android:id="@+id/addLostDogChooseLostDogFragment"
-                android:name="com.example.epamandroid.mvp.views.fragments.ChooseLostBreedFragment"
+                android:id="@+id/addMapRestaurantChooseMapRestaurantFragment"
+                android:name="com.example.epamandroid.mvp.views.fragments.ChooseMapTypeFragment"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:layout_marginStart="8dp"
@@ -86,23 +86,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addLostDogSelectADogTextView"
-                tools:layout="@layout/choose_lost_breed_fragment" />
+                app:layout_constraintTop_toBottomOf="@+id/addMapRestaurantSelectARestaurantTextView"
+                tools:layout="@layout/choose_map_type_fragment" />
 
             <TextView
-                android:id="@+id/addLostEnterPhoneNumber"
+                android:id="@+id/addMapEnterPhoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@string/enter_phone_number"
                 android:textColor="?attr/colorAccentGrey"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/addLostEnterPhoneNumberEditText"
+                app:layout_constraintBottom_toBottomOf="@+id/addMapEnterPhoneNumberEditText"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/addLostEnterPhoneNumberEditText" />
+                app:layout_constraintTop_toTopOf="@+id/addMapEnterPhoneNumberEditText" />
 
             <EditText
-                android:id="@+id/addLostEnterPhoneNumberEditText"
+                android:id="@+id/addMapEnterPhoneNumberEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -111,24 +111,24 @@
                 android:ems="10"
                 android:inputType="phone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/addLostEnterPhoneNumber"
-                app:layout_constraintTop_toBottomOf="@+id/addLostDogChooseLostDogFragment"
+                app:layout_constraintStart_toEndOf="@+id/addMapEnterPhoneNumber"
+                app:layout_constraintTop_toBottomOf="@+id/addMapRestaurantChooseMapRestaurantFragment"
                 tools:ignore="Autofill,LabelFor" />
 
             <TextView
-                android:id="@+id/addLostDogAddBreedDescription"
+                android:id="@+id/addMapRestaurantAddTypeDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/add_breed_description"
+                android:text="@string/add_type_description"
                 android:textAlignment="center"
                 android:textColor="?attr/colorAccentGrey"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@+id/addLostEnterPhoneNumberEditText"
+                app:layout_constraintTop_toBottomOf="@+id/addMapEnterPhoneNumberEditText"
                 tools:layout_editor_absoluteX="16dp" />
 
             <EditText
-                android:id="@+id/addLostDogAddBreedDescriptionEditText"
+                android:id="@+id/addMapRestaurantAddTypeDescriptionEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -139,11 +139,11 @@
                 android:textColor="?attr/colorAccentGrey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddBreedDescription"
+                app:layout_constraintTop_toBottomOf="@+id/addMapRestaurantAddTypeDescription"
                 tools:ignore="Autofill,LabelFor" />
 
             <Button
-                android:id="@+id/addLostDogConfirmButton"
+                android:id="@+id/addMapRestaurantConfirmButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -152,7 +152,7 @@
                 android:background="?attr/colorPrimary"
                 android:text="@string/ok"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addLostDogAddBreedDescriptionEditText" />
+                app:layout_constraintTop_toBottomOf="@+id/addMapRestaurantAddTypeDescriptionEditText" />
 
 
         </android.support.constraint.ConstraintLayout>

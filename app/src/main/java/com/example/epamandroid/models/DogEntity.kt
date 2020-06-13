@@ -4,15 +4,15 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class DogEntity(
+data class RestaurantEntity(
         val id: Int?,
-        val breed: String?,
+        val type: String?,
         val weight: String?,
         val height: String?,
         val description: String?,
         val isCanLiveAtHome: Boolean?,
         val isAffectionate: Boolean?,
-        val breedPopularity: Float?,
+        val typePopularity: Float?,
         val cost: Int?,
         val lifeExpectancy: String?,
         val photo: String?

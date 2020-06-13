@@ -5,71 +5,71 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.example.epamandroid.R
-import com.example.epamandroid.models.DogEntity
-import kotlinx.android.synthetic.main.breed_description_view.view.*
+import com.example.epamandroid.models.RestaurantEntity
+import kotlinx.android.synthetic.main.type_description_view.view.*
 
-class BreedDescriptionView @JvmOverloads constructor(
+class TypeDescriptionView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
     init {
         orientation = VERTICAL
-        inflate(getContext(), R.layout.breed_description_view, this)
-        breedDescriptionRatingBar.setIsIndicator(true)
+        inflate(getContext(), R.layout.type_description_view, this)
+        typeDescriptionRatingBar.setIsIndicator(true)
     }
 
-    fun getBreedPhoto(): ImageView = breedDescriptionDogPhoto
+    fun getTypePhoto(): ImageView = typeDescriptionRestaurantPhoto
 
-//    fun updateDogInfo(bundle: Bundle?) {
-//        when(bundle?.getString(DogEntityConstants.BREED_EXTRA_KEY)){
-//            null -> {lostBreedDescriptionHeader.setText(R.string.dog_breed)}
-//            else -> {lostBreedDescriptionHeader?.text = bundle.getString(DogEntityConstants.BREED_EXTRA_KEY)}
+//    fun updateRestaurantInfo(bundle: Bundle?) {
+//        when(bundle?.getString(RestaurantEntityConstants.TYPE_EXTRA_KEY)){
+//            null -> {mapTypeDescriptionHeader.setText(R.string.restaurant_type)}
+//            else -> {mapTypeDescriptionHeader?.text = bundle.getString(RestaurantEntityConstants.TYPE_EXTRA_KEY)}
 //        }
-//        when(bundle?.getString(DogEntityConstants.DESCRIPTION_EXTRA_KEY)){
-//            null -> {breedDescriptionText.setText(R.string.no_description)}
-//            else -> {breedDescriptionText?.text = bundle.getString(DogEntityConstants.DESCRIPTION_EXTRA_KEY)}
+//        when(bundle?.getString(RestaurantEntityConstants.DESCRIPTION_EXTRA_KEY)){
+//            null -> {typeDescriptionText.setText(R.string.no_description)}
+//            else -> {typeDescriptionText?.text = bundle.getString(RestaurantEntityConstants.DESCRIPTION_EXTRA_KEY)}
 //        }
-//        when(bundle?.getFloat(DogEntityConstants.BREED_POPULARITY_EXTRA_KEY)){
-//            null -> {breedDescriptionRatingBar?.rating = 0F}
-//            else -> {breedDescriptionRatingBar?.rating = bundle.getFloat(DogEntityConstants.BREED_POPULARITY_EXTRA_KEY)}
+//        when(bundle?.getFloat(RestaurantEntityConstants.TYPE_POPULARITY_EXTRA_KEY)){
+//            null -> {typeDescriptionRatingBar?.rating = 0F}
+//            else -> {typeDescriptionRatingBar?.rating = bundle.getFloat(RestaurantEntityConstants.TYPE_POPULARITY_EXTRA_KEY)}
 //        }
 //
-//        breedDescriptionGridView.updateDogGridInfo(
-//                bundle?.getString(DogEntityConstants.HEIGHT_EXTRA_KEY),
-//                bundle?.getString(DogEntityConstants.WEIGHT_EXTRA_KEY),
-//                bundle?.getString(DogEntityConstants.LIFE_EXPENTANCY_EXTRA_KEY),
-//                bundle?.getInt(DogEntityConstants.COST_EXTRA_KEY),
-//                bundle?.getBoolean(DogEntityConstants.CAN_LIVE_AT_HOME_EXTRA_KEY),
-//                bundle?.getBoolean(DogEntityConstants.AFFECTIONATE_EXTRA_KEY)
+//        typeDescriptionGridView.updateRestaurantGridInfo(
+//                bundle?.getString(RestaurantEntityConstants.HEIGHT_EXTRA_KEY),
+//                bundle?.getString(RestaurantEntityConstants.WEIGHT_EXTRA_KEY),
+//                bundle?.getString(RestaurantEntityConstants.LIFE_EXPENTANCY_EXTRA_KEY),
+//                bundle?.getInt(RestaurantEntityConstants.COST_EXTRA_KEY),
+//                bundle?.getBoolean(RestaurantEntityConstants.CAN_LIVE_AT_HOME_EXTRA_KEY),
+//                bundle?.getBoolean(RestaurantEntityConstants.AFFECTIONATE_EXTRA_KEY)
 //
 //        )
 //
 //    }
 
-    fun updateDogInfo(dogEntity: DogEntity?) {
+    fun updateRestaurantInfo(restaurantEntity: RestaurantEntity?) {
 
 
-        when (dogEntity?.breed) {
-            null -> breedDescriptionHeader.setText(R.string.dog_breed)
-            else -> breedDescriptionHeader.text = dogEntity.breed
+        when (restaurantEntity?.type) {
+            null -> typeDescriptionHeader.setText(R.string.restaurant_type)
+            else -> typeDescriptionHeader.text = restaurantEntity.type
         }
-        when (dogEntity?.description) {
-            null -> breedDescriptionText?.setText(R.string.no_description)
-            else -> breedDescriptionText?.text = dogEntity.description
+        when (restaurantEntity?.description) {
+            null -> typeDescriptionText?.setText(R.string.no_description)
+            else -> typeDescriptionText?.text = restaurantEntity.description
         }
-        when (dogEntity?.breedPopularity) {
-            null -> breedDescriptionRatingBar?.rating = 0F
-            else -> breedDescriptionRatingBar?.rating = dogEntity.breedPopularity
+        when (restaurantEntity?.typePopularity) {
+            null -> typeDescriptionRatingBar?.rating = 0F
+            else -> typeDescriptionRatingBar?.rating = restaurantEntity.typePopularity
         }
 
-        breedDescriptionGridView.updateDogGridInfo(
-                dogEntity?.height,
-                dogEntity?.weight,
-                dogEntity?.lifeExpectancy,
-                dogEntity?.cost,
-                dogEntity?.isCanLiveAtHome,
-                dogEntity?.isAffectionate
+        typeDescriptionGridView.updateRestaurantGridInfo(
+                restaurantEntity?.height,
+                restaurantEntity?.weight,
+                restaurantEntity?.lifeExpectancy,
+                restaurantEntity?.cost,
+                restaurantEntity?.isCanLiveAtHome,
+                restaurantEntity?.isAffectionate
 
         )
     }

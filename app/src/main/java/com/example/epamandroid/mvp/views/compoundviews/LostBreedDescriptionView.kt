@@ -5,36 +5,36 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.example.epamandroid.R
-import com.example.epamandroid.models.LostDogEntity
-import kotlinx.android.synthetic.main.lost_breed_description_view.view.*
+import com.example.epamandroid.models.MapRestaurantEntity
+import kotlinx.android.synthetic.main.map_type_description_view.view.*
 
-class LostBreedDescriptionView @JvmOverloads constructor(
+class MapTypeDescriptionView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
     init {
         orientation = VERTICAL
-        inflate(getContext(), R.layout.lost_breed_description_view, this)
+        inflate(getContext(), R.layout.map_type_description_view, this)
     }
 
-    fun getLostBreedPhoto(): ImageView = lostBreedDescriptionDogPhoto
+    fun getMapTypePhoto(): ImageView = mapTypeDescriptionRestaurantPhoto
 
-    fun updateDogInfo(lostDogEntity: LostDogEntity?) {
+    fun updateRestaurantInfo(mapRestaurantEntity: MapRestaurantEntity?) {
 
-        when (lostDogEntity?.breed) {
-            null -> lostBreedDescriptionHeader.setText(R.string.dog_breed)
-            else -> lostBreedDescriptionHeader.text = lostDogEntity.breed
+        when (mapRestaurantEntity?.type) {
+            null -> mapTypeDescriptionHeader.setText(R.string.restaurant_type)
+            else -> mapTypeDescriptionHeader.text = mapRestaurantEntity.type
         }
 
-        when (lostDogEntity?.phoneNumber) {
-            null -> lostBreedDescriptionPhoneNumber?.setText(R.string.phone_number)
-            else -> lostBreedDescriptionPhoneNumber?.text = lostDogEntity.phoneNumber
+        when (mapRestaurantEntity?.phoneNumber) {
+            null -> mapTypeDescriptionPhoneNumber?.setText(R.string.phone_number)
+            else -> mapTypeDescriptionPhoneNumber?.text = mapRestaurantEntity.phoneNumber
         }
 
-        when (lostDogEntity?.description) {
-            null -> lostBreedDescriptionText?.setText(R.string.no_description)
-            else -> lostBreedDescriptionText?.text = lostDogEntity.description
+        when (mapRestaurantEntity?.description) {
+            null -> mapTypeDescriptionText?.setText(R.string.no_description)
+            else -> mapTypeDescriptionText?.text = mapRestaurantEntity.description
         }
     }
 

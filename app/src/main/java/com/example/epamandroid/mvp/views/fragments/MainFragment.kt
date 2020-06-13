@@ -122,7 +122,7 @@ class MainFragment : Fragment(),
                 mainFragmentViewPager.setCurrentItem(MAP_FRAGMENT_KEY, false)
 
                 mainActivity.apply {
-                    setTitle(R.string.lost_dogs)
+                    setTitle(R.string.map_restaurants)
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
 

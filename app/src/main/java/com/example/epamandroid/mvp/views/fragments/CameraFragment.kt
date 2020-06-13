@@ -107,11 +107,11 @@ class CameraFragment : Fragment(), ICameraContract.View {
             changeFragmentCallback?.onItemChangedToMain()
         }
 
-        cameraFragmentDogBreed.setOnClickListener {
-            if (cameraFragmentDogBreed.text != getString(R.string.uninitialized_classifier)) {
+        cameraFragmentRestaurantType.setOnClickListener {
+            if (cameraFragmentRestaurantType.text != getString(R.string.uninitialized_classifier)) {
                 showBottomSheetCallback
                         ?.onShowBottomSheetFromCamera(
-                                cameraFragmentDogBreed
+                                cameraFragmentRestaurantType
                                         .text
                                         .toString()
                         )
@@ -349,7 +349,7 @@ class CameraFragment : Fragment(), ICameraContract.View {
 
     override fun classifyFrame() {
         if (activity == null || cameraDevice == null) {
-            setBreedText(getString(R.string.uninitialized_classifier))
+            setTypeText(getString(R.string.uninitialized_classifier))
             return
         }
 
@@ -359,15 +359,15 @@ class CameraFragment : Fragment(), ICameraContract.View {
         val textToShow = imageClassifier.classifyFrame(bitmap)
 
         bitmap.recycle()
-        setBreedText(textToShow)
+        setTypeText(textToShow)
     }
 
-    override fun setBreedText(breed: String?) {
+    override fun setTypeText(type: String?) {
         activity?.runOnUiThread {
-            if (breed != null || activity != null) {
-                cameraFragmentDogBreed?.text = breed
+            if (type != null || activity != null) {
+                cameraFragmentRestaurantType?.text = type
             } else {
-                cameraFragmentDogBreed?.text = getString(R.string.uninitialized_classifier)
+                cameraFragmentRestaurantType?.text = getString(R.string.uninitialized_classifier)
             }
         }
     }
@@ -377,6 +377,6 @@ class CameraFragment : Fragment(), ICameraContract.View {
     }
 
     interface IShowBottomSheetCallback {
-        fun onShowBottomSheetFromCamera(dogBreed: String)
+        fun onShowBottomSheetFromCamera(restaurantType: String)
     }
 }

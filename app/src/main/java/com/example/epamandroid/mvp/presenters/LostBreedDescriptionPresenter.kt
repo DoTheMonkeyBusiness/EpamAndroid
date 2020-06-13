@@ -1,12 +1,12 @@
 package com.example.epamandroid.mvp.presenters
 
-import com.example.epamandroid.mvp.contracts.ILostBreedDescriptionContract
+import com.example.epamandroid.mvp.contracts.IMapTypeDescriptionContract
 import com.example.epamandroid.mvp.repository.Repository
 
-class LostBreedDescriptionPresenter(private val view: ILostBreedDescriptionContract.View)
-    : ILostBreedDescriptionContract.Presenter {
+class MapTypeDescriptionPresenter(private val view: IMapTypeDescriptionContract.View)
+    : IMapTypeDescriptionContract.Presenter {
 
-    private val repository: ILostBreedDescriptionContract.Model = Repository
+    private val repository: IMapTypeDescriptionContract.Model = Repository
 
     override fun onCreate() = Unit
 

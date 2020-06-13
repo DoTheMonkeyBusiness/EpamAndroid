@@ -7,14 +7,14 @@ import com.example.epamandroid.mvp.core.IBaseView
 interface ICameraContract {
 
     interface View : IBaseView {
-        fun setBreedText(breed: String?)
+        fun setTypeText(type: String?)
         fun classifyFrame()
     }
 
     interface Presenter: IBasePresenter {
         fun stopBackgroundThread()
         fun startBackgroundThread()
-        fun putDogInfoInBundle(dogBreed: String): Bundle?
+        fun putRestaurantInfoInBundle(restaurantType: String): Bundle?
 
     }
 

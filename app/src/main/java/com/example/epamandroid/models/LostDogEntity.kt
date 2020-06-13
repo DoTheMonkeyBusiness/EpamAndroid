@@ -6,9 +6,9 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-data class LostDogEntity(
+data class MapRestaurantEntity(
     val id: UUID?,
-    val breed: String?,
+    val type: String?,
     val phoneNumber: String?,
     val description: String?,
     val position: LatLng?,

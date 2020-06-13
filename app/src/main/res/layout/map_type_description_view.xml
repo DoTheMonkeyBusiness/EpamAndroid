@@ -8,19 +8,19 @@
     tools:parentTag="android.widget.LinearLayout">
 
     <TextView
-        android:id="@+id/breedDescriptionHeader"
+        android:id="@+id/mapTypeDescriptionHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:padding="8dp"
-        android:text="@string/dog_breed"
+        android:text="@string/restaurant_type"
         android:textAlignment="center"
         android:textColor="?attr/colorAccent"
         android:textSize="30sp"
         android:textStyle="bold" />
 
     <ImageView
-        android:id="@+id/breedDescriptionDogPhoto"
+        android:id="@+id/mapTypeDescriptionRestaurantPhoto"
         android:layout_width="match_parent"
         android:layout_height="240dp"
         android:layout_centerHorizontal="true"
@@ -28,7 +28,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="@string/dog_photo_description"
+        android:contentDescription="@string/restaurant_photo_description"
         android:src="@drawable/ic_help_outline" />
 
     <View
@@ -38,44 +38,27 @@
         android:background="?attr/colorPrimaryDark" />
 
     <TextView
-        android:id="@+id/breedDescriptionRatingText"
+        android:id="@+id/mapTypeDescriptionPhoneNumber"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/breed_popularity"
-        android:textAlignment="center"
-        android:textColor="?attr/colorAccent"
+        android:text="@string/phone_number"
+        android:textColor="?attr/colorPhoneNumber"
+        android:layout_marginStart="16dp"
         android:textSize="24sp"
         android:textStyle="bold" />
-
-    <RatingBar
-        android:id="@+id/breedDescriptionRatingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="?attr/colorPrimaryDark" />
-
-    <com.example.epamandroid.mvp.views.compoundviews.BreedDescriptionGridView
-        android:id="@+id/breedDescriptionGridView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
         android:layout_marginBottom="8dp"
         android:background="?attr/colorPrimaryDark" />
 
     <TextView
-        android:id="@+id/breedDescriptionText"
+        android:id="@+id/mapTypeDescriptionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/breedDescriptionRatingBar"
+        android:layout_below="@id/typeDescriptionRatingBar"
         android:layout_centerHorizontal="true"
         android:padding="16dp"
         android:text="@string/no_description"

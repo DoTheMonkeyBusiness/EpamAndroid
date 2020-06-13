@@ -1,11 +1,11 @@
 afghan hound
-african hunting dog
+african hunting restaurant
 airedale
 american staffordshire terrier
 appenzeller
 australian terrier
 bedlington terrier
-bernese mountain dog
+bernese mountain restaurant
 blenheim spaniel
 border collie
 border terrier
@@ -22,14 +22,14 @@ english foxhound
 english setter
 english springer
 entlebucher
-eskimo dog
-french bulldog
+eskimo restaurant
+french bullrestaurant
 german shepherd
 german short haired pointer
 gordon setter
 great dane
 great pyrenees
-greater swiss mountain dog
+greater swiss mountain restaurant
 ibizan hound
 irish setter
 irish terrier
@@ -42,13 +42,13 @@ labrador retriever
 lakeland terrier
 leonberg
 lhasa
-maltese dog
+maltese restaurant
 mexican hairless
 newfoundland
 norfolk terrier
 norwegian elkhound
 norwich terrier
-old english sheepdog
+old english sheeprestaurant
 pekinese
 pembroke
 pomeranian
@@ -60,7 +60,7 @@ samoyed
 scotch terrier
 scottish deerhound
 sealyham terrier
-shetland sheepdog
+shetland sheeprestaurant
 shih tzu
 siberian husky
 staffordshire bullterrier

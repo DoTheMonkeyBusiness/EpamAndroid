@@ -16,13 +16,13 @@
     <string name="configure_failed">Configure Failed</string>
     <string name="back_to_menu">back to menu</string>
     <string name="uninitialized_classifier">Uninitialized Classifier or invalid context.</string>
-    <string name="dog_photo_description">dog photo</string>
-    <string name="dog_breed">Dog breed</string>
+    <string name="restaurant_photo_description">restaurant photo</string>
+    <string name="restaurant_type">Restaurant type</string>
     <string name="can_live_at_home">can live at home </string>
     <string name="affectionate">affectionate </string>
     <string name="is_affectionate_icon_description">is affectionate icon description</string>
     <string name="is_can_live_at_home_icon_description">is can live at home icon description</string>
-    <string name="breed_popularity">breed popularity</string>
+    <string name="type_popularity">type popularity</string>
     <string name="dash">-</string>
     <string name="weight_kg">weight (pounds):</string>
     <string name="height_kg">height (inches):</string>
@@ -31,13 +31,13 @@
     <string name="cost_dollars">cost ($):</string>
     <string name="no_description">No description</string>
     <string name="close_button">close button</string>
-    <string name="lost_dogs">lost dogs</string>
-    <string name="add_lost_dog">Add lost dog</string>
-    <string name="add_dog_photo">Add dog photo</string>
+    <string name="map_restaurants">map restaurants</string>
+    <string name="add_map_restaurant">Add map restaurant</string>
+    <string name="add_restaurant_photo">Add restaurant photo</string>
     <string name="photo_processing_error">photo processing error</string>
     <string name="unable_location">unable to get current location</string>
-    <string name="select_a_dog">Select a dog:</string>
-    <string name="add_breed_description">add breed description</string>
+    <string name="select_a_restaurant">Select a restaurant:</string>
+    <string name="add_type_description">add type description</string>
     <string name="ok">OK</string>
     <string name="enter_phone_number">Enter phone number:</string>
     <string name="phone_number">Phone number</string>
@@ -47,5 +47,5 @@
     <string name="announcement_posting_error">error while posting your announcement</string>
     <string name="custom_marker">custom marker</string>
     <string name="important">important</string>
-    <string name="lost_dogs_near">There are lost dogs near you</string>
+    <string name="map_restaurants_near">There are map restaurants near you</string>
 </resources>

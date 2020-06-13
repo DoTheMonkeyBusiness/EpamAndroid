@@ -7,96 +7,96 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.epamandroid.R
-import com.example.epamandroid.constants.DogEntityConstants.DOG_BREED_STRING_EXTRA_KEY
-import com.example.epamandroid.constants.DogEntityConstants.DOG_ENTITY_EXTRA_KEY
-import com.example.epamandroid.models.DogEntity
-import com.example.epamandroid.mvp.contracts.IBreedDescriptionContract
-import com.example.epamandroid.mvp.presenters.BreedDescriptionPresenter
+import com.example.epamandroid.constants.RestaurantEntityConstants.RESTAURANT_TYPE_STRING_EXTRA_KEY
+import com.example.epamandroid.constants.RestaurantEntityConstants.RESTAURANT_ENTITY_EXTRA_KEY
+import com.example.epamandroid.models.RestaurantEntity
+import com.example.epamandroid.mvp.contracts.ITypeDescriptionContract
+import com.example.epamandroid.mvp.presenters.TypeDescriptionPresenter
 import com.example.imageloader.IMichelangelo
 import com.example.imageloader.Michelangelo
 import com.example.kotlinextensions.goneView
 import com.example.kotlinextensions.visibleView
-import kotlinx.android.synthetic.main.breed_description_fragment.*
+import kotlinx.android.synthetic.main.type_description_fragment.*
 
-class BreedDescriptionFragment : Fragment(), IBreedDescriptionContract.View {
+class TypeDescriptionFragment : Fragment(), ITypeDescriptionContract.View {
 
     companion object {
-        private const val TAG: String = "BreedDescriptionFragment"
-        private const val DOG_BREED_ENTITY_STATE_KEY: String = "dogBreedEntityStateKey"
+        private const val TAG: String = "TypeDescriptionFragment"
+        private const val RESTAURANT_TYPE_ENTITY_STATE_KEY: String = "restaurantTypeEntityStateKey"
     }
 
     private lateinit var michelangelo: IMichelangelo
-    private lateinit var presenter: IBreedDescriptionContract.Presenter
+    private lateinit var presenter: ITypeDescriptionContract.Presenter
 
-    private var dogEntityState: DogEntity? = null
-    private var breedDescriptionResultCallback: IBreedDescriptionResultCallback? = null
+    private var restaurantEntityState: RestaurantEntity? = null
+    private var typeDescriptionResultCallback: ITypeDescriptionResultCallback? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        if (context is IBreedDescriptionResultCallback) {
-            breedDescriptionResultCallback = context
+        if (context is ITypeDescriptionResultCallback) {
+            typeDescriptionResultCallback = context
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = BreedDescriptionPresenter(this@BreedDescriptionFragment)
+        presenter = TypeDescriptionPresenter(this@TypeDescriptionFragment)
         michelangelo = Michelangelo.getInstance(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.breed_description_fragment, container, false)
+        return inflater.inflate(R.layout.type_description_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val bundle = arguments
-        val bundleDogEntity: DogEntity? = bundle?.getParcelable<DogEntity?>(DOG_ENTITY_EXTRA_KEY)
-        val bundleDogBreed: String? = bundle?.getString(DOG_BREED_STRING_EXTRA_KEY)
+        val bundleRestaurantEntity: RestaurantEntity? = bundle?.getParcelable<RestaurantEntity?>(RESTAURANT_ENTITY_EXTRA_KEY)
+        val bundleRestaurantType: String? = bundle?.getString(RESTAURANT_TYPE_STRING_EXTRA_KEY)
 
-        breedDescriptionFragment.goneView()
+        typeDescriptionFragment.goneView()
 
         if (bundle != null) {
             when {
-                (bundleDogEntity !== null) -> {
-                    updateBreedDescription(bundleDogEntity)
+                (bundleRestaurantEntity !== null) -> {
+                    updateTypeDescription(bundleRestaurantEntity)
                 }
-                (savedInstanceState != null && savedInstanceState.containsKey(DOG_BREED_ENTITY_STATE_KEY)) -> {
-                    updateBreedDescription(savedInstanceState.getParcelable(DOG_BREED_ENTITY_STATE_KEY))
+                (savedInstanceState != null && savedInstanceState.containsKey(RESTAURANT_TYPE_ENTITY_STATE_KEY)) -> {
+                    updateTypeDescription(savedInstanceState.getParcelable(RESTAURANT_TYPE_ENTITY_STATE_KEY))
                 }
-                (bundleDogBreed != null) -> {
-                    breedDescriptionResultCallback?.onDescriptionLoading()
+                (bundleRestaurantType != null) -> {
+                    typeDescriptionResultCallback?.onDescriptionLoading()
 
-                    presenter.loadDogByBreed(bundleDogBreed)
+                    presenter.loadRestaurantByType(bundleRestaurantType)
                 }
             }
         } else {
-            breedDescriptionResultCallback?.onDescriptionError()
+            typeDescriptionResultCallback?.onDescriptionError()
         }
     }
 
-    override fun updateBreedDescription(dogEntity: DogEntity?) {
-        if (dogEntity != null) {
-            dogEntityState = dogEntity
-            breedDescriptionFragment.updateDogInfo(dogEntity)
-            michelangelo.load(breedDescriptionFragment.getBreedPhoto(), dogEntity.photo)
-            breedDescriptionFragment.visibleView()
-            breedDescriptionResultCallback?.onDescriptionConfirm()
+    override fun updateTypeDescription(restaurantEntity: RestaurantEntity?) {
+        if (restaurantEntity != null) {
+            restaurantEntityState = restaurantEntity
+            typeDescriptionFragment.updateRestaurantInfo(restaurantEntity)
+            michelangelo.load(typeDescriptionFragment.getTypePhoto(), restaurantEntity.photo)
+            typeDescriptionFragment.visibleView()
+            typeDescriptionResultCallback?.onDescriptionConfirm()
         } else {
-            breedDescriptionResultCallback?.onDescriptionError()
+            typeDescriptionResultCallback?.onDescriptionError()
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putParcelable(DOG_BREED_ENTITY_STATE_KEY, dogEntityState)
+        outState.putParcelable(RESTAURANT_TYPE_ENTITY_STATE_KEY, restaurantEntityState)
     }
 
-    interface IBreedDescriptionResultCallback {
+    interface ITypeDescriptionResultCallback {
         fun onDescriptionConfirm()
         fun onDescriptionLoading()
         fun onDescriptionError()

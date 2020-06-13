@@ -13,7 +13,7 @@
         android:id="@+id/bottomNavigationMap"
         android:checked="false"
         android:icon="@drawable/ic_map"
-        android:title="@string/lost_dogs"
+        android:title="@string/map_restaurants"
         app:showAsAction="always" />
 
     <item

@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.example.epamandroid.R
-import kotlinx.android.synthetic.main.dog_view.view.*
+import kotlinx.android.synthetic.main.restaurant_view.view.*
 
-class DogView @JvmOverloads constructor(
+class RestaurantView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
@@ -17,32 +17,32 @@ class DogView @JvmOverloads constructor(
 
     init {
 //        layoutParams = RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-        inflate(getContext(), R.layout.dog_view, this)
+        inflate(getContext(), R.layout.restaurant_view, this)
     }
 
-    fun getDogIcon(): ImageView = dogIcon
-    fun setDogBreed(breed: String?): DogView {
+    fun getRestaurantIcon(): ImageView = restaurantIcon
+    fun setRestaurantType(type: String?): RestaurantView {
 
-        when (breed){
-            null -> {dogBreedTextView?.setText(R.string.error)}
-            else -> {dogBreedTextView?.text = breed}
+        when (type){
+            null -> {restaurantTypeTextView?.setText(R.string.error)}
+            else -> {restaurantTypeTextView?.text = type}
         }
 
         return this
     }
-    fun isCanLiveAtHome(isCanLiveAtHome: Boolean?): DogView {
+    fun isCanLiveAtHome(isCanLiveAtHome: Boolean?): RestaurantView {
         when {
-            isCanLiveAtHome == null -> { dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)}
-            isCanLiveAtHome -> dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
-            else -> dogViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
+            isCanLiveAtHome == null -> { restaurantViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)}
+            isCanLiveAtHome -> restaurantViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_check)
+            else -> restaurantViewCanLiveAtHomeIcon.setImageResource(R.drawable.ic_close)
         }
         return this
     }
 
-    fun isLikes(isLikes: Boolean): DogView {
+    fun isLikes(isLikes: Boolean): RestaurantView {
         when {
-            isLikes -> dogIsLikes.setImageResource(R.drawable.ic_star)
-            else -> dogIsLikes.setImageResource(R.drawable.ic_star_border)
+            isLikes -> restaurantIsLikes.setImageResource(R.drawable.ic_star)
+            else -> restaurantIsLikes.setImageResource(R.drawable.ic_star_border)
         }
         return this
     }

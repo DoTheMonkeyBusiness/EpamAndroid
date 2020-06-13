@@ -2,13 +2,13 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/dogView"
+    android:id="@+id/restaurantView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:parentTag="android.widget.RelativeLayout">
 
     <ImageView
-        android:id="@+id/dogIcon"
+        android:id="@+id/restaurantIcon"
         android:layout_width="88dp"
         android:layout_height="88dp"
         android:layout_alignParentStart="true"
@@ -16,46 +16,46 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:contentDescription="@string/dog_photo_description"
+        android:contentDescription="@string/restaurant_photo_description"
         app:srcCompat="@drawable/ic_help_outline" />
 
     <RelativeLayout
-        android:id="@+id/dogViewRelativeLayout"
+        android:id="@+id/restaurantViewRelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
-        android:layout_toEndOf="@id/dogIcon"
+        android:layout_toEndOf="@id/restaurantIcon"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/dogBreedTextView"
+            android:id="@+id/restaurantTypeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/dogViewCanLiveAtHomeIcon"
+            android:layout_alignEnd="@id/restaurantViewCanLiveAtHomeIcon"
             android:layout_alignParentTop="true"
-            android:text="@string/dog_breed"
+            android:text="@string/restaurant_type"
             android:textColor="?attr/colorAccent"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/dogViewCanLiveAtHome"
+            android:id="@+id/restaurantViewCanLiveAtHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/dogBreedTextView"
+            android:layout_below="@id/restaurantTypeTextView"
             android:layout_marginTop="8dp"
             android:text="@string/can_live_at_home"
             android:textColor="?attr/colorAccentGrey"
             android:textSize="18sp" />
 
         <ImageView
-            android:id="@+id/dogViewCanLiveAtHomeIcon"
+            android:id="@+id/restaurantViewCanLiveAtHomeIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/dogViewCanLiveAtHome"
+            android:layout_alignBottom="@id/restaurantViewCanLiveAtHome"
             android:layout_marginStart="8dp"
-            android:layout_toEndOf="@id/dogViewCanLiveAtHome"
+            android:layout_toEndOf="@id/restaurantViewCanLiveAtHome"
             android:contentDescription="@string/is_can_live_at_home_icon_description"
             android:tint="?attr/colorAccentGrey"
             app:srcCompat="@drawable/ic_check" />
@@ -63,14 +63,14 @@
     </RelativeLayout>
 
     <ImageView
-        android:id="@+id/dogIsLikes"
+        android:id="@+id/restaurantIsLikes"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_toEndOf="@id/dogViewRelativeLayout"
+        android:layout_toEndOf="@id/restaurantViewRelativeLayout"
         android:contentDescription="@string/is_likes"
         android:scaleType="fitEnd"
         android:tint="?attr/colorAccent"
@@ -80,9 +80,9 @@
     <!--android:id="@+id/isCanLiveAtHomeTextView"-->
     <!--android:layout_width="wrap_content"-->
     <!--android:layout_height="wrap_content"-->
-    <!--android:layout_below="@id/dogBreedTextView"-->
+    <!--android:layout_below="@id/restaurantTypeTextView"-->
     <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_alignStart="@id/dogBreedTextView"-->
+    <!--android:layout_alignStart="@id/restaurantTypeTextView"-->
     <!--android:gravity="center"-->
     <!--android:text="@string/can_live_at_home"-->
     <!--android:textColor="?attr/colorAccent" />-->

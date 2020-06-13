@@ -7,82 +7,82 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.epamandroid.R
-import com.example.epamandroid.models.DogEntity
+import com.example.epamandroid.models.RestaurantEntity
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
-import com.example.epamandroid.mvp.views.compoundviews.DogView
+import com.example.epamandroid.mvp.views.compoundviews.RestaurantView
 import com.example.imageloader.IMichelangelo
 import com.example.imageloader.Michelangelo
 
 class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecyclerViewAdapter.ViewHolder>() {
 
     private val michelangelo: IMichelangelo = Michelangelo.getInstance(context)
-    private val dogsList:  ArrayList<DogEntity> = arrayListOf()
+    private val restaurantsList:  ArrayList<RestaurantEntity> = arrayListOf()
 
-    private var dogEntity: DogEntity? = null
+    private var restaurantEntity: RestaurantEntity? = null
 
-    var onItemClick: ((DogEntity) -> Unit)? = null
+    var onItemClick: ((RestaurantEntity) -> Unit)? = null
 
     override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
     ): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dog_view_item, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.restaurant_view_item, parent, false))
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-            val holder = (viewHolder.itemView as DogView)
-            dogEntity = dogsList[position]
+            val holder = (viewHolder.itemView as RestaurantView)
+            restaurantEntity = restaurantsList[position]
 
             holder
-                    .setDogBreed(dogEntity?.breed)
-                    .isCanLiveAtHome(dogEntity?.isCanLiveAtHome)
-            michelangelo.load(holder.getDogIcon(), dogEntity?.photo)
+                    .setRestaurantType(restaurantEntity?.type)
+                    .isCanLiveAtHome(restaurantEntity?.isCanLiveAtHome)
+            michelangelo.load(holder.getRestaurantIcon(), restaurantEntity?.photo)
     }
 
     override fun getItemCount(): Int {
-            return dogsList.size
+            return restaurantsList.size
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position < dogsList.size) {
-            ViewType.DOG
+        return if (position < restaurantsList.size) {
+            ViewType.RESTAURANT
         } else {
             ViewType.LOADING
         }
     }
 
-    fun addItems(result: List<DogEntity>?) {
-        val oldItems: ArrayList<DogEntity> = arrayListOf()
+    fun addItems(result: List<RestaurantEntity>?) {
+        val oldItems: ArrayList<RestaurantEntity> = arrayListOf()
 
-        oldItems.addAll(dogsList)
-        result?.let { dogsList.addAll(it) }
-        notifyChanges(oldItems, dogsList)
+        oldItems.addAll(restaurantsList)
+        result?.let { restaurantsList.addAll(it) }
+        notifyChanges(oldItems, restaurantsList)
     }
 
-    fun updateDogsList(list: ArrayList<DogEntity>?) {
+    fun updateRestaurantsList(list: ArrayList<RestaurantEntity>?) {
         if (list !== null) {
-            val oldItems: ArrayList<DogEntity> = arrayListOf()
+            val oldItems: ArrayList<RestaurantEntity> = arrayListOf()
 
-            oldItems.addAll(dogsList)
-            dogsList.clear()
-            dogsList.addAll(list)
-            notifyChanges(oldItems, dogsList)
+            oldItems.addAll(restaurantsList)
+            restaurantsList.clear()
+            restaurantsList.addAll(list)
+            notifyChanges(oldItems, restaurantsList)
         }
     }
 
-    fun getDogList(): ArrayList<DogEntity>? {
-        return dogsList
+    fun getRestaurantList(): ArrayList<RestaurantEntity>? {
+        return restaurantsList
     }
 
     fun getMaxId(): Int {
 
         return when {
-            dogsList.isNullOrEmpty() -> {
+            restaurantsList.isNullOrEmpty() -> {
                 0
             }
             else -> {
                 var maxElement = 0
-                dogsList.forEach {
+                restaurantsList.forEach {
                     if (it.id != null && it.id > maxElement){
                         maxElement = it.id
                     }
@@ -93,13 +93,13 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
         }
     }
 
-    fun getEntityById(id: Int): DogEntity? = dogsList[id]
+    fun getEntityById(id: Int): RestaurantEntity? = restaurantsList[id]
 
-    fun isEmptyDogsList(): Boolean {
-        return dogsList.isEmpty()
+    fun isEmptyRestaurantsList(): Boolean {
+        return restaurantsList.isEmpty()
     }
 
-    private fun notifyChanges(oldList: ArrayList<DogEntity>, newList: ArrayList<DogEntity>) {
+    private fun notifyChanges(oldList: ArrayList<RestaurantEntity>, newList: ArrayList<RestaurantEntity>) {
 
         val diff = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
 
@@ -108,10 +108,10 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
             }
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                val oldDogEntity: DogEntity? = oldList[oldItemPosition]
-                val newDogEntity: DogEntity? = newList[newItemPosition]
+                val oldRestaurantEntity: RestaurantEntity? = oldList[oldItemPosition]
+                val newRestaurantEntity: RestaurantEntity? = newList[newItemPosition]
 
-                return oldDogEntity == newDogEntity
+                return oldRestaurantEntity == newRestaurantEntity
             }
 
             override fun getOldListSize() = oldList.size
@@ -125,8 +125,8 @@ class HomeRecyclerViewAdapter(context: Context?) : RecyclerView.Adapter<HomeRecy
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             view.setOnClickListener {
-                if (itemViewType == ViewType.DOG) {
-                    dogsList[adapterPosition].let { it1 -> it1.let { it2 -> onItemClick?.invoke(it2) } }
+                if (itemViewType == ViewType.RESTAURANT) {
+                    restaurantsList[adapterPosition].let { it1 -> it1.let { it2 -> onItemClick?.invoke(it2) } }
                 }
             }
         }

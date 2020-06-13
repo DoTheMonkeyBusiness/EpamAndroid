@@ -9,39 +9,39 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.epamandroid.R
-import com.example.epamandroid.mvp.contracts.IChooseLostBreedContract
-import com.example.epamandroid.mvp.presenters.ChooseLostBreedPresenter
-import com.example.epamandroid.mvp.views.adapters.ChooseLostDogRecyclerViewAdapter
-import kotlinx.android.synthetic.main.choose_lost_breed_fragment.*
+import com.example.epamandroid.mvp.contracts.IChooseMapTypeContract
+import com.example.epamandroid.mvp.presenters.ChooseMapTypePresenter
+import com.example.epamandroid.mvp.views.adapters.ChooseMapRestaurantRecyclerViewAdapter
+import kotlinx.android.synthetic.main.choose_map_type_fragment.*
 
-class ChooseLostBreedFragment : Fragment(), IChooseLostBreedContract.View {
+class ChooseMapTypeFragment : Fragment(), IChooseMapTypeContract.View {
 
     companion object {
-        private const val TAG: String = "ChooseLostBreedFragment"
+        private const val TAG: String = "ChooseMapTypeFragment"
     }
 
-    private lateinit var chooseLostBreedPresener: IChooseLostBreedContract.Presenter
-    private lateinit var viewAdapter: ChooseLostDogRecyclerViewAdapter
+    private lateinit var chooseMapTypePresener: IChooseMapTypeContract.Presenter
+    private lateinit var viewAdapter: ChooseMapRestaurantRecyclerViewAdapter
     private lateinit var linearLayoutManager: LinearLayoutManager
 
-    private var setLostBreedCallback: ISetLostBreedCallback? = null
+    private var setMapTypeCallback: ISetMapTypeCallback? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
 
-        if (context is ISetLostBreedCallback) {
-            setLostBreedCallback = context
+        if (context is ISetMapTypeCallback) {
+            setMapTypeCallback = context
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        chooseLostBreedPresener = ChooseLostBreedPresenter(this)
+        chooseMapTypePresener = ChooseMapTypePresenter(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.choose_lost_breed_fragment, container, false)
+        return inflater.inflate(R.layout.choose_map_type_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,40 +53,40 @@ class ChooseLostBreedFragment : Fragment(), IChooseLostBreedContract.View {
 
         setRecycler()
 
-        chooseLostBreedPresener.onCreate()
+        chooseMapTypePresener.onCreate()
     }
 
     private fun setLinearLayoutManager() {
-        linearLayoutManager = LinearLayoutManager(this@ChooseLostBreedFragment.context, LinearLayoutManager.VERTICAL, false)
+        linearLayoutManager = LinearLayoutManager(this@ChooseMapTypeFragment.context, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun setViewAdapter() {
-        viewAdapter = ChooseLostDogRecyclerViewAdapter()
+        viewAdapter = ChooseMapRestaurantRecyclerViewAdapter()
 
         viewAdapter.onItemClick = {
-            setLostBreedCallback?.onSelectDogBreed(it)
-//            showBottomSheetCallback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(dog.id))
+            setMapTypeCallback?.onSelectRestaurantType(it)
+//            showBottomSheetCallback?.onShowBottomSheetFromHome(viewAdapter.getEntityById(restaurant.id))
         }
     }
 
     private fun setRecycler() {
-        chooseLostBreedFragmentRecyclerView.apply {
+        chooseMapTypeFragmentRecyclerView.apply {
             layoutManager = linearLayoutManager
 
             adapter = viewAdapter
 
-            addItemDecoration(DividerItemDecoration(this@ChooseLostBreedFragment.context,
+            addItemDecoration(DividerItemDecoration(this@ChooseMapTypeFragment.context,
                     DividerItemDecoration.VERTICAL))
 
         }
 
     }
 
-    override fun addElementsToRecyclerView(dogList: List<String>?) {
-        viewAdapter.addItems(dogList)
+    override fun addElementsToRecyclerView(restaurantList: List<String>?) {
+        viewAdapter.addItems(restaurantList)
     }
 
-    interface ISetLostBreedCallback {
-        fun onSelectDogBreed(breed: String)
+    interface ISetMapTypeCallback {
+        fun onSelectRestaurantType(type: String)
     }
 }

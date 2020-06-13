@@ -1,7 +1,7 @@
 package com.example.epamandroid.mvp.contracts
 
 import android.content.Context
-import com.example.epamandroid.gsonmodels.GsonLostDogEntity
+import com.example.epamandroid.gsonmodels.GsonMapRestaurantEntity
 import com.example.epamandroid.models.ClusterMarker
 import com.example.epamandroid.mvp.core.IBasePresenter
 import com.example.epamandroid.mvp.core.IBaseView
@@ -16,10 +16,10 @@ interface IMapContract {
     }
 
     interface Presenter : IBasePresenter {
-        fun findLostDogsNearby()
+        fun findMapRestaurantsNearby()
     }
 
     interface Model {
-        fun getEntitiesNearby(userPosition: LatLng, radius: Float): HashMap<String, GsonLostDogEntity>?
+        fun getEntitiesNearby(userPosition: LatLng, radius: Float): HashMap<String, GsonMapRestaurantEntity>?
     }
 }

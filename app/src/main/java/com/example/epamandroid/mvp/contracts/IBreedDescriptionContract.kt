@@ -1,22 +1,22 @@
 package com.example.epamandroid.mvp.contracts
 
 import android.content.Context
-import com.example.epamandroid.gsonmodels.GsonDogEntity
-import com.example.epamandroid.models.DogEntity
+import com.example.epamandroid.gsonmodels.GsonRestaurantEntity
+import com.example.epamandroid.models.RestaurantEntity
 import com.example.epamandroid.mvp.core.IBasePresenter
 import com.example.epamandroid.mvp.core.IBaseView
 
-interface IBreedDescriptionContract {
+interface ITypeDescriptionContract {
     interface View : IBaseView {
-        fun updateBreedDescription(dogEntity: DogEntity?)
+        fun updateTypeDescription(restaurantEntity: RestaurantEntity?)
         fun getContext(): Context?
     }
 
     interface Presenter : IBasePresenter {
-        fun loadDogByBreed(breed: String)
+        fun loadRestaurantByType(type: String)
     }
 
     interface Model {
-        fun getEntity(breed: String) : GsonDogEntity?
+        fun getEntity(type: String) : GsonRestaurantEntity?
     }
 }

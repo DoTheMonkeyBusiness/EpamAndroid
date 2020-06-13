@@ -18,23 +18,23 @@ import com.example.epamandroid.constants.MapConstants.LATITUDE_EXTRA_KEY
 import com.example.epamandroid.constants.MapConstants.LONGITUDE_EXTRA_KEY
 import com.example.epamandroid.constants.PermissionsConstants.LOCATION_PERMISSION_EXTRA_KEY
 import com.example.epamandroid.constants.PermissionsConstants.READ_EXTERNAL_STORAGE_PERMISSION_EXTRA_KEY
-import com.example.epamandroid.mvp.contracts.IAddLostDogContract
-import com.example.epamandroid.mvp.presenters.AddLostDogPresenter
-import com.example.epamandroid.mvp.views.fragments.ChooseLostBreedFragment
+import com.example.epamandroid.mvp.contracts.IAddMapRestaurantContract
+import com.example.epamandroid.mvp.presenters.AddMapRestaurantPresenter
+import com.example.epamandroid.mvp.views.fragments.ChooseMapTypeFragment
 import com.example.filename.ImageFilePath
 import com.example.kotlinextensions.goneView
 import com.example.kotlinextensions.visibleView
-import kotlinx.android.synthetic.main.activity_add_lost_dog.*
+import kotlinx.android.synthetic.main.activity_add_map_restaurant.*
 import java.io.File
 import java.io.IOException
 
 
-class AddLostDogActivity : AppCompatActivity(),
-    IAddLostDogContract.View,
-    ChooseLostBreedFragment.ISetLostBreedCallback {
+class AddMapRestaurantActivity : AppCompatActivity(),
+    IAddMapRestaurantContract.View,
+    ChooseMapTypeFragment.ISetMapTypeCallback {
     companion object {
 
-        private const val TAG: String = "AddLostDogActivity"
+        private const val TAG: String = "AddMapRestaurantActivity"
 
         private const val IMAGE_FILE_TYPE_KEY: String = "image/*"
         private const val SELECT_PICTURE_INTENT_KEY: String = "Select Picture"
@@ -48,7 +48,7 @@ class AddLostDogActivity : AppCompatActivity(),
     private var imageSeted: Boolean = false
     private var isDownload: Boolean = false
 
-    private lateinit var addLostDogActivityPresenter: IAddLostDogContract.Presenter
+    private lateinit var addMapRestaurantActivityPresenter: IAddMapRestaurantContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val isDarkModeEnabled = PreferenceManager.getDefaultSharedPreferences(this)
@@ -63,18 +63,18 @@ class AddLostDogActivity : AppCompatActivity(),
         }
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_lost_dog)
+        setContentView(R.layout.activity_add_map_restaurant)
 
         configureSupportActionBar()
         getReadExternalStoragePermission()
 
-        addLostDogActivityPresenter = AddLostDogPresenter(this)
+        addMapRestaurantActivityPresenter = AddMapRestaurantPresenter(this)
 
-        addLostDogAddPhotoButton.setOnClickListener {
+        addMapRestaurantAddPhotoButton.setOnClickListener {
             choosePhoto()
         }
 
-        addLostDogConfirmButton.setOnClickListener {
+        addMapRestaurantConfirmButton.setOnClickListener {
             if (!isDownload) {
                 onConfirm()
             }
@@ -82,16 +82,16 @@ class AddLostDogActivity : AppCompatActivity(),
     }
 
     private fun configureSupportActionBar() {
-        setSupportActionBar(addLostDogCustomActionBarLayout as Toolbar?)
+        setSupportActionBar(addMapRestaurantCustomActionBarLayout as Toolbar?)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        title = getString(R.string.add_lost_dog)
+        title = getString(R.string.add_map_restaurant)
     }
 
     private fun getReadExternalStoragePermission() {
         val permissions: Array<String> = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
-        if (this@AddLostDogActivity.let {
+        if (this@AddMapRestaurantActivity.let {
                 ContextCompat.checkSelfPermission(
                     it,
                     Manifest.permission.READ_EXTERNAL_STORAGE
@@ -130,17 +130,17 @@ class AddLostDogActivity : AppCompatActivity(),
 
     private fun onConfirm() {
         if (!imageSeted
-            || addLostDogSelectADogTextView.text.isEmpty()
-            || addLostEnterPhoneNumberEditText.text.isEmpty()
-            || addLostDogAddBreedDescriptionEditText.text.isEmpty()
+            || addMapRestaurantSelectARestaurantTextView.text.isEmpty()
+            || addMapEnterPhoneNumberEditText.text.isEmpty()
+            || addMapRestaurantAddTypeDescriptionEditText.text.isEmpty()
         ) {
             Toast.makeText(applicationContext, getString(R.string.all_fields_must_be_filled), Toast.LENGTH_LONG).show()
         } else {
             isDownload = true
-            addLostDogActivityPresenter.uploadLostDog(
-                addLostDogSelectADogTextView.text.toString(),
-                addLostEnterPhoneNumberEditText.text.toString(),
-                addLostDogAddBreedDescriptionEditText.text.toString(),
+            addMapRestaurantActivityPresenter.uploadMapRestaurant(
+                addMapRestaurantSelectARestaurantTextView.text.toString(),
+                addMapEnterPhoneNumberEditText.text.toString(),
+                addMapRestaurantAddTypeDescriptionEditText.text.toString(),
                 intent.getDoubleExtra(LATITUDE_EXTRA_KEY, DEFAULT_DOUBLE_VALUE_KEY),
                 intent.getDoubleExtra(LONGITUDE_EXTRA_KEY, DEFAULT_DOUBLE_VALUE_KEY),
                 imageFile
@@ -166,9 +166,9 @@ class AddLostDogActivity : AppCompatActivity(),
             && data.data != null
         ) {
             try {
-                imageFile = File(ImageFilePath.getPath(this@AddLostDogActivity, data.data))
+                imageFile = File(ImageFilePath.getPath(this@AddMapRestaurantActivity, data.data))
                 imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, data.data)
-                addLostDogAddPhotoImageView.setImageBitmap(imageBitmap)
+                addMapRestaurantAddPhotoImageView.setImageBitmap(imageBitmap)
                 imageSeted = true
             } catch (e: IOException) {
                 Toast.makeText(applicationContext, getString(R.string.photo_processing_error), Toast.LENGTH_LONG).show()
@@ -177,7 +177,7 @@ class AddLostDogActivity : AppCompatActivity(),
         }
     }
 
-    override fun onSelectDogBreed(breed: String) {
-        addLostDogSelectADogTextView.text = breed
+    override fun onSelectRestaurantType(type: String) {
+        addMapRestaurantSelectARestaurantTextView.text = type
     }
 }

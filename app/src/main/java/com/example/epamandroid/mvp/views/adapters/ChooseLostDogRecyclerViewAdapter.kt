@@ -8,8 +8,8 @@ import android.widget.TextView
 import com.example.epamandroid.R
 import com.example.epamandroid.mvp.views.annotationclasses.ViewType
 
-class ChooseLostDogRecyclerViewAdapter : RecyclerView.Adapter<ChooseLostDogRecyclerViewAdapter.ViewHolder>() {
-    private val breedList = ArrayList<String>()
+class ChooseMapRestaurantRecyclerViewAdapter : RecyclerView.Adapter<ChooseMapRestaurantRecyclerViewAdapter.ViewHolder>() {
+    private val typeList = ArrayList<String>()
 
     var onItemClick: ((String) -> Unit)? = null
 
@@ -17,29 +17,29 @@ class ChooseLostDogRecyclerViewAdapter : RecyclerView.Adapter<ChooseLostDogRecyc
             parent: ViewGroup,
             viewType: Int
     ): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.breed_text_view, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.type_text_view, parent, false))
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val holder = viewHolder.itemView as TextView
 
-        holder.text = breedList[position]
+        holder.text = typeList[position]
     }
 
     override fun getItemCount(): Int {
-       return breedList.size
+       return typeList.size
     }
 
     fun addItems(result: List<String>?) {
-        result?.let{breedList.addAll(it)}
+        result?.let{typeList.addAll(it)}
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         init {
             view.setOnClickListener {
-                if (itemViewType == ViewType.DOG) {
-                    breedList[adapterPosition].let { it1 -> onItemClick?.invoke(it1) }
+                if (itemViewType == ViewType.RESTAURANT) {
+                    typeList[adapterPosition].let { it1 -> onItemClick?.invoke(it1) }
                 }
             }
         }

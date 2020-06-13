@@ -20,10 +20,10 @@ import com.example.epamandroid.constants.MapConstants.LATITUDE_EXTRA_KEY
 import com.example.epamandroid.constants.MapConstants.LONGITUDE_EXTRA_KEY
 import com.example.epamandroid.constants.PermissionsConstants.LOCATION_PERMISSION_EXTRA_KEY
 import com.example.epamandroid.models.ClusterMarker
-import com.example.epamandroid.models.LostDogEntity
+import com.example.epamandroid.models.MapRestaurantEntity
 import com.example.epamandroid.mvp.contracts.IMapContract
 import com.example.epamandroid.mvp.presenters.MapPresenter
-import com.example.epamandroid.mvp.views.activities.AddLostDogActivity
+import com.example.epamandroid.mvp.views.activities.AddMapRestaurantActivity
 import com.example.epamandroid.mvp.services.LocationService
 import com.example.epamandroid.util.ClusterManagerRenderer
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -42,14 +42,14 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
 
     companion object {
         private const val TAG: String = "MapFragment"
-        private const val LOST_DOG_TITLE_KEY: String = "addLostDog"
+        private const val LOST_RESTAURANT_TITLE_KEY: String = "addMapRestaurant"
         private const val DEFAULT_ZOOM_KEY: Float = 15F
     }
 
-    private var lostDogsMap: GoogleMap? = null
+    private var mapRestaurantsMap: GoogleMap? = null
     private var locationPermissionsGranted: Boolean = false
     private var fusedLocationProviderClient: FusedLocationProviderClient? = null
-    private var lostDogMarker: Marker? = null
+    private var mapRestaurantMarker: Marker? = null
     private var clusterManager: ClusterManager<ClusterMarker>? = null
     private var clusterManagerRenderer: ClusterManagerRenderer? = null
     private var clusterMarkersSet: HashSet<ClusterMarker> = hashSetOf()
@@ -157,45 +157,45 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
     }
 
     private fun moveCamera(latLng: LatLng?, zoom: Float) {
-        lostDogsMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
+        mapRestaurantsMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
     }
 
     private fun setOnMapClickListener() {
-        lostDogsMap?.setOnMapClickListener {
-            val marker = MarkerOptions().position(it).title(LOST_DOG_TITLE_KEY)
+        mapRestaurantsMap?.setOnMapClickListener {
+            val marker = MarkerOptions().position(it).title(LOST_RESTAURANT_TITLE_KEY)
 
-            lostDogMarker?.remove()
-            lostDogMarker = lostDogsMap?.addMarker(marker)
+            mapRestaurantMarker?.remove()
+            mapRestaurantMarker = mapRestaurantsMap?.addMarker(marker)
         }
     }
 
     private fun setOnMarkerClickListener() {
-        lostDogsMap?.setOnMarkerClickListener { marker ->
-            if (marker.title == LOST_DOG_TITLE_KEY) {
-                startActivity(Intent(context, AddLostDogActivity::class.java).apply {
+        mapRestaurantsMap?.setOnMarkerClickListener { marker ->
+            if (marker.title == LOST_RESTAURANT_TITLE_KEY) {
+                startActivity(Intent(context, AddMapRestaurantActivity::class.java).apply {
                     putExtra(LATITUDE_EXTRA_KEY, marker.position.latitude)
                     putExtra(LONGITUDE_EXTRA_KEY, marker.position.longitude)
                 })
             } else {
-                val lostDogEntity = clusterMarkersSet.find {
+                val mapRestaurantEntity = clusterMarkersSet.find {
                     it.title == marker.title
-                }?.lostDogEntity
+                }?.mapRestaurantEntity
 
-                showBottomSheetCallback?.onShowBottomSheetFromMap(lostDogEntity)
+                showBottomSheetCallback?.onShowBottomSheetFromMap(mapRestaurantEntity)
             }
             true
         }
     }
 
     override fun addMapMarker(clusterMarker: ClusterMarker) {
-        if (lostDogsMap != null) {
+        if (mapRestaurantsMap != null) {
             if (clusterManager == null) {
-                clusterManager = ClusterManager(activity?.applicationContext, lostDogsMap)
+                clusterManager = ClusterManager(activity?.applicationContext, mapRestaurantsMap)
             }
 
             val manager = clusterManager
             val appContext = activity?.applicationContext
-            val googleMap = lostDogsMap
+            val googleMap = mapRestaurantsMap
 
             if (clusterManagerRenderer == null) {
                 clusterManagerRenderer = ClusterManagerRenderer(appContext, googleMap, manager)
@@ -210,7 +210,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
     }
 
     override fun removeMapMarkers(clusterMarkers: HashSet<ClusterMarker>) {
-        if (lostDogsMap != null) {
+        if (mapRestaurantsMap != null) {
             val manager = clusterManager
 
             clusterMarkers.forEach{
@@ -226,11 +226,11 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
 
     override fun onMapReady(map: GoogleMap?) {
 
-        lostDogsMap = map
+        mapRestaurantsMap = map
 
         if (locationPermissionsGranted) {
             getUserLocation()
-            mapPresenter.findLostDogsNearby()
+            mapPresenter.findMapRestaurantsNearby()
 
             startLocationService()
 
@@ -249,7 +249,7 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
             ) {
                 return
             }
-            lostDogsMap?.isMyLocationEnabled = true
+            mapRestaurantsMap?.isMyLocationEnabled = true
 
             setOnMapClickListener()
             setOnMarkerClickListener()
@@ -289,6 +289,6 @@ class MapFragment : Fragment(), OnMapReadyCallback, IMapContract.View {
     }
 
     interface IShowBottomSheetCallback {
-        fun onShowBottomSheetFromMap(lostDogEntity: LostDogEntity?)
+        fun onShowBottomSheetFromMap(mapRestaurantEntity: MapRestaurantEntity?)
     }
 }

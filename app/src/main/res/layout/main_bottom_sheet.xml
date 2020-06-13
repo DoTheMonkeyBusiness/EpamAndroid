@@ -60,8 +60,8 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-        <!--<com.example.epamandroid.mvp.views.compoundviews.BreedDescriptionView-->
-        <!--android:id="@+id/breedDescription"-->
+        <!--<com.example.epamandroid.mvp.views.compoundviews.TypeDescriptionView-->
+        <!--android:id="@+id/typeDescription"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
         <!--android:background="?attr/colorBackground"-->

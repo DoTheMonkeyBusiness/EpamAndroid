@@ -1,9 +1,9 @@
 package com.example.epamandroid.constants
 
-object LostDogEntityConstants {
-    const val LOST_DOG_ENTITY_EXTRA_KEY: String = "lostDogEntity"
+object MapRestaurantEntityConstants {
+    const val LOST_RESTAURANT_ENTITY_EXTRA_KEY: String = "mapRestaurantEntity"
     const val ID_EXTRA_KEY: String = "id"
-    const val BREED_EXTRA_KEY: String = "breed"
+    const val TYPE_EXTRA_KEY: String = "type"
     const val PHONE_NUMBER_EXTRA_KEY: String = "phoneNumber"
     const val DESCRIPTION_EXTRA_KEY: String = "description"
     const val LATITUDE_EXTRA_KEY: String = "latitude"

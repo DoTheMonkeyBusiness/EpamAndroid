@@ -6,9 +6,9 @@ import android.util.Log
 import com.example.epamandroid.constants.MapConstants.MAP_FASTEST_INTERVAL
 import com.example.epamandroid.constants.MapConstants.MAP_RADIUS_EXTRA_KEY
 import com.example.epamandroid.constants.MapConstants.MAP_UPDATE_INTERVAL
-import com.example.epamandroid.gsonmodels.GsonLostDogEntity
+import com.example.epamandroid.gsonmodels.GsonMapRestaurantEntity
 import com.example.epamandroid.models.ClusterMarker
-import com.example.epamandroid.models.LostDogEntity
+import com.example.epamandroid.models.MapRestaurantEntity
 import com.example.epamandroid.mvp.contracts.IMapContract
 import com.example.epamandroid.mvp.repository.Repository
 import com.example.imageloader.Michelangelo
@@ -33,7 +33,7 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
 
             if (deviceLocation != null) {
                 Log.d(TAG, "update map location")
-                findDogs(LatLng(deviceLocation.latitude, deviceLocation.longitude))
+                findRestaurants(LatLng(deviceLocation.latitude, deviceLocation.longitude))
             }
         }
     }
@@ -46,7 +46,7 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
         }
     }
 
-    override fun findLostDogsNearby() {
+    override fun findMapRestaurantsNearby() {
         val locationRequestHighAccuracy = LocationRequest().apply {
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             interval = MAP_UPDATE_INTERVAL
@@ -60,17 +60,17 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
         )
     }
 
-    private fun findDogs(deviceLocation: LatLng) {
+    private fun findRestaurants(deviceLocation: LatLng) {
         Thread {
-            val lostDogsSet: HashSet<LostDogEntity> = hashSetOf()
-            val gsonLostDogsMap: HashMap<String, GsonLostDogEntity>? = repository
+            val mapRestaurantsSet: HashSet<MapRestaurantEntity> = hashSetOf()
+            val gsonMapRestaurantsMap: HashMap<String, GsonMapRestaurantEntity>? = repository
                 .getEntitiesNearby(deviceLocation, MAP_RADIUS_EXTRA_KEY)
 
-            gsonLostDogsMap?.forEach {
-                lostDogsSet.add(
-                    LostDogEntity(
+            gsonMapRestaurantsMap?.forEach {
+                mapRestaurantsSet.add(
+                    MapRestaurantEntity(
                         it.value.id,
-                        it.value.breed,
+                        it.value.type,
                         it.value.phoneNumber,
                         it.value.description,
                         it.value.latitude?.let { it1 -> it.value.longitude?.let { it2 -> LatLng(it1, it2) } },
@@ -79,18 +79,18 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
                 )
             }
 
-            removeClusterMarkers(lostDogsSet)
+            removeClusterMarkers(mapRestaurantsSet)
 
-            if (lostDogsSet.isNotEmpty()) {
-                createClusterMarkers(lostDogsSet)
+            if (mapRestaurantsSet.isNotEmpty()) {
+                createClusterMarkers(mapRestaurantsSet)
             }
         }.start()
     }
 
-    private fun removeClusterMarkers(lostDogsNearbySet: HashSet<LostDogEntity>) {
+    private fun removeClusterMarkers(mapRestaurantsNearbySet: HashSet<MapRestaurantEntity>) {
         val clusterMarkersSet: HashSet<ClusterMarker> = hashSetOf()
         view.getMarkersSet().forEach { marker ->
-            if (lostDogsNearbySet.firstOrNull { it.id?.equals(marker.title) == true } == null) {
+            if (mapRestaurantsNearbySet.firstOrNull { it.id?.equals(marker.title) == true } == null) {
                 clusterMarkersSet.add(marker)
             }
         }
@@ -99,12 +99,12 @@ class MapPresenter(private val view: IMapContract.View) : IMapContract.Presenter
         }
     }
 
-    private fun createClusterMarkers(lostDogsNearbyList: HashSet<LostDogEntity>) {
-        lostDogsNearbyList.forEach {
+    private fun createClusterMarkers(mapRestaurantsNearbyList: HashSet<MapRestaurantEntity>) {
+        mapRestaurantsNearbyList.forEach {
             val marker = ClusterMarker(
                 it.position,
                 it.id.toString(),
-                it.breed,
+                it.type,
                 michelangelo.loadSync(it.photo),
                 it
             )

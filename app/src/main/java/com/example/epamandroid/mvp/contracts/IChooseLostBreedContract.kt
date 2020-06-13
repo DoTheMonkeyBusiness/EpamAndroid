@@ -3,15 +3,15 @@ package com.example.epamandroid.mvp.contracts
 import com.example.epamandroid.mvp.core.IBasePresenter
 import com.example.epamandroid.mvp.core.IBaseView
 
-interface IChooseLostBreedContract {
+interface IChooseMapTypeContract {
     interface View : IBaseView {
-        fun addElementsToRecyclerView(dogList: List<String>?)
+        fun addElementsToRecyclerView(restaurantList: List<String>?)
     }
 
     interface Presenter : IBasePresenter
 
     interface Model {
-        fun getBreeds(
+        fun getTypes(
         ): MutableList<String?>?
     }
 }

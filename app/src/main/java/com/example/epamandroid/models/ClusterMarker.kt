@@ -9,7 +9,7 @@ class ClusterMarker (
     private var title: String?,
     private var snippet: String?,
     var iconPicture: Bitmap?,
-    var lostDogEntity: LostDogEntity?
+    var mapRestaurantEntity: MapRestaurantEntity?
 ) : ClusterItem {
     override fun getSnippet(): String? = snippet
     override fun getTitle(): String? = title
